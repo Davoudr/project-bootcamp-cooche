@@ -1,13 +1,28 @@
 {
-  "license": "MIT",
   "dependencies": {
+    "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-openid-connect": "^2.7.2",
+    "express-session": "^1.17.2",
+    "google-auth-library": "^7.14.1",
+    "googleapis": "^100.0.0",
+    "moment": "^2.29.2",
     "mongodb": "^4.5.0",
-    "nodemon": "^2.0.15"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
+    "passport": "^0.5.2",
+    "passport-google-oauth": "^2.0.0"
   },
   "scripts": {
-    "start": "nodemon index.js"
-  }
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "name": "cooche-app",
+  "version": "1.0.0",
+  "description": "Concordia-Bootcamp final project",
+  "main": "server.js",
+  "repository": "https://github.com/Davoudr/project-bootcamp-cooche.git",
+  "author": "Davoud Ramezani Kermani",
+  "license": "MIT"
 }
