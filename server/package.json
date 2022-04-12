@@ -10,13 +10,12 @@
     "moment": "^2.29.2",
     "mongodb": "^4.5.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "passport-google-oauth": "^2.0.0"
   },
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js"
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start": "cross-env NODE_ENV=production node server.js"
   },
   "name": "cooche-app",
   "version": "1.0.0",
@@ -24,5 +23,9 @@
   "main": "server.js",
   "repository": "https://github.com/Davoudr/project-bootcamp-cooche.git",
   "author": "Davoud Ramezani Kermani",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.15"
+  }
 }
