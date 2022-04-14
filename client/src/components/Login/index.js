@@ -3,23 +3,49 @@ import { SiFacebook } from "react-icons/si";
 import styled from "styled-components";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../../other/AppContext";
 
 const Login = () => {
   const { loginWithRedirect, logout, user, isLoading } = useAuth0();
-  const {
-    logInMethod,
-    setLogInMethod,
-    userInfo,
-    setUserInfo,
-    passConfirmed,
-    setPassConfirmed,
-  } = useContext(AppContext);
-
+  const { logInMethod, setLogInMethod, userInfo, setUserInfo } =
+    useContext(AppContext);
+  const [passConfrmedErr, setPassConfrmedErr] = useState(false);
+  const [passPassLengthErr, setPassPassLengthErr] = useState(false);
+  const [agreementErr, setAgreementErr] = useState(false);
   const handleSubmit = (ev) => {
+    if (!ev.target[5].checked) {
+      setAgreementErr(true);
+    } else {
+      setAgreementErr(false);
+    }
+
+    if (ev.target[3].value !== ev.target[4].value) {
+      setPassConfrmedErr(true);
+    } else {
+      setPassConfrmedErr(false);
+    }
+
+    if (ev.target[3].value.length < 7 ) {
+      setPassPassLengthErr(true);
+    } else {
+      setPassPassLengthErr(false);
+    }
+
+
+
     ev.preventDefault();
-    ev.target.reset();
+    // ev.target.reset();
+  };
+
+  const handleChangeForm = (ev) => { //for having real-time err of pass-length
+    if (ev.target.id === "password" && ev.target.value.length < 7) {
+      setPassPassLengthErr(true);
+    } else {
+      setPassPassLengthErr(false);
+    }
+
+
   };
   const handleChange = (ev) => {
     let theKey = ev.target.id;
@@ -54,7 +80,7 @@ const Login = () => {
             <>
               <div className="left">
                 <button
-                  className="loginBtn fb-div"
+                  className="loginBtn"
                   onClick={() => loginWithRedirect()}
                 >
                   <FcGoogle className="icon" size="2rem" />
@@ -77,7 +103,7 @@ const Login = () => {
               </div>
             </>
           ) : (
-            <>
+            <div className="middle-bottom">
               <div className="middle">
                 <div className="left">
                   <button
@@ -95,7 +121,7 @@ const Login = () => {
                 <div className="right">
                   <form
                     onSubmit={handleSubmit}
-                    // onChange={onchangeHandle}
+                    onChange={handleChangeForm}
                     autocomplete="on"
                     className="form"
                   >
@@ -134,11 +160,25 @@ const Login = () => {
                     />
                     <input
                       className="input"
-                      id="lname"
+                      id="passConfrmed"
                       type="password"
                       placeholder="Confirm Password"
                       required
                     />
+                    <div className="agreement">
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        id="agreement"
+                      />
+                      I agree to the{" "}
+                      <a
+                        className="link"
+                        href="https://policies.google.com/terms?hl=en-US"
+                      >
+                        terms of services
+                      </a>
+                    </div>
                     <button className="submit-btn" type="submit">
                       Register
                     </button>
@@ -146,10 +186,33 @@ const Login = () => {
                 </div>
               </div>
               <div className="bottom">
-                <div className="agreement"></div>
-                <div className="err"></div>
+                <div
+                  className={`err ${agreementErr && "err-active"} ${passPassLengthErr && "err-active"} ${passConfrmedErr && "err-active"}`}
+                >
+                  <span
+                    className={`err-msg  ${
+                      passPassLengthErr && "err-passLength-active"
+                    }`}
+                  >
+                    Password length is short!
+                  </span>
+                  <span
+                    className={`err-msg  ${
+                      passConfrmedErr && "err-passConfrmed-active"
+                    }`}
+                  >
+                    Password confirmation does'nt match!
+                  </span>
+                  <span
+                    className={`err-msg  ${
+                      agreementErr && "err-agreement-active"
+                    }`}
+                  >
+                    For sign-up you need to agree to the terms of service
+                  </span>
+                </div>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -161,27 +224,60 @@ export default Login;
 const Wrapper = styled.div`
   height: calc(100vh - var(--navbar-height));
   display: flex;
-
   justify-content: space-around;
   align-items: center;
-  /* flex-flow: column; */
   flex-direction: column;
   padding: 50px;
   min-width: var(--min-normal-width);
   background-color: var(--c10);
-
+  .link {
+    color: var(--c51);
+  }
+  .checkbox {
+    margin-right: 10px;
+    transform: scale(1.3);
+  }
+  .agreement {
+    padding: 10px 10px 10px;
+    text-align: center;
+  }
+  .middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 100%;
+  }
+  .middle-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .err-msg {
+    display: none;
+    text-align: center;
+    color: red;
+  }
+  .err {
+    padding: 10px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    /* flex-flow: column; */
+    flex-direction: column;
+    border: solid 1px red;
+    margin-top: 20px;
+  }
   .input {
     font-size: var(--font-size-4);
   }
   .header {
     display: flex;
-
     justify-content: space-around;
     align-items: center;
-    /* flex-flow: column; */
     flex-direction: column;
   }
-
   .method-btn {
     margin: 20px 10px;
     background-color: transparent;
@@ -196,14 +292,12 @@ const Wrapper = styled.div`
   }
   .methods {
     display: flex;
-
     justify-content: center;
     align-items: center;
     /* flex-flow: row; */
     flex-direction: row;
     height: 100%;
   }
-
   .method-name {
     font-size: var(--font-size-4);
     color: var(--c41);
@@ -212,14 +306,12 @@ const Wrapper = styled.div`
   .submit-btn {
     border: 2px solid var(--c11);
     border-radius: var(--border-radius2);
-    height: 3.5rem;
+    height: 2.5rem;
     padding-left: 10px;
-
     width: 200px;
     font-size: var(--font-size-4);
     color: var(--c41);
   }
-
   .submit-btn {
     border: none;
   }
@@ -236,15 +328,15 @@ const Wrapper = styled.div`
     background-color: var(--c21);
     box-shadow: 5px 5px 5px -3px rgba(0, 0, 0, 0.1);
     transition: all ease 0.1s;
+    height: 2.5rem;
     &:active {
       box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
       background-color: var(--c11);
     }
   }
-
   .center {
     margin: 20px;
-    height: 100%;
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -252,7 +344,6 @@ const Wrapper = styled.div`
   }
   .or {
     border: 2px solid lightgray;
-
     border-radius: 50%;
     padding: 10px;
     color: var(--c12);
@@ -271,16 +362,13 @@ const Wrapper = styled.div`
     right: 0;
     margin: auto;
   }
-
   .login {
     display: flex;
-
     justify-content: space-around;
     align-items: center;
     /* flex-flow: column; */
     flex-direction: column;
     box-shadow: 0px 0px 15px -3px rgba(0, 0, 0, 0.1);
-
     background-color: white;
     border-radius: var(--border-radius3);
     padding: 50px;
@@ -298,7 +386,6 @@ const Wrapper = styled.div`
   }
   .form {
     display: flex;
-
     justify-content: center;
     align-items: center;
     /* flex-flow: column; */
@@ -309,7 +396,6 @@ const Wrapper = styled.div`
     fill: darkblue;
     size: 50px;
   }
-
   .title {
     top: 50px;
     font-size: var(--font-size-10);
@@ -317,4 +403,16 @@ const Wrapper = styled.div`
     font-family: var(--f11);
     color: var(--c11);
   }
+  .err-passLength-active {
+    display: block;
+  }
+  .err-passConfrmed-active {
+    display: block;
+  }
+  .err-agreement-active {
+    display: block;
+  }
+.err-active{
+  display: flex;
+}
 `;
