@@ -15,32 +15,36 @@ import MyInfo from "./components/MyInfo";
 import MySuggestions from "./components/MySuggestions";
 import NewSuggestion from "./components/NewSuggestion";
 import BusinessInfo from "./components/BusinessInfo";
+import Auth0ProviderWithNavigate from "./other/auth0Provider";
+import Test from "./components/Test";
 
 const App = () => {
   return (
     <Fragment>
-      <NavBar />
       <Router>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/about" element={<About />} />
-          <Route exact path="/contact-us" element={<ContactUs />} />
-          <Route exact path="/dashboard" element={<Dashboard />}>
-            <Route exact path="bookmark-list" element={<BookmarkList />} />
-            <Route exact path="my-info" element={<MyInfo />} />
-            <Route exact path="my-suggestions" element={<MySuggestions />} />
-            <Route exact path="new-suggestions" element={<NewSuggestion />} />
-          </Route>
-          <Route exact path="/business-info">
-            <Route exact path=":id" element={<BusinessInfo />} />
-          </Route>
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/not-found" element={<Err404 />} />
-          <Route exact path="/*" element={<Err404 />} />
-        </Routes>
+        <Auth0ProviderWithNavigate>
+          <NavBar />
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/about" element={<About />} />
+            <Route exact path="/contact-us" element={<ContactUs />} />
+            <Route exact path="/dashboard" element={<Dashboard />}>
+              <Route exact path="bookmark-list" element={<BookmarkList />} />
+              <Route exact path="my-info" element={<MyInfo />} />
+              <Route exact path="my-suggestions" element={<MySuggestions />} />
+              <Route exact path="new-suggestions" element={<NewSuggestion />} />
+            </Route>
+            <Route exact path="/business-info">
+              <Route exact path=":id" element={<BusinessInfo />} />
+            </Route>
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/test" element={<Test />} />
+            <Route exact path="/not-found" element={<Err404 />} />
+            <Route exact path="/*" element={<Err404 />} />
+          </Routes>
+        </Auth0ProviderWithNavigate>
       </Router>
     </Fragment>
   );
 };
 export default App;
-
