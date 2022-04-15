@@ -6,32 +6,68 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import { useAuth0 } from "@auth0/auth0-react";
+import { imgUrl } from "../../other/variables";
 
 // ----------------------------------------------------------------
 const NavBar = () => {
   let location = useLocation();
-const {loginWithRedirect, logout, user, isLoading}=useAuth0();
+  const { userInfo, setUserInfo, passGenerator, googleLoginPass, setGoogleLoginPass } = useContext(AppContext);
+  const { loginWithRedirect, logout, user, isLoading } = useAuth0();
+  console.log(user); //////////////////////////////////////////////
+  // ----------------------------------------------------------------
+  useEffect(() => {
+    if (user !== undefined) {
+      const username = user.email.trim().split("@")[0];
+      if (userInfo !== null && username === userInfo._id) {
+        console.log(`Welcome ${user.name}`);
+      } else {
+        const newPass = passGenerator(10);
+        const picture = user.picture === null ? imgUrl.defaultUserIcon : user.picture;
+        setGoogleLoginPass (newPass);
+        const info = new FormData();
+        info.append("_id", username);
+        info.append("email", user.email);
+        info.append("family_name", user.family_name);
+        info.append("given_name", user.given_name);
+        info.append("password", newPass);
+        info.append("pic", picture);
 
-console.log(user)
-// ----------------------------------------------------------------
+        setUserInfo(info);
+
+        fetch("http://localhost:8000/user/add", {
+          method: "POST",
+          body: info,
+        })
+          .then((res) => res.json())
+          .then((data) =>
+            console.log(`FE / POST / </userAdd> / res / ${data.data}`)
+          );
+      }
+    }
+  }, [user]);
+
+  // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
   return (
     <Wrapper>
       <Link to="/" className="logo">
         Cooche
       </Link>
       <NavRight>
-        {!isLoading && user ?   (
+        {!isLoading && user ? (
           <>
             <Item>
               <Img src={user.picture} />
             </Item>
             <Item>{`${user.given_name} ${user.family_name}`}</Item>
-            <LogBtn onClick={()=>logout()}>
-              <Item >Logout</Item>
+            <LogBtn onClick={() => logout()}>
+              <Item>Logout</Item>
             </LogBtn>
           </>
         ) : (
-          !isLoading && !user && location.pathname !== "/login" && (
+          !isLoading &&
+          !user &&
+          location.pathname !== "/login" && (
             <Link to="/login">
               <Item>Login</Item>
             </Link>
@@ -47,7 +83,7 @@ const LogBtn = styled.button`
   background-color: transparent;
 `;
 const Wrapper = styled.div`
-border-radius: 0%;
+  border-radius: 0%;
   height: var(--navbar-height);
   background-color: var(--c41);
   color: var(--c21);
