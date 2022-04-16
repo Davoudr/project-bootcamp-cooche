@@ -2,10 +2,75 @@ import styled from "styled-components";
 import { useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import GoogleLogin from "./GoogleLogin";
+import { useState } from "react";
+import ErrBox from "./ErrBox";
+import { useNavigate } from "react-router-dom";
+import LoadingTiny from "../LoadingTiny";
 // ----------------------------------------------------------
 const SignInTab = () => {
   // ----------------------------------------------------------
-  const {} = useContext(AppContext);
+  const {
+    userInfo,
+    setUserInfo,
+    loading,
+    setLoading,
+    message,
+    setMessage,
+    userSession,
+    setUserSession,
+  } = useContext(AppContext);
+  let navigate = useNavigate();
+  const [userInputSignIn, setuserInputSignIn] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [err, serErr] = useState({
+    email: { state: false, text: "" },
+    password: { state: false, text: "" },
+  });
+
+  const signInHandle = (ev) => {
+    ev.preventDefault();
+    setLoading(true);
+    fetch("http://localhost:8000/user/sign-in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(userInputSignIn),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        switch (true) {
+          case data.status === 400:
+            serErr({
+              password: { state: false, text: "" },
+              email: { state: true, text: data.message },
+            });
+            setLoading(false);
+            break;
+          case data.status === 401:
+            serErr({
+              email: { state: false, text: "" },
+              password: { state: true, text: data.message },
+            });
+            setLoading(false);
+            break;
+          default:
+            serErr({
+              email: { state: false, text: "" },
+              password: { state: false, text: "" },
+            });
+            setLoading(false);
+            setUserInfo(data.data);
+            setUserSession(data.data);
+            navigate(`/`, { replace: true });
+            break;
+        }
+      });
+  };
   // ----------------------------------------------------------
   return (
     <Wrapper>
@@ -16,16 +81,41 @@ const SignInTab = () => {
         <div className="center">
           <div className="line"></div>
           <div className="or">OR</div>
-        </div>
+        </div>{" "}
         <div className="right">
-          <input
-            className="input"
-            type="text"
-            placeholder="Username"
-            autoFocus
-          />
-          <input className="input" type="text" placeholder="Password" />
-          <button className="submit-btn">Sign In</button>
+          <form className="right" autoComplete="on" onSubmit={signInHandle}>
+            <input
+              className="input"
+              type="email"
+              placeholder="E-Mail address"
+              onChange={(ev) => {
+                setuserInputSignIn({
+                  ...userInputSignIn,
+                  email: ev.target.value,
+                });
+              }}
+              autoFocus
+              required
+            />
+            <input
+              className="input"
+              type="password"
+              placeholder="Password"
+              onChange={(ev) => {
+                setuserInputSignIn({
+                  ...userInputSignIn,
+                  password: ev.target.value,
+                });
+              }}
+              required
+            />
+            <button className="submit-btn" type="submit">
+              {!loading ? `Sign In` : <LoadingTiny />}
+            </button>
+          </form>
+          <div className="err-box">
+            <ErrBox conditions={[err.email, err.password]} />
+          </div>
         </div>
       </div>
     </Wrapper>
@@ -39,8 +129,10 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 20px;
-  /* min-width: var(--min-normal-width); */
   background-color: var(--c10);
+  .err-box{
+    width: 200px;
+  }
   .methods {
     display: flex;
     justify-content: center;
@@ -99,6 +191,10 @@ const Wrapper = styled.div`
   }
   .submit-btn {
     border: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .login {
     display: flex;

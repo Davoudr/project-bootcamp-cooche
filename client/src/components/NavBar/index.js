@@ -7,25 +7,37 @@ import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { imgUrl } from "../../other/variables";
-
 // ----------------------------------------------------------------
 const NavBar = () => {
+  // -------------------------------
   let location = useLocation();
-  const { userInfo, setUserInfo, passGenerator, googleLoginPass, setGoogleLoginPass } = useContext(AppContext);
-  const { loginWithRedirect, logout, user, isLoading } = useAuth0();
-  console.log(user); //////////////////////////////////////////////
-  // ----------------------------------------------------------------
+  let navigate = useNavigate();
+  const {
+    message,
+    setMessage,
+    userSession,
+    setUserSession,
+    userInfo,
+    setUserInfo,
+    passGenerator,
+    setLogInMethod,
+    loading,
+    setLoading,
+  } = useContext(AppContext);
+  const { loginWithRedirect, logout, user, isLoading, isAuthenticated, error } =
+    useAuth0();
+  // -------------------------------
   useEffect(() => {
     if (user !== undefined) {
       const username = user.email.trim().split("@")[0];
-      if (userInfo !== null && username === userInfo._id) {
+      if (userInfo !== null && username === userInfo.username) {
         console.log(`Welcome ${user.name}`);
       } else {
         const newPass = passGenerator(10);
-        const picture = user.picture === null ? imgUrl.defaultUserIcon : user.picture;
-        setGoogleLoginPass (newPass);
+        const picture =
+          user.picture === null ? imgUrl.defaultUserIcon : user.picture;
         const info = new FormData();
-        info.append("_id", username);
+        info.append("username", username);
         info.append("email", user.email);
         info.append("family_name", user.family_name);
         info.append("given_name", user.given_name);
@@ -33,20 +45,50 @@ const NavBar = () => {
         info.append("pic", picture);
 
         setUserInfo(info);
+        setUserSession({
+          ...userSession,
+          username: username,
+          family_name: user.family_name,
+          given_name: user.given_name,
+          pic: picture,
+        });
 
         fetch("http://localhost:8000/user/add", {
           method: "POST",
           body: info,
         })
           .then((res) => res.json())
-          .then((data) =>
-            console.log(`FE / POST / </userAdd> / res / ${data.data}`)
-          );
+          .then((data) => {
+            if (data.status === 201) {
+              console.log(`FE / POST / </userAdd> / res / ${data.message}`);
+              setUserSession({
+                ...userSession,
+                userHasThePassword: newPass,
+              });
+            } else {
+              console.log(`FE / POST / </userAdd> / res / ${data.message}`);
+            }
+          });
       }
     }
   }, [user]);
 
-  // ----------------------------------------------------------------
+  // -------------------------------
+  const hanleLogout = () => {
+    setUserInfo(null);
+    setUserSession(null);
+    logout();
+  };
+
+  const hanleSignIn = () => {  
+    navigate(`/login`);
+    setLogInMethod("sign-in")
+  }
+
+  const hanleSignUp = () => { 
+    navigate(`/login`);
+    setLogInMethod("sign-up");
+   }
   // ----------------------------------------------------------------
   return (
     <Wrapper>
@@ -54,23 +96,36 @@ const NavBar = () => {
         Cooche
       </Link>
       <NavRight>
-        {!isLoading && user ? (
+        {userSession || (!isLoading && user) ? (
           <>
             <Item>
-              <Img src={user.picture} />
+              <Img src={!isLoading && user ? user.picture : userSession.pic} />
             </Item>
-            <Item>{`${user.given_name} ${user.family_name}`}</Item>
-            <LogBtn onClick={() => logout()}>
+            <Item>
+              {!isLoading && user
+                ? `${user.given_name} ${user.family_name}`
+                : `${userSession.given_name} ${userSession.family_name}`}
+            </Item>
+            <LogBtn onClick={hanleLogout}>
               <Item>Logout</Item>
             </LogBtn>
           </>
         ) : (
           !isLoading &&
           !user &&
+          !userSession &&
           location.pathname !== "/login" && (
-            <Link to="/login">
-              <Item>Login</Item>
-            </Link>
+            // <Link to="/login">
+            //   <Item>LogIn SignUp</Item>
+            // </Link>
+            <>
+              <LogBtn onClick={hanleSignIn}>
+                <Item>SignIn</Item>
+              </LogBtn>
+              <LogBtn onClick={hanleSignUp}>
+                <Item>SignUp</Item>
+              </LogBtn>
+            </>
           )
         )}
       </NavRight>
@@ -81,6 +136,7 @@ export default NavBar;
 // ----------------------------------------------------------------
 const LogBtn = styled.button`
   background-color: transparent;
+  box-shadow: none;
 `;
 const Wrapper = styled.div`
   border-radius: 0%;

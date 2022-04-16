@@ -2,17 +2,33 @@ import styled from "styled-components";
 import { useContext, useState, useRef } from "react";
 import { AppContext } from "../../other/AppContext";
 import GoogleLogin from "./GoogleLogin";
+import LoadingTiny from "../LoadingTiny";
+import { useNavigate } from "react-router-dom";
+import MsgBox from "../MsgBox";
+import { imgUrl } from "../../other/variables";
+import ErrBox from "./ErrBox";
 // --------------------------------------------------------------------------
 const SignUp = () => {
   // --------------------------------------------------------------------------
-  const { userInfo, setUserInfo } = useContext(AppContext);
+  const {
+    userInfo,
+    setUserInfo,
+    loading,
+    setLoading,
+    message,
+    setMessage,
+    userSession,
+    setUserSession,
+  } = useContext(AppContext);
   const refToPass = useRef(null);
+  let navigate = useNavigate();
   const refToAgreement = useRef(null);
   const [passConfrmedErr, setPassConfrmedErr] = useState(false);
-  const [passPassLengthErr, setPassPassLengthErr] = useState(false);
+  const [passLengthErr, setpassLengthErr] = useState(false);
   const [agreementErr, setAgreementErr] = useState(false);
   // --------------------------------------------------------------------------
   const handleSubmit = (ev) => {
+    ev.preventDefault();
     // ------------------------------checking if agrement is checked
     if (!ev.target[6].checked) {
       refToAgreement.current.focus();
@@ -29,40 +45,68 @@ const SignUp = () => {
     }
     // ------------------------------checking if password lenght is not short
     if (ev.target[3].value.length < 7) {
-      setPassPassLengthErr(true);
+      setpassLengthErr(true);
     } else {
-      setPassPassLengthErr(false);
+      setpassLengthErr(false);
     }
-    if (!passConfrmedErr && !passPassLengthErr && !agreementErr) {
-      // ------------------------------storing user-info and sending it to BE to be sotored in db
+    // ------------------------------storing user-info and sending it to BE to be sotored in db
+    if (
+      ev.target[3].value.length > 7 &&
+      ev.target[3].value === ev.target[4].value &&
+      ev.target[6].checked
+    ) {
+      setLoading(true);
       const info = new FormData();
-      info.append("_id", ev.target[0].value.trim().split("@")[0]);
+      info.append("username", ev.target[0].value.trim().split("@")[0]);
       info.append("email", ev.target[0].value.trim());
       info.append("family_name", ev.target[1].value.trim());
       info.append("given_name", ev.target[2].value.trim());
       info.append("password", ev.target[3].value);
       info.append("pic", ev.target[5].files[0]);
 
-      setUserInfo(info);
-      
       fetch("http://localhost:8000/user/add", {
         method: "POST",
         body: info,
       })
         .then((res) => res.json())
-        .then((data) =>
-          console.log(`FE / POST / </userAdd> / res / ${data.data}`)
-        );
-      // ev.target.reset();
+        .then((data) => {
+          if (data.status === 201) {
+            console.log(`FE / POST / </userAdd> / res / ${data.message}`);
+
+            setUserInfo(info);
+            setUserSession({
+              username: ev.target[0].value.trim().split("@")[0],
+              family_name: ev.target[1].value.trim(),
+              given_name: ev.target[2].value.trim(),
+              pic:
+                ev.target[5].files[0] === undefined
+                  ? imgUrl.defaultUserIcon
+                  : ev.target[5].files[0],
+              userHasThePassword: true,
+            });
+
+            navigate(`/`, { replace: true });
+            setLoading(false);
+            ev.target.reset();
+          } else {
+            setLoading(false);
+            setMessage({
+              status: true,
+              title: "Please Sign-In",
+              content: data.message,
+              btnText: "Ok",
+            });
+          }
+        })
+        .catch((err) => console.log("Error in add new user:", err));
     }
-    ev.preventDefault();
   };
   // --------------------------------------------------------------------------for having real-time (onChange) err for pass-length
   const handleChangeForm = (ev) => {
     if (ev.target.id === "password" && ev.target.value.length < 7) {
-      setPassPassLengthErr(true);
+      setpassLengthErr(true);
     } else {
-      setPassPassLengthErr(false);
+      setpassLengthErr(false);
     }
   };
   // --------------------------------------------------------------------------
@@ -82,7 +126,7 @@ const SignUp = () => {
               <form
                 onSubmit={handleSubmit}
                 onChange={handleChangeForm}
-                autocomplete="on"
+                autoComplete="on"
                 className="form"
               >
                 <input
@@ -144,37 +188,25 @@ const SignUp = () => {
                   </a>
                 </div>
                 <button className="submit-btn" type="submit">
-                  Register
+                  {!loading ? `Register` : <LoadingTiny />}
                 </button>
               </form>
             </div>
           </div>
           <div className="bottom">
-            <div
-              className={`err ${agreementErr && "err-active"} ${
-                passPassLengthErr && "err-active"
-              } ${passConfrmedErr && "err-active"}`}
-            >
-              <span
-                className={`err-msg  ${
-                  passPassLengthErr && "err-passLength-active"
-                }`}
-              >
-                Password length is short!
-              </span>
-              <span
-                className={`err-msg  ${
-                  passConfrmedErr && "err-passConfrmed-active"
-                }`}
-              >
-                Password confirmation does'nt match!
-              </span>
-              <span
-                className={`err-msg  ${agreementErr && "err-agreement-active"}`}
-              >
-                For sign-up you need to agree to the terms of service
-              </span>
-            </div>
+            <ErrBox
+              conditions={[
+                { state: passLengthErr, text: "Password length is short!" },
+                {
+                  state: passConfrmedErr,
+                  text: "Password confirmation does'nt match!",
+                },
+                {
+                  state: agreementErr,
+                  text: "For sign-up you need to agree to the terms of service!",
+                },
+              ]}
+            />
           </div>
         </div>
       </div>
@@ -189,8 +221,8 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 20px;
-  /* min-width: var(--min-normal-width); */
   background-color: var(--c10);
+  position: relative;
   .link {
     color: var(--c51);
   }
@@ -271,6 +303,9 @@ const Wrapper = styled.div`
 
   .submit-btn {
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .center {
     margin: 20px;
@@ -350,10 +385,8 @@ const Wrapper = styled.div`
   }
   .file-input::-webkit-file-upload-button {
     visibility: hidden;
-    background-color: red;
   }
   .file-input::before {
-    background-color: red;
     content: "Choose Photo";
     display: inline-block;
     width: 1px;
@@ -361,14 +394,11 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
   .file-input:hover::before {
-    border-color: black;
-    background-color: red;
   }
   .file-input:active::before {
-    background-color: red;
   }
   .file-input {
-    /* background-color: var(--c21); */
+    background-color: var(--c21);
     padding: 5px;
     padding-left: 10px;
   }

@@ -17,13 +17,22 @@ import NewSuggestion from "./components/NewSuggestion";
 import BusinessInfo from "./components/BusinessInfo";
 import Auth0ProviderWithNavigate from "./other/auth0Provider";
 import Test from "./components/Test";
-
+import MsgBox from "./components/MsgBox";
+// -----------------------
+import styled from "styled-components";
+import { useContext } from "react";
+import { AppContext } from "./other/AppContext";
+// -----------------------
 const App = () => {
+  // -----------------------
+  const { message, setMessage } = useContext(AppContext);
+  // -----------------------
   return (
     <Fragment>
       <Router>
         <Auth0ProviderWithNavigate>
           <NavBar />
+          <Msg className="alert">{message.status && <MsgBox />}</Msg>
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/about" element={<About />} />
@@ -48,3 +57,8 @@ const App = () => {
   );
 };
 export default App;
+
+const Msg = styled.div`
+  z-index: 100;
+  position: absolute;
+`;

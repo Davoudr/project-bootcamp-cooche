@@ -1,9 +1,22 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-const Dashboard = () => {
+import { useContext } from "react";
+import { AppContext } from "../../other/AppContext";
 
-  const {loginWithRedirect, logout, user, isLoading}=useAuth0();
-  return !user ? (
+const Dashboard = () => {
+  const { loginWithRedirect, logout, user, isLoading } = useAuth0();
+  const {
+    passwordAlertFunc,
+    userInfo,
+    userSession,
+    passwordGoogleSingUp,
+    setPasswordGoogleSingUp,
+  } = useContext(AppContext);
+  // ------------------------------
+  passwordAlertFunc();
+  // -------------------
+
+  return !userInfo && !userSession ? (
     <Navigate to="/login" />
   ) : (
     <>

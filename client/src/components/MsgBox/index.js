@@ -1,40 +1,40 @@
-
-
-
 import { useContext } from "react";
 import styled from "styled-components";
-import { AppContext } from "../other/AppContext";
-const MsgBox = ({titleText, contectText, btnText}) => {
-  const { showMsg, setShowMsg } = useContext(AppContext);
+import { AppContext } from "../../other/AppContext";
+// -----------------------------------------------
+const MsgBox = () => {
+  // -----------------------------------------------
+  const { message, setMessage } = useContext(AppContext);
   const pageHandle = (ev) => {
     ev.stopPropagation();
-    setShowMsg(false);
+    setMessage({ status: false, title: "", content: "", btnText: "" });
   };
   const boxHandle = (ev) => {
     ev.stopPropagation();
   };
   const btnHandle = (ev) => {
     ev.stopPropagation();
-    setShowMsg(false);
+    setMessage({ status: false, title: "", content: "", btnText: "" });
   };
+  // -----------------------------------------------
   return (
     <Wrapper onClick={pageHandle}>
-      {showMsg && (
+      {message && (
         <div className="msg-box" onClick={boxHandle}>
-          <span className="title text">{titleText}</span>
-          <p className="text msg">
-           {contectText}
-          </p>
-          <button onClick={btnHandle}>{btnText}</button>
+          <span className="title text">{message.title}</span>
+          <p className="text msg">{message.content}</p>
+          <button className="btn" onClick={btnHandle}>{message.btnText}</button>
         </div>
       )}
     </Wrapper>
   );
 };
-
 export default MsgBox;
-
+// -----------------------------------------------
 const Wrapper = styled.button`
+.btn{
+  color: var(--c13);
+}
   &:active {
     box-shadow: none;
     background-color: transparent;
@@ -50,6 +50,7 @@ const Wrapper = styled.button`
   }
   .title {
     font-size: var(--font-size-7);
+    font-weight: bold;
   }
   .msg {
     z-index: 11;
@@ -69,11 +70,11 @@ const Wrapper = styled.button`
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-    background-color: rgba(17, 25, 40, 0.75);
+    backdrop-filter: blur(19px) saturate(132%);
+    -webkit-backdrop-filter: blur(19px) saturate(132%);
+    background-color: rgba(61, 64, 91, 0.69);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
+    border: 1px solid rgba(209, 213, 219, 0.3);
     display: flex;
 
     justify-content: space-around;

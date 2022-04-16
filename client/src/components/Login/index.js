@@ -43,7 +43,6 @@ const Login = () => {
 export default Login;
 // ----------------------------------------------------------
 const Wrapper = styled.div`
-
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -51,6 +50,7 @@ const Wrapper = styled.div`
   padding: 50px;
   min-width: var(--min-normal-width);
   background-color: var(--c10);
+  height: calc(100vh - var(--navbar-height));
   .header {
     display: flex;
     justify-content: space-around;
