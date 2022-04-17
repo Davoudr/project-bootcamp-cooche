@@ -18,6 +18,7 @@ import BusinessInfo from "./components/BusinessInfo";
 import Auth0ProviderWithNavigate from "./other/auth0Provider";
 import Test from "./components/Test";
 import MsgBox from "./components/MsgBox";
+import Footer from "./components/Footer/Footer";
 // -----------------------
 import styled from "styled-components";
 import { useContext } from "react";
@@ -28,7 +29,7 @@ const App = () => {
   const { message, setMessage } = useContext(AppContext);
   // -----------------------
   return (
-    <Fragment>
+    <Wrapper>
       <Router>
         <Auth0ProviderWithNavigate>
           <NavBar />
@@ -39,7 +40,7 @@ const App = () => {
             <Route exact path="/contact-us" element={<ContactUs />} />
             <Route exact path="/dashboard" element={<Dashboard />}>
               <Route exact path="bookmark-list" element={<BookmarkList />} />
-              <Route exact path="my-info" element={<MyInfo />} />
+              <Route exact path="profile" element={<MyInfo />} />
               <Route exact path="my-suggestions" element={<MySuggestions />} />
               <Route exact path="new-suggestions" element={<NewSuggestion />} />
             </Route>
@@ -51,9 +52,10 @@ const App = () => {
             <Route exact path="/not-found" element={<Err404 />} />
             <Route exact path="/*" element={<Err404 />} />
           </Routes>
+          <Footer />
         </Auth0ProviderWithNavigate>
       </Router>
-    </Fragment>
+    </Wrapper>
   );
 };
 export default App;
@@ -61,4 +63,10 @@ export default App;
 const Msg = styled.div`
   z-index: 100;
   position: absolute;
+`;
+const Wrapper = styled.div`
+
+  display: block;
+  margin: auto;
+
 `;

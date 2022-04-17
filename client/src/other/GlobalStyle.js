@@ -25,6 +25,7 @@ export default createGlobalStyle`
 	      /* ------------- */
         --f11: 'Poiret One', cursive;
         --f12: 'Roboto', sans-serif;
+		--f13: 'Montserrat', sans-serif;
 	      /* ------------- */
         --font-size-1: 0.5rem;
         --font-size-2: 0.7rem;
@@ -37,8 +38,6 @@ export default createGlobalStyle`
         --font-size-9: 2.1rem;
         --font-size-10: 2.3rem;
 	  	  /* ------------- */
-        --navbar-height: 4rem;
-        /* ------------- */
         --border-radius1: 0.1rem;
         --border-radius2: 0.3rem;
         --border-radius3: 0.5rem;
@@ -46,6 +45,13 @@ export default createGlobalStyle`
         /* ------------- */
         --min-normal-width: 700px;
         --min-normal-width-inside: 600px;
+		--website-width : 1200px;
+		--navbar-height: 4rem;
+		--header-height: 20rem;
+        /* ------dashboard------- */
+		
+
+
 	    }
 	/* ------------------------------------------------------------------ */
 	  *,
@@ -58,7 +64,7 @@ export default createGlobalStyle`
 	  input, button, select, option,
 	  h1, h2, h3, h4, h5, h6, p,
 	  text {
-	    font-family: 'Roboto','Poppins', sans-serif,  sans-serif, Roboto,  -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	  font-family: 'Montserrat', sans-serif, 'Roboto','Poppins', sans-serif,  sans-serif, Roboto,  -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       border: none;
       border-radius: var(--border-radius2);
 	  }
@@ -82,7 +88,7 @@ export default createGlobalStyle`
 	    padding: 0;
 	    border: 0;
 	    vertical-align: baseline;
-		transition: all ease-out 0.5s;
+		transition: all ease-out 0.25s;
 	  }
 	  /* HTML5 display-role reset for older browsers */
 	  article, aside, details, figcaption, figure,
@@ -122,7 +128,8 @@ export default createGlobalStyle`
 	    }
 
 		div{
-			transition: all ease-out 0.5s;
+			transition: all ease-out 0.25s;
+			
 		}
 		
 		button{
@@ -137,5 +144,8 @@ export default createGlobalStyle`
 
     		}
 			border: none;
+		}
+		body{
+			background-color: var(--c11);
 		}
 	`;

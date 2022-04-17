@@ -50,6 +50,7 @@ export const AppProvider = ({ children }) => {
   // -----------------------which will be created if user do sign-up using google-acount!
   const passwordAlertFunc = () => {
     if (
+      userSession &&
       typeof userSession.userHasThePassword === "string" &&
       userSession.userHasThePassword.length > 0
     ) {

@@ -86,7 +86,7 @@ const Wrapper = styled.div`
     padding: 50px;
     min-width: var(--min-normal-width-inside);
     position: relative;
-    transition: all ease-out 0.5s;
+    transition: all ease-out 0.25s;
   }
   .title {
     top: 50px;

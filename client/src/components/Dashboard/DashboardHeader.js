@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import logo from "../../img/world-points.png";
-// -------------------------------------------
-const Header = () => {
+import bg from "../../img/yellow-city.png";
+const DashboardHeader = () => {
   return (
     <Wrapper>
       <Content>
-        <img src={logo} className="logo-pic" alt="logo"/>
+      <img className="bg" src={bg} alt="background"/>
+        <img src={logo} className="logo-pic" alt="logo" />
         <div className="text">
           <span className="title">
             Connect easily and fast with your cominity
@@ -16,9 +17,12 @@ const Header = () => {
     </Wrapper>
   );
 };
-export default Header;
-// -------------------------------------------
+
+export default DashboardHeader;
+
 const Wrapper = styled.div`
+z-index: -2;
+position: relative;
   width: 100%;
   background-color: var(--c61);
   height: var(--header-height);
@@ -27,6 +31,12 @@ const Wrapper = styled.div`
   align-items: center;
   /* flex-flow: row; */
   flex-direction: row;
+  .bg{
+    position: absolute;
+    z-index: -1;
+    height: calc(0.8 * var(--header-height));
+    bottom: 0;
+  }
 `;
 
 const Content = styled.div`
@@ -50,9 +60,12 @@ const Content = styled.div`
   .sub-title {
     font-size: var(--font-size-5);
     display: block;
+    color: var();
   }
-  .text{
-      margin-left: 3rem;
-      color: var(--c41);
+  .text {
+    margin-left: 3rem;
+    color: var(--c51);
   }
 `;
+
+

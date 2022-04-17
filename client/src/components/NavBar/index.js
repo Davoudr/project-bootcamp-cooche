@@ -44,7 +44,7 @@ const NavBar = () => {
           given_name: user.given_name,
           family_name: user.family_name,
           pic: picUrl,
-          userHasThePassword: newPass,
+          userHasThePassword: true,//we dont know if she/he is new or not; for now, we update the userSession (navBar needs it) before entring server-res-delays
         };
         //--------updating userSession
         setUserSession(info);
@@ -71,6 +71,7 @@ const NavBar = () => {
           .then((data) => {
             if (data.status === 201) {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
+              setUserSession({ ...userSession, userHasThePassword: newPass });//user is new, he/she has loged in using quth0-google; a random-pass will be created and we need to let him/her know what is the password!
             } else {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
             }
@@ -98,48 +99,62 @@ const NavBar = () => {
   // ----------------------------------------------------------------
   return (
     <Wrapper>
-      <Link to="/" className="logo">
-        Cooche
-      </Link>
-      <NavRight>
-        {userSession || (!isLoading && user) ? (
-          <>
-            <Item>
-              <Img src={!isLoading && user ? user.picture : userSession.pic} />
-            </Item>
-            <Item>
-              {!isLoading && user
-                ? `${user.given_name} ${user.family_name}`
-                : `${userSession.given_name} ${userSession.family_name}`}
-            </Item>
-            <LogBtn onClick={hanleLogout}>
-              <Item>Logout</Item>
-            </LogBtn>
-          </>
-        ) : (
-          !isLoading &&
-          !user &&
-          !userSession &&
-          location.pathname !== "/login" && (
-            // <Link to="/login">
-            //   <Item>LogIn SignUp</Item>
-            // </Link>
+      <Content>
+        <Link to="/" className="logo">
+          <span>Cooche</span>
+        </Link>
+        <NavRight>
+          {userSession || (!isLoading && user) ? (
             <>
-              <LogBtn onClick={hanleSignIn}>
-                <Item>SignIn</Item>
-              </LogBtn>
-              <LogBtn onClick={hanleSignUp}>
-                <Item>SignUp</Item>
+              <Link to="/dashboard">
+                <Item>
+                  <Img
+                    src={!isLoading && user ? user.picture : userSession.pic}
+                  />
+                </Item>
+              </Link>
+              <Link to="/dashboard">
+                <Item>
+                  {!isLoading && user
+                    ? `${user.given_name} ${user.family_name}`
+                    : `${userSession.given_name} ${userSession.family_name}`}
+                </Item>
+              </Link>
+              <LogBtn onClick={hanleLogout}>
+                <Item>Logout</Item>
               </LogBtn>
             </>
-          )
-        )}
-      </NavRight>
+          ) : (
+            !isLoading &&
+            !user &&
+            !userSession &&
+            location.pathname !== "/login" && (
+              // <Link to="/login">
+              //   <Item>LogIn SignUp</Item>
+              // </Link>
+              <>
+                <LogBtn onClick={hanleSignIn}>
+                  <Item>SignIn</Item>
+                </LogBtn>
+                <LogBtn onClick={hanleSignUp}>
+                  <Item>SignUp</Item>
+                </LogBtn>
+              </>
+            )
+          )}
+        </NavRight>
+      </Content>
     </Wrapper>
   );
 };
 export default NavBar;
 // ----------------------------------------------------------------
+const Content = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const LogBtn = styled.button`
   background-color: transparent;
   box-shadow: none;
@@ -147,15 +162,20 @@ const LogBtn = styled.button`
 const Wrapper = styled.div`
   border-radius: 0%;
   height: var(--navbar-height);
-  background-color: var(--c41);
+  width: var(--website-width);
   color: var(--c21);
+  margin: auto;
+  width: var(--website-width);
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  /* flex-flow: column; */
+  flex-direction: column;
+
   .logo {
     background-color: rgba(0, 0, 0, 0);
     color: var(--c51);
-
     font-size: var(--font-size-10);
     font-family: var(--f11);
     font-weight: bold;
@@ -174,6 +194,10 @@ const Item = styled.li`
   margin-right: 20px;
   color: var(--c13);
   cursor: pointer;
+  &:hover {
+    color: var(--c51);
+    transform: scale(1.03);
+  }
 `;
 const Img = styled.img`
   height: 45px;
