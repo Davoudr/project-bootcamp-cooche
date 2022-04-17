@@ -6,7 +6,7 @@ export const AppContext = createContext(null);
 export const AppProvider = ({ children }) => {
   // -----------------------
   const [logInMethod, setLogInMethod] = useState("sign-in");
-  const [userInfo, setUserInfo] = useState(null);
+
   const [message, setMessage] = useState({
     status: false,
     title: "",
@@ -14,7 +14,21 @@ export const AppProvider = ({ children }) => {
     btnText: "",
   });
   const [loading, setLoading] = useState(false);
+  // ======================================================================
   const [userSession, setUserSession] = usePersistedState(null, "user");
+  // any setUserSession must consider obj-rest; this state must have these keys
+  // setUserSession({
+  //   username: <sth>,
+  //   email: <sth>,
+  //   given_name: <sth>,
+  //   family_name: <sth>,
+  //   pic: <sth>, // this should be set from server-res bcuz server is returning the file-Cloudinary-url as pic-value if there be any profile-pic uploaded by user
+  //   userHasThePassword: true/pssword, // this is equdl to password if user sign-up using google, bcuz he will not set his password by himself; Then, FE will inform him/her in his/her first dashboard-page visiting using passwordAlertFunc
+  // });
+
+  // app should use userSession not auth0-user, bcuz user may signin/signup usinf from
+  // meanwhile we will update userSession if there be any auth0-user which means user has used auth0-google signin/signup!
+  // ======================================================================
   const [passwordGoogleSingUp, setPasswordGoogleSingUp] = useState({
     newUser: false,
     thePassword: null,
@@ -63,8 +77,6 @@ export const AppProvider = ({ children }) => {
         loading,
         setLoading,
         passGenerator,
-        userInfo,
-        setUserInfo,
         message,
         setMessage,
         logInMethod,

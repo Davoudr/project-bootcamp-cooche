@@ -82,6 +82,7 @@ export default createGlobalStyle`
 	    padding: 0;
 	    border: 0;
 	    vertical-align: baseline;
+		transition: all ease-out 0.5s;
 	  }
 	  /* HTML5 display-role reset for older browsers */
 	  article, aside, details, figcaption, figure,

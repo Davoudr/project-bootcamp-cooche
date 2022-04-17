@@ -7,12 +7,10 @@ import { useNavigate } from "react-router-dom";
 import MsgBox from "../MsgBox";
 import { imgUrl } from "../../other/variables";
 import ErrBox from "./ErrBox";
-// --------------------------------------------------------------------------
+// ------------------------------------------------------
 const SignUp = () => {
-  // --------------------------------------------------------------------------
+  // ----------------------------------------------------
   const {
-    userInfo,
-    setUserInfo,
     loading,
     setLoading,
     message,
@@ -26,7 +24,21 @@ const SignUp = () => {
   const [passConfrmedErr, setPassConfrmedErr] = useState(false);
   const [passLengthErr, setpassLengthErr] = useState(false);
   const [agreementErr, setAgreementErr] = useState(false);
-  // --------------------------------------------------------------------------
+  const [fileInput, setFileInput] = useState(``);
+  const [previewSource, setPreviewSource] = useState(null);
+  // ------------------------------------------------------preparing profile-img to be sent to BE
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+  const handleFileInputChange = (ev) => {
+    const file = ev.target.files[0];
+    previewFile(file);
+  };
+  // ======================================================sing-up form handle
   const handleSubmit = (ev) => {
     ev.preventDefault();
     // ------------------------------checking if agrement is checked
@@ -55,36 +67,52 @@ const SignUp = () => {
       ev.target[3].value === ev.target[4].value &&
       ev.target[6].checked
     ) {
+      // ----------------------------converting submit-btn contetnt to loading-animation
       setLoading(true);
-      const info = new FormData();
-      info.append("username", ev.target[0].value.trim().split("@")[0]);
-      info.append("email", ev.target[0].value.trim());
-      info.append("family_name", ev.target[1].value.trim());
-      info.append("given_name", ev.target[2].value.trim());
-      info.append("password", ev.target[3].value);
-      info.append("pic", ev.target[5].files[0]);
-
-      fetch("http://localhost:8000/user/add", {
+      // ----------------------------if user is uploading profile-img: informing user from probable delay
+      if (previewSource) {
+        setMessage({
+          status: true,
+          title: "Please Wait",
+          content:
+            "We are uploading your profile photo and it may take up to 10s/1mb!",
+          btnText: "Ok",
+        });
+      }
+      // ----------------------------making sure there is a profile image in user-obj
+      const picData = previewSource ? previewSource : imgUrl.defaultUserIcon;
+      // ----------------------------creating user-obj
+      const endpointUserObj = {
+        username: ev.target[0].value.trim().split("@")[0],
+        email: ev.target[0].value.trim(),
+        family_name: ev.target[1].value.trim(),
+        given_name: ev.target[2].value.trim(),
+        password: ev.target[3].value,
+        pic: picData,
+        base64: previewSource ? true : false, // this key won't save in user-colleciton in db ; this key is  included in order to clarifying for BE if pic-value is url or base64 (if it should be converted to url or not)
+      };
+      // ----------------------------postin user-obj to db
+      fetch("/user/add", {
         method: "POST",
-        body: info,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(endpointUserObj),
       })
         .then((res) => res.json())
         .then((data) => {
+          // ------------------------proper action based on server-res
           if (data.status === 201) {
             console.log(`FE / POST / </userAdd> / res / ${data.message}`);
-
-            setUserInfo(info);
             setUserSession({
-              username: ev.target[0].value.trim().split("@")[0],
-              family_name: ev.target[1].value.trim(),
-              given_name: ev.target[2].value.trim(),
-              pic:
-                ev.target[5].files[0] === undefined
-                  ? imgUrl.defaultUserIcon
-                  : ev.target[5].files[0],
-              userHasThePassword: true,
+              username: data.user.username,
+              email: data.user.email,
+              given_name: data.user.given_name,
+              family_name: data.user.family_name,
+              pic: data.user.pic, // this should be set from server-res bcuz server is returning the file-Cloudinary-url as pic-value if there be any profile-pic uploaded by user
+              userHasThePassword: true, // this is false if user sign-up using google, bcuz he will not set his password by himself; Then, FE will inform him/her in his/her first dashboard-page visiting
             });
-
             navigate(`/`, { replace: true });
             setLoading(false);
             ev.target.reset();
@@ -101,14 +129,16 @@ const SignUp = () => {
         .catch((err) => console.log("Error in add new user:", err));
     }
   };
-  // --------------------------------------------------------------------------for having real-time (onChange) err for pass-length
+  // --------------------------------------------------------------------------
   const handleChangeForm = (ev) => {
+    // --------------------for having real-time (onChange) err for pass-length
     if (ev.target.id === "password" && ev.target.value.length < 7) {
       setpassLengthErr(true);
     } else {
       setpassLengthErr(false);
     }
   };
+
   // --------------------------------------------------------------------------
   return (
     <Wrapper>
@@ -123,6 +153,13 @@ const SignUp = () => {
               <div className="or">OR</div>
             </div>
             <div className="right">
+              {previewSource && (
+                <img
+                  className="chosen-profile-pic"
+                  src={previewSource}
+                  alt="profile-pic"
+                />
+              )}
               <form
                 onSubmit={handleSubmit}
                 onChange={handleChangeForm}
@@ -171,6 +208,8 @@ const SignUp = () => {
                   className="input file-input"
                   id="pic"
                   name="pic"
+                  onChange={handleFileInputChange}
+                  value={fileInput}
                 />
                 <div className="agreement">
                   <input
@@ -223,6 +262,13 @@ const Wrapper = styled.div`
   padding: 20px;
   background-color: var(--c10);
   position: relative;
+  .chosen-profile-pic {
+    border-radius: 50%;
+    height: 4rem;
+    width: 4rem;
+    object-fit: cover;
+    box-shadow: 0px 10px 15px -3px rgba(61, 64, 91, 0.4);
+  }
   .link {
     color: var(--c51);
   }
@@ -351,10 +397,10 @@ const Wrapper = styled.div`
   }
   .left,
   .right {
-    flex: 1;
     display: flex;
-    align-items: center;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
   }
   .form {

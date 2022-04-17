@@ -6,34 +6,26 @@ import { useState } from "react";
 import ErrBox from "./ErrBox";
 import { useNavigate } from "react-router-dom";
 import LoadingTiny from "../LoadingTiny";
-// ----------------------------------------------------------
+// ------------------------------------------------------
 const SignInTab = () => {
-  // ----------------------------------------------------------
-  const {
-    userInfo,
-    setUserInfo,
-    loading,
-    setLoading,
-    message,
-    setMessage,
-    userSession,
-    setUserSession,
-  } = useContext(AppContext);
+  // ----------------------------------------------------
   let navigate = useNavigate();
+  const { loading, setLoading, setUserSession } = useContext(AppContext);
+  // -----------------------local states
   const [userInputSignIn, setuserInputSignIn] = useState({
     email: "",
     password: "",
   });
-
-  const [err, serErr] = useState({
+  const [err, setErr] = useState({
     email: { state: false, text: "" },
     password: { state: false, text: "" },
   });
-
+  // ----------------------------------------------------
   const signInHandle = (ev) => {
     ev.preventDefault();
+    // ---------------------sending login-info to BE
     setLoading(true);
-    fetch("http://localhost:8000/user/sign-in", {
+    fetch("/user/sign-in", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,29 +35,29 @@ const SignInTab = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        // -----------------proper action based on server-res
         switch (true) {
           case data.status === 400:
-            serErr({
+            setErr({
               password: { state: false, text: "" },
               email: { state: true, text: data.message },
             });
             setLoading(false);
             break;
           case data.status === 401:
-            serErr({
+            setErr({
               email: { state: false, text: "" },
               password: { state: true, text: data.message },
             });
             setLoading(false);
             break;
           default:
-            serErr({
+            setErr({
               email: { state: false, text: "" },
               password: { state: false, text: "" },
             });
             setLoading(false);
-            setUserInfo(data.data);
-            setUserSession(data.data);
+            setUserSession(data.user);
             navigate(`/`, { replace: true });
             break;
         }
@@ -130,7 +122,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 20px;
   background-color: var(--c10);
-  .err-box{
+  .err-box {
     width: 200px;
   }
   .methods {

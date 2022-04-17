@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import test from "../../img/test.jpeg";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -7,64 +6,71 @@ import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { imgUrl } from "../../other/variables";
-// ----------------------------------------------------------------
+// -----------------------------------------------------component
 const NavBar = () => {
-  // -------------------------------
+  // -------------------------------auth0
+  const { loginWithRedirect, logout, user, isLoading, isAuthenticated, error } =
+    useAuth0();
+  // -------------------------------hooks
   let location = useLocation();
+  // -------------
   let navigate = useNavigate();
+  // -------------
   const {
     message,
     setMessage,
     userSession,
     setUserSession,
-    userInfo,
-    setUserInfo,
     passGenerator,
     setLogInMethod,
-    loading,
-    setLoading,
   } = useContext(AppContext);
-  const { loginWithRedirect, logout, user, isLoading, isAuthenticated, error } =
-    useAuth0();
-  // -------------------------------
+  // -------------to make sure userSession is uptodate and db has the user (litterally for the times user uses auth0-google singin/signup)
   useEffect(() => {
-    if (user !== undefined) {
-      const username = user.email.trim().split("@")[0];
-      if (userInfo !== null && username === userInfo.username) {
+    //------------if user has used auth0-google singin/signup
+    if (!isLoading && user) {
+      //----------update userSession by auth0-user if it is not uptodate
+      if (userSession && user.email === userSession.email) {
         console.log(`Welcome ${user.name}`);
       } else {
+        //--------now we are sure user is new
+        const username = user.email.trim().split("@")[0];
         const newPass = passGenerator(10);
-        const picture =
+        const picUrl =
           user.picture === null ? imgUrl.defaultUserIcon : user.picture;
-        const info = new FormData();
-        info.append("username", username);
-        info.append("email", user.email);
-        info.append("family_name", user.family_name);
-        info.append("given_name", user.given_name);
-        info.append("password", newPass);
-        info.append("pic", picture);
-
-        setUserInfo(info);
-        setUserSession({
-          ...userSession,
+        //--------creatin his/her obj for userSession
+        const info = {
           username: username,
-          family_name: user.family_name,
+          email: user.email,
           given_name: user.given_name,
-          pic: picture,
-        });
-
-        fetch("http://localhost:8000/user/add", {
+          family_name: user.family_name,
+          pic: picUrl,
+          userHasThePassword: newPass,
+        };
+        //--------updating userSession
+        setUserSession(info);
+        //--------updating db
+        const endpointUserObj = {
+          username: username,
+          email: user.email,
+          given_name: user.given_name,
+          family_name: user.family_name,
+          password: newPass,
+          pic: picUrl,
+          base64: false,
+        };
+        //-------postin user-obj to db
+        fetch("/user/add", {
           method: "POST",
-          body: info,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(endpointUserObj),
         })
           .then((res) => res.json())
           .then((data) => {
             if (data.status === 201) {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
-              setUserSession({
-                ...userSession,
-                userHasThePassword: newPass,
-              });
             } else {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
             }
@@ -75,20 +81,20 @@ const NavBar = () => {
 
   // -------------------------------
   const hanleLogout = () => {
-    setUserInfo(null);
-    setUserSession(null);
     logout();
+    setUserSession(null);
+    // window.location.reload(false);
   };
 
-  const hanleSignIn = () => {  
+  const hanleSignIn = () => {
     navigate(`/login`);
-    setLogInMethod("sign-in")
-  }
+    setLogInMethod("sign-in"); // to switch tabs in login page
+  };
 
-  const hanleSignUp = () => { 
+  const hanleSignUp = () => {
     navigate(`/login`);
-    setLogInMethod("sign-up");
-   }
+    setLogInMethod("sign-up"); // to switch tabs in login page
+  };
   // ----------------------------------------------------------------
   return (
     <Wrapper>

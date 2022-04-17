@@ -4,7 +4,7 @@ import { AppContext } from "../../other/AppContext";
 const Home = () => {
   const {
     passwordAlertFunc,
-    userInfo,
+  
     userSession,
     passwordGoogleSingUp,
     setPasswordGoogleSingUp,

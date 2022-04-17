@@ -7,7 +7,7 @@ const Dashboard = () => {
   const { loginWithRedirect, logout, user, isLoading } = useAuth0();
   const {
     passwordAlertFunc,
-    userInfo,
+  
     userSession,
     passwordGoogleSingUp,
     setPasswordGoogleSingUp,
@@ -16,7 +16,7 @@ const Dashboard = () => {
   passwordAlertFunc();
   // -------------------
 
-  return !userInfo && !userSession ? (
+  return  !userSession ? (
     <Navigate to="/login" />
   ) : (
     <>

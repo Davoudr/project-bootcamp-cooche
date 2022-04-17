@@ -4,7 +4,7 @@ import { AppContext } from "../other/AppContext";
 // --------------------------------------------
 
 const Test = () => {
-  const { userInfo, userSession } = useContext(AppContext);
+  const {  userSession } = useContext(AppContext);
 //   function hexToBase64(str) {
 //     return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
 // }
