@@ -6,6 +6,8 @@ import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { imgUrl } from "../../other/variables";
+import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import { useSpring, animated } from "react-spring";
 // -----------------------------------------------------component
 const NavBar = () => {
   // -------------------------------auth0
@@ -17,12 +19,15 @@ const NavBar = () => {
   let navigate = useNavigate();
   // -------------
   const {
+    updateMode,
     message,
     setMessage,
     userSession,
     setUserSession,
-    passGenerator,
+    passwordGenerator,
     setLogInMethod,
+    darkMode,
+    setDarkMode,
   } = useContext(AppContext);
   // -------------to make sure userSession is uptodate and db has the user (litterally for the times user uses auth0-google singin/signup)
   useEffect(() => {
@@ -34,7 +39,7 @@ const NavBar = () => {
       } else {
         //--------now we are sure user is new
         const username = user.email.trim().split("@")[0];
-        const newPass = passGenerator(10);
+        const newPass = passwordGenerator(10);
         const picUrl =
           user.picture === null ? imgUrl.defaultUserIcon : user.picture;
         //--------creatin his/her obj for userSession
@@ -44,7 +49,7 @@ const NavBar = () => {
           given_name: user.given_name,
           family_name: user.family_name,
           pic: picUrl,
-          userHasThePassword: true,//we dont know if she/he is new or not; for now, we update the userSession (navBar needs it) before entring server-res-delays
+          userHasThePassword: true, //we dont know if she/he is new or not; for now, we update the userSession (navBar needs it) before entring server-res-delays
         };
         //--------updating userSession
         setUserSession(info);
@@ -71,7 +76,7 @@ const NavBar = () => {
           .then((data) => {
             if (data.status === 201) {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
-              setUserSession({ ...userSession, userHasThePassword: newPass });//user is new, he/she has loged in using quth0-google; a random-pass will be created and we need to let him/her know what is the password!
+              setUserSession({ ...userSession, userHasThePassword: newPass }); //user is new, he/she has loged in using quth0-google; a random-pass will be created and we need to let him/her know what is the password!
             } else {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
             }
@@ -96,6 +101,8 @@ const NavBar = () => {
     navigate(`/login`);
     setLogInMethod("sign-up"); // to switch tabs in login page
   };
+  // -------------------------------to toggle-update the .dark class for all elements based on last darkmode-state in local storage
+  updateMode();
   // ----------------------------------------------------------------
   return (
     <Wrapper>
@@ -129,9 +136,6 @@ const NavBar = () => {
             !user &&
             !userSession &&
             location.pathname !== "/login" && (
-              // <Link to="/login">
-              //   <Item>LogIn SignUp</Item>
-              // </Link>
               <>
                 <LogBtn onClick={hanleSignIn}>
                   <Item>SignIn</Item>
@@ -142,6 +146,18 @@ const NavBar = () => {
               </>
             )
           )}
+          <ModeBtn onClick={() => setDarkMode(!darkMode)}>
+            <MdOutlineDarkMode
+              className={`mode ${!darkMode && "mode-active"}`}
+              size="1.5rem"
+              fill="var(--c13)"
+            />
+            <MdDarkMode
+              className={`mode ${darkMode && "mode-active"}`}
+              size="1.5rem"
+              fill="var(--c1)"
+            />
+          </ModeBtn>
         </NavRight>
       </Content>
     </Wrapper>
@@ -149,6 +165,28 @@ const NavBar = () => {
 };
 export default NavBar;
 // ----------------------------------------------------------------
+
+const ModeBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  background-color: transparent;
+  box-shadow: none;
+  padding: none;
+
+  .mode-active {
+    display: none;
+  }
+
+  &:active {
+    background-color: transparent;
+    box-shadow: none;
+    transform: translate(1);
+    transform: rotate(60deg);
+  }
+`;
+
 const Content = styled.div`
   display: flex;
   justify-content: space-between;
@@ -158,6 +196,8 @@ const Content = styled.div`
 const LogBtn = styled.button`
   background-color: transparent;
   box-shadow: none;
+  padding: 0;
+  margin-left: 1rem;
 `;
 const Wrapper = styled.div`
   border-radius: 0%;
@@ -191,7 +231,6 @@ const Item = styled.li`
   font-size: var(--font-size-5);
   font-family: var(--f12);
   list-style: none;
-  margin-right: 20px;
   color: var(--c13);
   cursor: pointer;
   &:hover {
@@ -200,6 +239,7 @@ const Item = styled.li`
   }
 `;
 const Img = styled.img`
+  margin-right: 1rem;
   height: 45px;
   width: 45px;
   border-radius: 50%;

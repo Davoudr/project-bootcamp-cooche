@@ -54,5 +54,6 @@ const Content = styled.div`
   .text{
       margin-left: 3rem;
       color: var(--c41);
+      font-family: var(--f11);
   }
 `;

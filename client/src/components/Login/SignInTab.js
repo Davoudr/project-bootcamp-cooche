@@ -170,6 +170,7 @@ const Wrapper = styled.div`
   }
   .input {
     font-size: var(--font-size-4);
+    font-family: var(--f12);
   }
   .input,
   .submit-btn {
@@ -187,6 +188,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: var(--f12);
   }
   .login {
     display: flex;

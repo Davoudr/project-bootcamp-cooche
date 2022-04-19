@@ -21,23 +21,23 @@ const Dashboard = () => {
       <DashboardHeader />
       <div className="contetnt">
         <div className="tabs">
-          <Nlink activeClassName="avtive" to="/dashboard/profile">
-            <button class="tab-btn" alt="button">
+          <Nlink  to="/dashboard/profile">
+            <button className="tab-btn" alt="button">
               Profile
             </button>
           </Nlink>
           <Nlink to="/dashboard/new-suggestions">
-            <button activeClassName="avtive" class="tab-btn" alt="button">
+            <button  className="tab-btn" alt="button">
               New Suggestio
             </button>
           </Nlink>
-          <Nlink activeClassName="avtive" to="/dashboard/my-suggestions">
-            <button class="tab-btn" alt="button">
+          <Nlink  to="/dashboard/my-suggestions">
+            <button className="tab-btn" alt="button">
               My suggestions
             </button>
           </Nlink>
-          <Nlink activeClassName="avtive" to="/dashboard/bookmark-list">
-            <button class="tab-btn" alt="button">
+          <Nlink  to="/dashboard/bookmark-list">
+            <button className="tab-btn" alt="button">
               Bookmark List
             </button>
           </Nlink>
@@ -49,43 +49,35 @@ const Dashboard = () => {
 };
 export default Dashboard;
 const Nlink = styled(NavLink)`
-&.active {
-							    .tab-btn{
-
-                    &::before {
-    transform: translate(0%, 0%);
-    width: 100%;
-    height: 100%;
-    background: var(--c51);
-    border-radius: 10px;
-    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+  &.active {
+    .tab-btn {
+      &::before {
+        transform: translate(0%, 0%);
+        width: 100%;
+        height: 100%;
+        background: var(--c51);
+        border-radius: 10px;
+        box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+    }
   }
-							    }
-  }
-
-`
+`;
 const Wrapper = styled.div`
-  /* display: flex; */
-
-  /* justify-content: flex-start; */
-  /* align-items: stretch; */
-  /* flex-flow: column; */
-  /* flex-direction: column; */
   position: relative;
-
-
+  z-index: 10;
+  
   .tabs {
-    
+    box-shadow: var(--box-shadow-2);
     padding: 1rem;
-    border: solid 1px var(--c61);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
     gap: 0.9rem;
-    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+    
     position: relative;
-
+    background-color: var(--c41);
+    border-radius: var(--border-radius10);
   }
   .contetnt {
     width: var(--website-width);
@@ -95,8 +87,10 @@ const Wrapper = styled.div`
     align-items: stretch;
     /* flex-flow: column; */
     flex-direction: column;
+    margin-top: 1rem;
   }
   .tab-btn {
+    
     all: unset;
     width: 10rem;
     height: 2rem;
@@ -116,8 +110,8 @@ const Wrapper = styled.div`
     -webkit-user-select: none;
     touch-action: manipulation;
   }
-  .tab-btn:active{
-    transform: scale(0.99);
+  .tab-btn:active {
+    /* transform: scale(0.99); */
   }
   .tab-btn::after,
   .tab-btn::before {
@@ -133,7 +127,7 @@ const Wrapper = styled.div`
     transform: translate(0%, 0%);
     width: 100%;
     height: 100%;
-    background: var(--c31);
+    background: var(--c41);
     border-radius: 10px;
   }
 
@@ -147,11 +141,11 @@ const Wrapper = styled.div`
     border-radius: 50px;
   }
 
-  .tab-btn:hover::before {
+  /* .tab-btn:hover::before {
     transform: translate(5%, 20%);
     width: 110%;
     height: 110%;
-  }
+  } */
 
   .tab-btn:hover::after {
     border-radius: 10px;
@@ -164,5 +158,4 @@ const Wrapper = styled.div`
     transition: 0s;
     transform: translate(0, 5%);
   }
-
 `;

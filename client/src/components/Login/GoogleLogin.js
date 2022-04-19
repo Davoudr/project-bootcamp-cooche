@@ -42,6 +42,7 @@ const Wrapper = styled.div`
     size: 50px;
   }
   .method-name {
+    font-family: var(--f12);
     font-size: var(--font-size-4);
     color: var(--c41);
   }

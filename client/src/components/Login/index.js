@@ -58,6 +58,7 @@ const Wrapper = styled.div`
     flex-direction: column;
   }
   .method-btn {
+    font-family: var(--f12);
     margin: 20px 10px;
     background-color: transparent;
     color: var(--c41);

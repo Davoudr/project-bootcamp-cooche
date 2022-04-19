@@ -8,7 +8,7 @@ const Home = () => {
 
     userSession,
     passwordGoogleSingUp,
-    setPasswordGoogleSingUp,
+
   } = useContext(AppContext);
   // -----------------
 

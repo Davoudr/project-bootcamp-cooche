@@ -65,6 +65,7 @@ const Content = styled.div`
   .text {
     margin-left: 3rem;
     color: var(--c51);
+    font-family: var(--f11);
   }
 `;
 

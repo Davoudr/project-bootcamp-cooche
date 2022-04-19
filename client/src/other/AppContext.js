@@ -1,12 +1,12 @@
 import { createContext } from "react";
 import { useState } from "react";
-import usePersistedState from "../hook/usePersistedState";
-// -----------------------
+import usePersistedSessionState from "../hook/usePersistedSessionState";
+import usePersistedLocalState from "../hook/usePersistedLocalState";
+// =======================================================================
 export const AppContext = createContext(null);
 export const AppProvider = ({ children }) => {
-  // -----------------------
+  // =====================================================================
   const [logInMethod, setLogInMethod] = useState("sign-in");
-
   const [message, setMessage] = useState({
     status: false,
     title: "",
@@ -15,7 +15,24 @@ export const AppProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(false);
   // ======================================================================
-  const [userSession, setUserSession] = usePersistedState(null, "user");
+  const [darkMode, setDarkMode] = usePersistedLocalState(false, "darkmode");
+  // on loading the website, we will use this func to toggle-update the .dark class for all elements based on last darkmode-state in local storage
+  const updateMode = () => {
+    const allElements = document.getElementsByTagName("*");
+    if (darkMode) {
+      for (let i = 0; i < allElements.length; i++) {
+        allElements[i].classList.remove("dark");
+      }
+    }
+    if (!darkMode) {
+      for (let i = 0; i < allElements.length; i++) {
+        allElements[i].classList.add("dark");
+      }
+    }
+  };
+  // to handle dark mode - all elements can have a .dark style!
+  // ======================================================================
+  const [userSession, setUserSession] = usePersistedSessionState(null, "user");
   // any setUserSession must consider obj-rest; this state must have these keys
   // setUserSession({
   //   username: <sth>,
@@ -33,11 +50,11 @@ export const AppProvider = ({ children }) => {
     newUser: false,
     thePassword: null,
   });
-
+  // ======================================================================
   // -----------------------random password generator
   const randStr =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@$&";
-  const passGenerator = (num) => {
+  const passwordGenerator = (num) => {
     let password = "";
     let rand = 0;
     for (let i = 0; i < num; i++) {
@@ -66,20 +83,49 @@ export const AppProvider = ({ children }) => {
       });
     }
   };
-  // -----------------------
+  // ========================================================================
+  // a func to capitalaize first letter of the str
+  const capitalizeFirstLetter = (string) =>
+    string.trim().charAt(0).toUpperCase() + string.slice(1);
+
+  // a func to conver arr of str to lowercase
+  const arrOfStrToLowerCase = (arr) =>
+    arr.map((ele) => ele.trim().toLowerCase());
+
+  // a func to capitalaize fist leter of all str in an Arr
+  const capitalizeFirstLetterInArr = (arr) =>
+    arr.map((ele) => capitalizeFirstLetter(ele));
+  // ========================================================================
+  // ========================================================================
+  // ========================================================================
+  // ========================================================================
+  // ========================================================================
+  // ========================================================================
+  // ========================================================================
   return (
     <AppContext.Provider
       value={{
+        // ---------------
+        capitalizeFirstLetterInArr,
+        capitalizeFirstLetter,
+        arrOfStrToLowerCase,
+        // ---------------
         passwordAlertFunc,
-        passwordGoogleSingUp,
-        setPasswordGoogleSingUp,
+        passwordGenerator,
+        // ---------------
+        updateMode,
+        darkMode,
+        setDarkMode,
+        // ---------------
         userSession,
         setUserSession,
+        // ---------------
         loading,
         setLoading,
-        passGenerator,
+        // ---------------
         message,
         setMessage,
+        // ---------------
         logInMethod,
         setLogInMethod,
       }}

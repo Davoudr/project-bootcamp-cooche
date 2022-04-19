@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // --------------------------------------------------------
-const usePersistedState = (defaultValue, key) => {
+const usePersistedSessionState = (defaultValue, key) => {
   
   const [value, setValue] = useState(() => {
     // grabbing from sessionStorage
@@ -19,7 +19,7 @@ const usePersistedState = (defaultValue, key) => {
   return [value, setValue];
 };
 // --------------------------------------------------------
-export default usePersistedState;
+export default usePersistedSessionState;
 
 
 

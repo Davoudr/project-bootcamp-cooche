@@ -1,16 +1,26 @@
 import styled from "styled-components";
-const MySuggestions = () => {
+
+
+
+const Test = () => {
   return (
     <Wrapper>
       <div className="card">
         <div className="content">
-          <div className="info"></div>
+          <div className="info">
+            <inpu type="checkbox" >option 1</inpu>
+
+
+
+
+            
+          </div>
         </div>
       </div>
     </Wrapper>
   );
 };
-export default MySuggestions;
+export default Test;
 
 const Wrapper = styled.div`
   width: var(--website-width);

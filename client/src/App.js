@@ -11,7 +11,7 @@ import ContactUs from "./components/ContactUs";
 import BookmarkList from "./components/BookmarkList";
 import Comments from "./components/Comments";
 import Err404 from "./components/Err404";
-import MyInfo from "./components/MyInfo";
+import MyProfile from "./components/MyProfile";
 import MySuggestions from "./components/MySuggestions";
 import NewSuggestion from "./components/NewSuggestion";
 import BusinessInfo from "./components/BusinessInfo";
@@ -26,10 +26,10 @@ import { AppContext } from "./other/AppContext";
 // -----------------------
 const App = () => {
   // -----------------------
-  const { message, setMessage } = useContext(AppContext);
+  const { message, setMessage, darkMode } = useContext(AppContext);
   // -----------------------
   return (
-    <Wrapper>
+    <Wrapper className={darkMode ? `dark` : `light`}>
       <Router>
         <Auth0ProviderWithNavigate>
           <NavBar />
@@ -40,7 +40,7 @@ const App = () => {
             <Route exact path="/contact-us" element={<ContactUs />} />
             <Route exact path="/dashboard" element={<Dashboard />}>
               <Route exact path="bookmark-list" element={<BookmarkList />} />
-              <Route exact path="profile" element={<MyInfo />} />
+              <Route exact path="profile" element={<MyProfile />} />
               <Route exact path="my-suggestions" element={<MySuggestions />} />
               <Route exact path="new-suggestions" element={<NewSuggestion />} />
             </Route>
@@ -65,8 +65,8 @@ const Msg = styled.div`
   position: absolute;
 `;
 const Wrapper = styled.div`
-
   display: block;
   margin: auto;
+
 
 `;

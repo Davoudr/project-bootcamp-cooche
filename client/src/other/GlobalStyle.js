@@ -6,6 +6,8 @@
 	  */
 ////=================================================================
 import { createGlobalStyle } from "styled-components";
+import { AppContext } from "./AppContext";
+
 export default createGlobalStyle`
 	////=================================================================
   
@@ -42,12 +44,24 @@ export default createGlobalStyle`
         --border-radius2: 0.3rem;
         --border-radius3: 0.5rem;
         --border-radius4: 0.7rem;
+		--border-radius5: 0.9rem;
+		--border-radius6: 1.1rem;
+		--border-radius6: 1.2rem;
+		--border-radius8: 1.5rem;
+        --border-radius9: 2rem;
+        --border-radius10: 5rem;
         /* ------------- */
         --min-normal-width: 700px;
         --min-normal-width-inside: 600px;
 		--website-width : 1200px;
 		--navbar-height: 4rem;
 		--header-height: 20rem;
+		/* --------------- */
+		--box-shadow-1: 0px 10px 15px -3px rgba(0,0,0,0.1);
+		--box-shadow-2: 0px 10px 15px -3px rgba(0,0,0,0.2);
+		--box-shadow-3: 0px 10px 15px -3px rgba(0,0,0,0.3);
+		--box-shadow-4: 0px 10px 15px -3px rgba(0,0,0,0.4);
+		--box-shadow-5: 0px 10px 15px -3px rgba(0,0,0,0.5);
         /* ------dashboard------- */
 		
 
@@ -146,6 +160,49 @@ export default createGlobalStyle`
 			border: none;
 		}
 		body{
-			background-color: var(--c11);
-		}
+			
+			/* background-color: var(--c11); */
+			background: hsla(18, 76%, 85%, 1);
+				background: linear-gradient(
+					90deg,
+					hsla(18, 76%, 85%, 1) 0%,
+					hsla(203, 69%, 84%, 1) 100%
+				);
+				background: -moz-linear-gradient(
+					90deg,
+					hsla(18, 76%, 85%, 1) 0%,
+					hsla(203, 69%, 84%, 1) 100%
+				);
+				background: -webkit-linear-gradient(
+					90deg,
+					hsla(18, 76%, 85%, 1) 0%,
+					hsla(203, 69%, 84%, 1) 100%
+				);
+				filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#f6cfbe", endColorstr="#b9dcf2", GradientType=1 );
+			
+			&.dark {
+				background: hsla(205, 46%, 10%, 1);
+				background: linear-gradient(
+					90deg,
+					hsla(205, 46%, 10%, 1) 0%,
+					hsla(191, 28%, 23%, 1) 50%,
+					hsla(207, 41%, 27%, 1) 100%
+				);
+				background: -moz-linear-gradient(
+					90deg,
+					hsla(205, 46%, 10%, 1) 0%,
+					hsla(191, 28%, 23%, 1) 50%,
+					hsla(207, 41%, 27%, 1) 100%
+				);
+				background: -webkit-linear-gradient(
+					90deg,
+					hsla(205, 46%, 10%, 1) 0%,
+					hsla(191, 28%, 23%, 1) 50%,
+					hsla(207, 41%, 27%, 1) 100%
+				);
+  				filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#0e1c26", endColorstr="#2a454b", GradientType=1 );
+
+			}
+			
+			}
 	`;
