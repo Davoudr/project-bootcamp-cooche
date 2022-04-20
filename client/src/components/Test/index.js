@@ -1,70 +1,96 @@
-import styled from "styled-components";
-
-
-
-const Test = () => {
+import styled, { keyframes, text } from "styled-components";
+import { FcGoogle } from "react-icons/fc";
+import { GrNext } from "react-icons/gr";
+const Test = ({ btnText }) => {
   return (
-    <Wrapper>
-      <div className="card">
-        <div className="content">
-          <div className="info">
-            <inpu type="checkbox" >option 1</inpu>
-
-
-
-
-            
-          </div>
-        </div>
+    <DIV className="info">
+      <div class="frame">
+        <button class="custom-btn btn-5">
+          <span
+          className="test"> <FcGoogle className="icon" size="2rem" /><span>ddasd</span></span>
+        </button>
       </div>
-    </Wrapper>
+    </DIV>
   );
 };
 export default Test;
 
-const Wrapper = styled.div`
-  width: var(--website-width);
-  margin: auto;
-  display: flex;
-  justify-content: flex-start;
-  align-items: stretch;
-  flex-direction: column;
-  margin-top: 1rem;
-  .info {
+
+const DIV = styled.div`
+ 
+  .test{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    
+    justify-content: center; 
+    align-items: center; 
+    /* flex-flow: nowrap; */  
+    flex-wrap: nowrap; 
   }
 
-  .content {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  .card {
-    background-color: var(--c10);
-    height: 300px;
-    z-index: 1;
-    border-radius: var(--border-radius6);
-    border-start-start-radius: 10rem;
-    box-shadow: var(--box-shadow-1);
-    &.dark {
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
-      background-color: rgba(17, 25, 40, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.125);
-    }
-  }
-`;
 
-const Img = styled.img`
-  height: 100px;
-  border-radius: 50%;
+.frame {
+  width: 90%;
+  margin: 40px auto;
+  text-align: center;
+}
+button {
+  margin: 20px;
+  outline: none;
+}
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  padding: 10px 25px;
+  border: 2px solid #000;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
   position: relative;
-  box-shadow: var(--box-shadow-3);
-  position: absolute;
+  display: inline-block;
+}
+
+/* 5 */
+.btn-5 {
+  background: #3D405B;
+  color: #fff;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.btn-5:hover {
+  background: transparent;
+  color: #3D405B;
+   box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #3D405B,
+   4px 4px 5px 0px #3D405B,
+}
+.btn-5:before,
+.btn-5:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background:#3D405B;
+  transition:400ms ease all;
+}
+.btn-5:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.btn-5:hover:before,
+.btn-5:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
+
+
 `;

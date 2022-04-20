@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import MsgBox from "../MsgBox";
 import { imgUrl } from "../../other/variables";
 import ErrBox from "./ErrBox";
+import Button from "../Tools/Button";
 // ------------------------------------------------------
 const SignUp = () => {
   // ----------------------------------------------------
@@ -149,7 +150,7 @@ const handleChangeNationality = (ev) => {
         <div className="middle-bottom">
           <div className="middle">
             <div className="left">
-              <GoogleLogin text={`Google Sign-Up`} />
+              <GoogleLogin text={`Sign-Up`} />
             </div>
             <div className="center">
               <div className="line"></div>
@@ -230,7 +231,7 @@ const handleChangeNationality = (ev) => {
                   </a>
                 </div>
                 <button className="submit-btn" type="submit">
-                  {!loading ? `Register` : <LoadingTiny />}
+                  {!loading ? <Button btnText="Register"/> : <LoadingTiny />}
                 </button>
               </form>
             </div>

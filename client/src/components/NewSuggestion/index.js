@@ -19,9 +19,28 @@ import {
   getLatLng,
 } from "react-places-autocomplete";
 import PlacesAutocomplete from "react-places-autocomplete";
+import { BsPhone } from "react-icons/bs";
+import { MdOutlineMail } from "react-icons/md";
+import { GiWorld } from "react-icons/gi";
+import { AiOutlineFacebook } from "react-icons/ai";
+import { IoLogoInstagram } from "react-icons/io";
+import { FaTwitter } from "react-icons/fa";
+import NextBtn from "./NextBtn";
+import MenuBtn from "./MenuBtn";
+import Button from "../Tools/Button";
+
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+
+import "tippy.js/themes/light.css";
+import "tippy.js/themes/material.css";
+import "tippy.js/animations/scale.css";
 // ===============================================================
 const NewSuggestion = () => {
   const {
+    setDarkMode,
+    updateMode,
+    darkMode,
     capitalizeFirstLetterInArr,
     capitalizeFirstLetter,
     arrOfStrToLowerCase,
@@ -33,6 +52,7 @@ const NewSuggestion = () => {
     setUserSession,
   } = useContext(AppContext);
   // ===============================================================
+
   const handleSubmit = (ev) => {
     ev.preventDefault();
     // ----------------------------converting submit-btn contetnt to loading-animation
@@ -91,19 +111,17 @@ const NewSuggestion = () => {
     let theValue = ev.map((ele) => {
       return ele.value;
     });
-    return theValue
+    return theValue;
   };
-  const languagesHandleChange = (ev) => { 
-    setLanguagesValue(reactSelectToValue(ev))
-   }
+  const languagesHandleChange = (ev) => {
+    setLanguagesValue(reactSelectToValue(ev));
+  };
   const onchangeHandle = (ev) => {
     let theKey = ev.target.id;
     let theValue = ev.target.value;
     setBusinessInfo({ ...businessInfo, [theKey]: theValue });
   };
-  const first = (ev) => {
-    console.log(ev);
-  };
+
   // -------------------------
   const langOptions = languagesArr.map((lang) => {
     return { label: capitalizeFirstLetter(lang), value: lang };
@@ -154,26 +172,17 @@ const NewSuggestion = () => {
     // .catch((error) => console.error("Error", error));
   };
 
-  // ----------------------------
-  const [textAreaValue, setTextAreaValue] = useState("");
-  const limit = 300;
-  const tweetLength = textAreaValue.length;
-  const txtAreaHandle = (event) => {
-    setTextAreaValue(event.target.value);
-  };
+
   // ----------------------------
   const [pages, setPages] = useState("details");
   const handleInfoBtn = (ev) => {
     setPages("details");
-    console.log(pages);
   };
   const handleConnecitonBtn = (ev) => {
     setPages("connections");
-    console.log(pages);
   };
   const handleDescriptionBtn = (ev) => {
     setPages("description");
-    console.log(pages);
   };
   const nextBtnHandle = (ev) => {
     pages === "details" ? setPages("connections") : setPages("description");
@@ -194,37 +203,50 @@ const NewSuggestion = () => {
             <div className="columns">
               <div className="menu">
                 <button className="btn info-btn" onClick={handleInfoBtn}>
-                  Information
+                  <MenuBtn
+                    darkMode={darkMode}
+                    trigger={false}
+                    btnText="Information"
+                    className="btn info-btn"
+                  />
                 </button>
+
                 <button
                   className="btn connections-btn"
                   onClick={handleConnecitonBtn}
                 >
-                  Connecitons
+                  <MenuBtn
+                    darkMode={darkMode}
+                    trigger={false}
+                    btnText="Connecitons"
+                    className="btn info-btn"
+                  />
                 </button>
                 <button
                   className="btn description-btn"
                   onClick={handleDescriptionBtn}
                 >
-                  Description
+                  <MenuBtn
+                    darkMode={darkMode}
+                    trigger={false}
+                    btnText="Description"
+                    className="btn info-btn"
+                  />
                 </button>
               </div>
               <div className="pages">
                 {pages === "details" && (
                   <div className="details">
                     <div className="btn-box">
-                      <button
-                        className="next next-info"
-                        onClick={nextBtnHandle}
-                      >
-                        Next
+                      <button className=" next-info" onClick={nextBtnHandle}>
+                        <NextBtn btntext="Next" />
                       </button>
                     </div>
                     <div className="name-box detail">
                       <label
                         htmlFor="name"
                         form="business-form"
-                        className="detail-label"
+                        className={`detail-label ${!darkMode && "dark"}`}
                       >
                         Business name
                       </label>
@@ -241,7 +263,7 @@ const NewSuggestion = () => {
                       <label
                         htmlFor="category"
                         form="business-form"
-                        className="detail-label"
+                        className={`detail-label ${!darkMode && "dark"}`}
                       >
                         Category
                       </label>
@@ -267,7 +289,7 @@ const NewSuggestion = () => {
                       <label
                         htmlFor="nationality"
                         form="business-form"
-                        className="detail-label"
+                        className={`detail-label ${!darkMode && "dark"}`}
                       >
                         Nationality
                       </label>
@@ -293,7 +315,9 @@ const NewSuggestion = () => {
                       <label
                         htmlFor="languages"
                         form="business-form"
-                        className="detail-label lng-label"
+                        className={`lng-label detail-label ${
+                          !darkMode && "dark"
+                        }`}
                       >
                         Languages supported
                       </label>
@@ -312,7 +336,9 @@ const NewSuggestion = () => {
                       <label
                         htmlFor="address"
                         form="business-form"
-                        className="detail-label address-label"
+                        className={`address-label detail-label ${
+                          !darkMode && "dark"
+                        }`}
                       >
                         Address
                       </label>
@@ -381,100 +407,151 @@ const NewSuggestion = () => {
 
                 {pages === "connections" && (
                   <div className="connections">
-                    <div className="connection-box">
-                      <label
-                        htmlFor="phone"
-                        form="business-form"
-                        className="phone connection-label label"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        className="input phone conneciton-input"
-                        id="phone"
-                        type="number"
-                        placeholder=""
-                        onChange={onchangeHandle}
-                      />
+                    <div className="btn-box">
+                      <button className="next-info" onClick={nextBtnHandle}>
+                        <NextBtn btntext="Next" />
+                      </button>
                     </div>
+                    <div>
+                      <div className="connection-box">
+                        <label
+                          htmlFor="phone"
+                          form="business-form"
+                          className="phone connection-label label"
+                        >
+                          <BsPhone
+                            fill={darkMode ? "#808080" : "#cdcdcd"}
+                            size={"1.5rem"}
+                          />
+                          <span
+                            className={`connection-type ${!darkMode && "dark"}`}
+                          >
+                            Phone Number
+                          </span>
+                        </label>
 
-                    <div className="connection-box">
-                      <label
-                        htmlFor="email"
-                        form="business-form"
-                        className="email connection-label label"
-                      >
-                        E-Mail
-                      </label>
-                      <input
-                        className="input email conneciton-input"
-                        id="email"
-                        type="email"
-                        placeholder=""
-                        onChange={onchangeHandle}
-                      />
-                    </div>
+                        <input
+                          className="input phone conneciton-input"
+                          id="phone"
+                          type="tel"
+                          placeholder=""
+                          onChange={onchangeHandle}
+                        />
+                      </div>
 
-                    <div className="connection-box">
-                      <label
-                        htmlFor="website"
-                        form="business-form"
-                        className="website connection-label label"
-                      >
-                        Website
-                      </label>
-                      <input
-                        className="input website conneciton-input"
-                        id="website"
-                        type="url"
-                        placeholder=""
-                        onChange={onchangeHandle}
-                      />
-                    </div>
-                    <div className="connection-box">
-                      <label
-                        htmlFor="facebook"
-                        form="business-form"
-                        className="fb connection-label label"
-                      >
-                        facebook
-                      </label>
-                      <input
-                        className="input fb conneciton-input"
-                        id="facebook"
-                        type="url"
-                        placeholder=""
-                      />
-                    </div>
-                    <div className="connection-box">
-                      <label
-                        htmlFor="instagram"
-                        form="business-form"
-                        className="instagram connection-label label"
-                      >
-                        Instagram
-                      </label>
-                      <input
-                        className="input instagram conneciton-input"
-                        id="instagram"
-                        type="url"
-                        placeholder=""
-                      />
-                    </div>
-                    <div className="connection-box">
-                      <label
-                        htmlFor="twitter"
-                        form="business-form"
-                        className="twitter connection-label label"
-                      >
-                        Twitter
-                      </label>
-                      <input
-                        className="input twitter conneciton-input"
-                        id="twitter"
-                        type="url"
-                        placeholder=""
-                      />
+                      <div className="connection-box">
+                        <label
+                          htmlFor="email"
+                          form="business-form"
+                          className="email connection-label label"
+                        >
+                          <MdOutlineMail
+                            fill={darkMode ? "#808080" : "#cdcdcd"}
+                            size={"1.5rem"}
+                          />
+                          <span
+                            className={`connection-type ${!darkMode && "dark"}`}
+                          >
+                            E-Mail
+                          </span>
+                        </label>
+
+                        <input
+                          className="input email conneciton-input"
+                          id="email"
+                          type="email"
+                          placeholder="cooche@gmail.com"
+                          onChange={onchangeHandle}
+                        />
+                      </div>
+
+                      <div className="connection-box">
+                        <label
+                          htmlFor="website"
+                          form="business-form"
+                          className="website connection-label label"
+                        >
+                          <GiWorld
+                            fill={darkMode ? "#808080" : "#cdcdcd"}
+                            size={"1.5rem"}
+                          />
+                          <span
+                            className={`connection-type ${!darkMode && "dark"}`}
+                          >
+                            Website
+                          </span>
+                        </label>
+                        <input
+                          className="input website conneciton-input"
+                          id="website"
+                          type="url"
+                          placeholder="www.cooche.com"
+                          onChange={onchangeHandle}
+                        />
+                      </div>
+                      <div className="connection-box">
+                        <label
+                          htmlFor="facebook"
+                          form="business-form"
+                          className="fb connection-label label"
+                        >
+                          <AiOutlineFacebook fill="#1b74e4" size={"1.5rem"} />
+                          <span
+                            className={`connection-type ${!darkMode && "dark"}`}
+                          >
+                            facebook
+                          </span>
+                        </label>
+                        <input
+                          className="input fb conneciton-input"
+                          id="facebook"
+                          type="url"
+                          placeholder="https://facebook.com/cooche"
+                          onChange={onchangeHandle}
+                        />
+                      </div>
+                      <div className="connection-box">
+                        <label
+                          htmlFor="instagram"
+                          form="business-form"
+                          className="instagram connection-label label"
+                        >
+                          <IoLogoInstagram fill="#ed4956" size={"1.5rem"} />
+                          <span
+                            className={`connection-type ${!darkMode && "dark"}`}
+                          >
+                            Instagram
+                          </span>
+                        </label>
+                        <input
+                          className="input instagram conneciton-input"
+                          id="instagram"
+                          type="url"
+                          placeholder="https://www.instagram.com/cooche"
+                          onChange={onchangeHandle}
+                        />
+                      </div>
+                      <div className="connection-box">
+                        <label
+                          htmlFor="twitter"
+                          form="business-form"
+                          className="twitter connection-label label"
+                        >
+                          <FaTwitter fill="#1d9bf0" size={"1.5rem"} />
+                          <span
+                            className={`connection-type ${!darkMode && "dark"}`}
+                          >
+                            Twitter
+                          </span>
+                        </label>
+                        <input
+                          className="input twitter conneciton-input"
+                          id="twitter"
+                          type="url"
+                          placeholder="https://twitter.com/cooche"
+                          onChange={onchangeHandle}
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
@@ -483,25 +560,66 @@ const NewSuggestion = () => {
                     <label
                       htmlFor="description"
                       form="business-form"
-                      className="description"
+                      className="description-label"
                     >
-                      Description
+                      <span
+                        className={`description-title description-span connection-type ${
+                          !darkMode && "dark"
+                        }`}
+                      >
+                        Optionally you can add some description about this
+                        business. For example:
+                      </span>
+
+                      <span
+                        className={`description-exp connection-type ${
+                          !darkMode && "dark"
+                        }`}
+                      >
+                        - Working hours
+                      </span>
+                      <span
+                        className={`description-exp connection-type ${
+                          !darkMode && "dark"
+                        }`}
+                      >
+                        - Prices
+                      </span>
+                      <span
+                        className={`description-exp connection-type ${
+                          !darkMode && "dark"
+                        }`}
+                      >
+                        - Advantages
+                      </span>
+                      <span
+                        className={`description-exp connection-type ${
+                          !darkMode && "dark"
+                        }`}
+                      >
+                        - Offers
+                      </span>
+                      <span
+                        className={`description-exp connection-type ${
+                          !darkMode && "dark"
+                        }`}
+                      >
+                        - Needs
+                      </span>
                     </label>
                     <textarea
-                      className="input descriprion"
+                      className="input descriprion descriprion-textArea"
                       id="description"
-                      onChange={txtAreaHandle}
-                      value={textAreaValue}
+                      onChange={onchangeHandle}
+                 
                     />
-                    <Counter
-                      className="counter"
-                      tweetLength={tweetLength}
-                      limit={limit}
-                    >
-                      {limit - tweetLength}
-                    </Counter>
+                  
                     <button className="btn submit-btn" type="submit">
-                      {!loading ? `Add` : <LoadingTiny />}
+                      {!loading ? (
+                        <Button btnText="Add" />
+                      ) : (
+                        <Button btnText={<LoadingTiny />} />
+                      )}
                     </button>
                   </div>
                 )}
@@ -539,14 +657,15 @@ const Wrapper = styled.div`
   }
   .btn {
     width: 100%;
-    background-color: var(--c11);
-    height: 2rem;
+    background-color: transparent;
+
     font-size: var(--font-size-3);
     font-family: var(--f12);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    box-shadow: none;
   }
   .box {
   }
@@ -584,11 +703,14 @@ const Wrapper = styled.div`
     &.dark {
       background-color: var(--c51);
     }
+    &:focus {
+      box-shadow: var(--box-shadow-1);
+    }
   }
 
   .address-results {
     margin-top: 0.2rem;
-    padding: 0.2rem;
+    padding: 0 0.2rem;
   }
   .address-result {
   }
@@ -601,7 +723,6 @@ const Wrapper = styled.div`
     align-items: center;
     /* flex-flow: row; */
     flex-direction: row;
-    /* background-color: red; */
     width: 100%;
     min-height: 3rem;
   }
@@ -627,11 +748,17 @@ const Wrapper = styled.div`
     flex-direction: column;
   }
   .connections {
-    background-color: red;
-    padding: 7rem;
+    /* background-color: aliceblue; */
+    padding: 2rem;
+    display: flex;
+
+    justify-content: flex-start;
+    align-items: stretch;
+    /* flex-flow: column; */
+    flex-direction: column;
   }
   .conneciton-input {
-    width: 500px;
+    width: 40rem;
     height: 2rem;
     padding-left: 1rem;
   }
@@ -734,6 +861,7 @@ const Wrapper = styled.div`
   .btn-box {
     width: 100%;
     display: flex;
+    padding: 0;
 
     margin-bottom: 1rem;
     justify-content: flex-end;
@@ -741,10 +869,7 @@ const Wrapper = styled.div`
     /* flex-flow: row; */
     flex-direction: row;
   }
-  .next-info {
-    padding: 0.5rem 2rem;
-    color: var(--c15);
-  }
+
   .pages {
   }
   .lng-label {
@@ -752,34 +877,68 @@ const Wrapper = styled.div`
   }
   .info-btn {
     margin-bottom: ${(props) => (props.pages === "details" ? "5rem" : "0")};
-    background-color: ${(props) => props.pages === "details" && "var(--c12)"};
+
     transition: all ease-in-out 0.5s;
   }
   .connections-btn {
     margin-bottom: ${(props) => (props.pages === "connections" ? "5rem" : "0")};
-    background-color: ${(props) =>
-      props.pages === "connections" && "var(--c12)"};
+
     transition: all ease-in-out 0.5s;
   }
   .description-btn {
     transition: all ease-in-out 0.5s;
     margin-bottom: ${(props) => (props.pages === "description" ? "5rem" : "0")};
-    background-color: ${(props) =>
-      props.pages === "description" && "var(--c12)"};
   }
+  .connection-type {
+    margin-left: 2rem;
+    &.dark {
+      color: var(--c21);
+    }
+  }
+  .description-box {
+    padding: 2rem;
+  }
+  .description-exp {
+    display: block;
+    list-style-type: square;
+    margin-left: 2rem;
+    margin-bottom: 0.5rem;
+    &.dark {
+      color: var(--c11);
+    }
+  }
+  .description-span {
+    margin-bottom: 1rem;
+    display: block;
+    &.dark {
+      color: var(--c11);
+    }
+  }
+
+  .descriprion-textArea {
+    width: 100%;
+    resize: none;
+    border: none;
+    border-radius: var(--border-radius5);
+    margin: 2rem 0;
+    height: 20rem;
+    padding: 2rem;
+    box-shadow: var(--box-shadow-1);
+  }
+
+  .next-info {
+    color: var(--c15);
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .submit-btn {
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ 
 `;
 
-const Counter = styled.span`
-  float: right;
-  position: absolute;
-  right: 140px;
-  bottom: 30px;
-  z-index: 5;
-  font-size: 16px;
-  color: ${(props) =>
-    props.tweetLength > props.limit
-      ? "#FF0000"
-      : props.tweetLength > 0.8 * props.limit
-      ? "#D1BB00"
-      : "#a2a1a1"};
-`;

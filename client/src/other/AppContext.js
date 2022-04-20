@@ -29,6 +29,8 @@ export const AppProvider = ({ children }) => {
         allElements[i].classList.add("dark");
       }
     }
+  
+    
   };
   // to handle dark mode - all elements can have a .dark style!
   // ======================================================================

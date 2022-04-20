@@ -50,7 +50,7 @@ export default createGlobalStyle`
 		--border-radius8: 1.5rem;
         --border-radius9: 2rem;
         --border-radius10: 5rem;
-        /* ------------- */
+        /* ------------ */
         --min-normal-width: 700px;
         --min-normal-width-inside: 600px;
 		--website-width : 1200px;
@@ -146,19 +146,7 @@ export default createGlobalStyle`
 			
 		}
 		
-		button{
-			background: var(--c21);
-    		font-weight: bold;
-   			box-shadow: 5px 5px 5px -3px rgba(0, 0, 0, 0.1);
-    		transition: all ease 0.1s;
-			padding: 5px 20px;
-    	  &:active {
-      			box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
-      			background-color: var(--c11);
 
-    		}
-			border: none;
-		}
 		body{
 			
 			/* background-color: var(--c11); */
@@ -206,3 +194,5 @@ export default createGlobalStyle`
 			
 			}
 	`;
+
+

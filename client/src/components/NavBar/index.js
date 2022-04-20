@@ -197,7 +197,7 @@ const LogBtn = styled.button`
   background-color: transparent;
   box-shadow: none;
   padding: 0;
-  margin-left: 1rem;
+  margin:0 1rem;
 `;
 const Wrapper = styled.div`
   border-radius: 0%;

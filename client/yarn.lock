@@ -1264,13 +1264,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@googlemaps/js-api-loader@^1.12.3":
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.14.0.tgz#7a1d3f0b7b53eabf797977ad0714b45069d5972e"
-  integrity sha512-J6xBJ39LPgafGiOaq7jX8KaThX4/G2nqP9DCwXHawB66K4U5KxAzVJi0H5Q6/NgjF2bAubhKd6rDmvoDgIXldg==
-  dependencies:
-    fast-deep-equal "^3.1.3"
-
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.9.5.tgz#2cbaf9a89460da24b5ca6531b8bbfc23e1df50c7"
@@ -1697,6 +1690,11 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
+"@popperjs/core@^2.9.0":
+  version "2.11.5"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
+  integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
+
 "@react-spring/animated@~9.4.4":
   version "9.4.4"
   resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.4.4.tgz#15e21923e55c06ca2bcea432869b91b2f8b07519"
@@ -2009,6 +2007,13 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
+"@tippyjs/react@^4.2.6":
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/@tippyjs/react/-/react-4.2.6.tgz#971677a599bf663f20bb1c60a62b9555b749cc71"
+  integrity sha512-91RicDR+H7oDSyPycI13q3b7o4O60wa2oRbjlz2fyRLmHImc4vyDwuUP8NtZaN0VARJY5hybvDYrFzhY9+Lbyw==
+  dependencies:
+    tippy.js "^6.3.1"
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
@@ -2147,11 +2152,6 @@
   dependencies:
     "@types/minimatch" "*"
     "@types/node" "*"
-
-"@types/google.maps@^3.46.1":
-  version "3.48.5"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.48.5.tgz#ab2ef4add490a108cdb5149d3df81dafb159528e"
-  integrity sha512-sI3EOhGHvzbitC/iLOf2nQ+TijsXqbV2nQi9twpRWy0p6q6vbwRnIy7PQKjmpFQewjTVNa1MfY2BL76MU1lOWA==
 
 "@types/graceful-fs@^4.1.2":
   version "4.1.5"
@@ -10786,27 +10786,10 @@ react-error-overlay@^6.0.11:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
 
-react-google-places-autocomplete@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/react-google-places-autocomplete/-/react-google-places-autocomplete-3.3.4.tgz#ae050271b38bc7d6f0c5811ff94ce3e246a05389"
-  integrity sha512-IeoBxUvwFYZ8gEXC7K9e9Az3QUO7A3fbc/ED0Px63dvY4fRtipdXbGK1nBCr7qJRpZbArOk2LMUgAi21lvjPOQ==
-  dependencies:
-    "@googlemaps/js-api-loader" "^1.12.3"
-    "@types/google.maps" "^3.46.1"
-    react-select "^4.3.1"
-    use-debounce "^3.4.3"
-
 react-icons@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.3.1.tgz#2fa92aebbbc71f43d2db2ed1aed07361124e91ca"
   integrity sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==
-
-react-input-autosize@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-3.0.0.tgz#6b5898c790d4478d69420b55441fcc31d5c50a85"
-  integrity sha512-nL9uS7jEs/zu8sqwFE5MAPx6pPkNAriACQ2rGLlqmKr2sPGtN7TXTyDdQt4lbNXVx7Uzadb40x8qotIuru6Rhg==
-  dependencies:
-    prop-types "^15.5.8"
 
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
@@ -10900,19 +10883,6 @@ react-scripts@5.0.0:
     workbox-webpack-plugin "^6.4.1"
   optionalDependencies:
     fsevents "^2.3.2"
-
-react-select@^4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-4.3.1.tgz#389fc07c9bc7cf7d3c377b7a05ea18cd7399cb81"
-  integrity sha512-HBBd0dYwkF5aZk1zP81Wx5UsLIIT2lSvAY2JiJo199LjoLHoivjn9//KsmvQMEFGNhe58xyuOITjfxKCcGc62Q==
-  dependencies:
-    "@babel/runtime" "^7.12.0"
-    "@emotion/cache" "^11.4.0"
-    "@emotion/react" "^11.1.1"
-    memoize-one "^5.0.0"
-    prop-types "^15.6.0"
-    react-input-autosize "^3.0.0"
-    react-transition-group "^4.3.0"
 
 react-select@^5.3.0:
   version "5.3.0"
@@ -12537,6 +12507,13 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+tippy.js@^6.3.1:
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.7.tgz#8ccfb651d642010ed9a32ff29b0e9e19c5b8c61c"
+  integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==
+  dependencies:
+    "@popperjs/core" "^2.9.0"
+
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -12909,11 +12886,6 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
-
-use-debounce@^3.4.3:
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-3.4.3.tgz#5df9322322b3f1b1c263d46413f9facf6d8b56ab"
-  integrity sha512-nxy+opOxDccWfhMl36J5BSCTpvcj89iaQk2OZWLAtBJQj7ISCtx1gh+rFbdjGfMl6vtCZf6gke/kYvrkVfHMoA==
 
 use@^3.1.0:
   version "3.1.1"

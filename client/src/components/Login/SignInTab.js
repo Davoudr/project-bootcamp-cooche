@@ -6,6 +6,7 @@ import { useState } from "react";
 import ErrBox from "./ErrBox";
 import { useNavigate } from "react-router-dom";
 import LoadingTiny from "../LoadingTiny";
+import Button from "../Tools/Button";
 // ------------------------------------------------------
 const SignInTab = () => {
   // ----------------------------------------------------
@@ -68,7 +69,7 @@ const SignInTab = () => {
     <Wrapper>
       <div className="methods">
         <div className="left">
-          <GoogleLogin text={`Google Sign-In`} />
+          <GoogleLogin text={`Sign-In`} />
         </div>
         <div className="center">
           <div className="line"></div>
@@ -102,7 +103,7 @@ const SignInTab = () => {
               required
             />
             <button className="submit-btn" type="submit">
-              {!loading ? `Sign In` : <LoadingTiny />}
+              {!loading ? <Button btnText="Sign In"/> : <LoadingTiny />}
             </button>
           </form>
           <div className="err-box">
@@ -189,6 +190,7 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     font-family: var(--f12);
+    background-color: transparent;
   }
   .login {
     display: flex;

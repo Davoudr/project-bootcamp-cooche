@@ -1,55 +1,50 @@
+
 import styled, { keyframes, text } from "styled-components";
-import { FcGoogle } from "react-icons/fc";
+import { AppContext } from "../../other/AppContext";
+import { useContext } from "react";
 import { GrNext } from "react-icons/gr";
-import { useAuth0 } from "@auth0/auth0-react";
+const Button = ({ btnText }) => {
+const{darkMode} = useContext(AppContext)
 
-
-
-// ------------------------------------------------------------
-const GoogleLogin = ({text}) => {
-// ----------------------------------------------------------calling auth0 provider
-const { loginWithRedirect } = useAuth0();
-// ----------------------------------------------------------
   return (
-    <DIV className="info">
+    <DIV className={`info ${darkMode && "dark"}`} >
       <div class="frame">
-        <button class="custom-btn theBtn" onClick={() => loginWithRedirect()}>
-          <span
-          className="test"> <FcGoogle className="icon" size="2rem" /><span>{text}</span></span>
+        <button class="custom-btn theBtn">
+          <span className="span">{btnText}</span>
         </button>
       </div>
     </DIV>
   );
 };
-export default GoogleLogin;
+export default Button;
 
 
 const DIV = styled.div`
- .icon{
-   margin-right: 0.5rem;
- }
-  .test{
+ .span{
+  border: none;
     display: flex;
-    
-    justify-content: center; 
-    align-items: center; 
-    /* flex-flow: nowrap; */  
-    flex-wrap: nowrap; 
-  }
+    justify-content: center;
+    align-items: center;
+ }
+ 
 
 
 .frame {
   width: 90%;
-  margin: 40px auto;
   text-align: center;
+ 
 }
 button {
-  margin: 20px;
+  margin: auto;
   outline: none;
-  font-size: 0.9rem;
+  display: flex;
+    
+    justify-content: center; 
+    align-items: center;
+    font-size: 0.9rem;
 }
 .custom-btn {
-  width: 170px;
+    width: 200px;
   height: 40px;
   padding: 10px 25px;
   border: 2px solid #000;
@@ -63,18 +58,26 @@ button {
 }
 
 .theBtn {
-  background:#3D405B;
+  background: #3D405B;
   color: #fff;
   line-height: 42px;
   padding: 0;
   border: none;
 }
+
 .theBtn:hover {
   background: transparent;
   color: #000;
    box-shadow:
    -7px -7px 20px 0px #fff9,
    -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
+}
+.dark .theBtn:hover {
+  background: transparent;
+  color: #000;
+   box-shadow:
    7px 7px 20px 0px #0002,
    4px 4px 5px 0px #0001;
 }
@@ -88,6 +91,11 @@ button {
   width:0;
   background: #000;
   transition:400ms ease all;
+}
+.dark .theBtn:before,
+.dark .theBtn:after{
+  content:'';
+  background:  #F2CC8F;
 }
 .theBtn:after{
   right:inherit;
