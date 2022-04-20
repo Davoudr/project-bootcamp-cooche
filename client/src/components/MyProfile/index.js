@@ -11,7 +11,6 @@ const MyProfile = () => {
   if (location.pathname === "/dashboard/profile") {
     setTimeout(()=>{setProfileSellected(true)}, 500)
   }
-  console.log(profileSellected)
   return (
     <Wrapper profileSellected={profileSellected}>
       <div className="card">

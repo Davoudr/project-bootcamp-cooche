@@ -10,6 +10,8 @@ A hub to create profile for businesses or look for them; considering their geo-l
 
 ## Data structure
 
+-        db : Cooche  ///  collections: users , businesses
+  ***
 -        userSession : user object in browser memory {
               username: ,
               email: ,
@@ -44,41 +46,46 @@ A hub to create profile for businesses or look for them; considering their geo-l
 
 ---
 
--        MongoDB have this object in bussinesses collection ; {
-               creator_id: ,
-               date: ,
-               name: ,
-               categories: [ ] , 
-               address: {
-                     address:
-                     lat,
-                     long:
-               } , 
-               connections: {
-                     phone: , 
-                     email: ,
-                     website: ,
-                     facebook: ,
-                     instagram: ,
-                     twitter: ,
-                     }
-               description:
-               rates: [....user_id....]
-               like: [....user_id....]
-               dislike: [....user_id....]
-               nationality: "" ,
-               languages: [ ],
-               comments: [    
-                              {_id: ,
-                              user_id:  , 
-                               comment:  , 
-                               date: , 
-                               like_by: [....user_id....] , 
-                               dislike_by: [....user_id....]
-                              } , ......
-                        ]
-               
-             };
+- MongoDB have this object in bussinesses collection ; {
+-                creator:{
+                              id:
+                              username:
+                              email:
+                        }
+                  date: "",
+                  name: "",
+                  category: "",
+                  nationality: "",
+                  languages: "",
+                  address: {
+                              address: "",
+                              lat: "",
+                              lng: "",
+                        },
+                  connections: {
+                              phone: "",
+                              email: "",
+                              website: "",
+                              facebook: "",
+                              instagram: "",
+                              twitter: "",
+                  },
+                  description: "",
+                  feedbacks: {
+                              rates: [....user_id....],
+                              like: [....user_id....],
+                              dislike: [....user_id....],
+                              comments: [  
+                                          {\_id: ,
+                                          user_id: ,
+                                          comment: ,
+                                          date: ,
+                                          like_by: [....user_id....] ,
+                                          dislike_by: [....user_id....]
+                                          } , ......
+                                    ]
+                  }
+            }
 
 ---
 

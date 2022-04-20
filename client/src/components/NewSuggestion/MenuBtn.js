@@ -1,12 +1,11 @@
 import styled, { keyframes } from "styled-components";
 
-import { GrNext } from "react-icons/gr";
 const MenuBtn = ({ trigger , btnText, darkMode}) => {
   return (
-    <DIV className="info" trigger={trigger}>
-      <button className={`button ${trigger && "button-acive"} ${darkMode && "darkMode"}`}>
+    <DIV className="info" trigger={trigger} >
+      <div className={`button ${trigger && "button-acive"} ${darkMode && "darkMode"}`}>
         <span className={`span ${trigger && "span-acive"} ${darkMode && "darkMode"}`}>{btnText}</span>
-      </button>
+      </div>
     </DIV>
   );
 };
@@ -72,7 +71,7 @@ const DIV = styled.div`
 
     &.button-acive {
       animation: ${rotate} 2s ease-in-out both;
-      animation-delay: 0.06s;
+      box-shadow: var(--box-shadow-0);
     }
   }
   .span {
@@ -82,7 +81,8 @@ const DIV = styled.div`
     letter-spacing: 0.7px;
     &.span-acive {
       animation: ${storm} 2s ease-in-out both;
-      animation-delay: 0.06s;
+      animation-delay: 0.2s;
+      
     }
     &.dark{
 

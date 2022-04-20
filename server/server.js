@@ -6,7 +6,7 @@ const bodyParser = require(`body-parser`);
 const mongoose = require("mongoose");
 require("dotenv").config();
 // ------------------------------------cloudnary
-const {cloudinary} = require ("./utils/cloudinary")
+const { cloudinary } = require("./utils/cloudinary");
 // ------------------------------------auth0
 const { auth, requiresAuth } = require("express-openid-connect");
 const config = {
@@ -22,33 +22,24 @@ const port = process.env.PORT || 8000;
 // ----------------------------------------------------------importing handlers
 const { handleUserAdd } = require("./handlers/handleUserAdd");
 const { handleUserGet } = require("./handlers/handleUserGet");
+const { handleBusinessAdd } = require("./handlers/handleBusinessAdd");
+const {
+  handleBusinessGetByCategory,
+} = require("./handlers/handleBusinessGetByCategory");
+
 // ----------------------------------------------------------
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-// ------------------------------------ 
+// ------------------------------------
 app
   .use(express.static("public"))
-  // .use(express.json({ limit: "50mb" }))
-  // .use(express.urlencoded({ extended: false, limit: "50mb" }))
   .use("/", express.static(__dirname + "/"))
   // ---------------------------------------------------------upload file
   .use(bodyParser.json({ limit: "50mb" }))
   .use(bodyParser.urlencoded({ extended: true, limit: "50mb" }))
   .use(fileUpload())
-       
   .use(cors())
-  // .use(function (req, res, next) {
-  //   res.header(
-  //     "Access-Control-Allow-Methods",
-  //     "OPTIONS, HEAD, GET, PUT, POST, DELETE"
-  //   );
-  //   res.header(
-  //     "Access-Control-Allow-Headers",
-  //     "Origin, X-Requested-With, Content-Type, Accept"
-  //   );
-  //   next();
-  // })
   // -----------------------------------------------------------auth0
   .use(auth(config))
   // -----------------------------------------------------------endpoints
@@ -58,6 +49,13 @@ app
   .post("/user/sign-in", (req, res) => {
     handleUserGet(req, res, process.env.DB_NAME);
   })
+  .post("/business/add", (req, res) => {
+    handleBusinessAdd(req, res, process.env.DB_NAME);
+  })
+  .get("/business/by-category/:category", (req, res) => {
+    handleBusinessGetByCategory(req, res, process.env.DB_NAME);
+  })
+
   // ------------------------------------
   .listen(port, () => {
     console.log(

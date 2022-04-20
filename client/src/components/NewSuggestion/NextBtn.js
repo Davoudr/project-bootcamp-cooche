@@ -35,7 +35,7 @@ const DIV = styled.div`
     background: var(--bg);
 
     &:nth-child(1) {
-      --btn-bg:  #81B29A;
+      --btn-bg: #81b29a;
     }
   }
 
@@ -48,18 +48,17 @@ const DIV = styled.div`
     min-height: var(--height);
     border-radius: var(--height);
     color: #fff;
-	&.dark{
-		color: #3D405B;
-	}
+    &.dark {
+      color: #3d405b;
+    }
     font-family: "Montserrat";
     font-weight: bold;
-    background:  #F2CC8F;
+    background: #f2cc8f;
     cursor: pointer;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    
 
     .text,
     .icon-container {
@@ -82,12 +81,12 @@ const DIV = styled.div`
         width: var(--icon-size);
         height: var(--icon-size);
         transition: transform 500ms ease, opacity 250ms ease;
-		display: flex;
-    
-    justify-content: center; 
-    align-items: center; 
-    /* flex-flow: column; */ 
-    flex-direction: column; 
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+        /* flex-flow: column; */
+        flex-direction: column;
 
         &--left {
           transform: translateX(-200%);

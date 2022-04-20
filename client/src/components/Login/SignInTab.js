@@ -168,6 +168,8 @@ const Wrapper = styled.div`
     left: 0;
     right: 0;
     margin: auto;
+    
+
   }
   .input {
     font-size: var(--font-size-4);

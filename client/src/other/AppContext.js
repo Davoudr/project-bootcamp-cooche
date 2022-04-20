@@ -29,8 +29,6 @@ export const AppProvider = ({ children }) => {
         allElements[i].classList.add("dark");
       }
     }
-  
-    
   };
   // to handle dark mode - all elements can have a .dark style!
   // ======================================================================
@@ -47,6 +45,24 @@ export const AppProvider = ({ children }) => {
 
   // app should use userSession not auth0-user, bcuz user may signin/signup usinf from
   // meanwhile we will update userSession if there be any auth0-user which means user has used auth0-google signin/signup!
+  // ======================================================================
+  // to avoid loosing data in case of err and missing form-field-data, usePersistedSessionState is used and will be cleard by each submit or clear button
+  const [businessInfo, setBusinessInfo] = usePersistedSessionState(
+    {
+      category: "",
+      name: "",
+      nationality: "",
+      phone: "",
+      email: "",
+      website: "",
+      facebook: "",
+      instagram: "",
+      twitter: "",
+      description: "",
+      languages: [],
+    },
+    "businessForm"
+  );
   // ======================================================================
   const [passwordGoogleSingUp, setPasswordGoogleSingUp] = useState({
     newUser: false,
@@ -107,6 +123,8 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        businessInfo,
+        setBusinessInfo,
         // ---------------
         capitalizeFirstLetterInArr,
         capitalizeFirstLetter,

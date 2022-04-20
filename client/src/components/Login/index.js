@@ -49,20 +49,27 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 50px;
   min-width: var(--min-normal-width);
-  background-color: var(--c10);
+
   height: calc(100vh - var(--navbar-height));
   .header {
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
+   
   }
   .method-btn {
-    font-family: var(--f12);
+    font-family: var(--f11);
     margin: 20px 10px;
     background-color: transparent;
-    color: var(--c41);
+    color: var(--c14);
     border-radius: 0%;
+    font-weight: bold;
+    padding-bottom: 1rem;
+    &.dark{
+      color: var(--c12);
+    }
+    
   }
   .active {
     border-bottom: 2px solid var(--c31);
@@ -74,12 +81,19 @@ const Wrapper = styled.div`
     align-items: center;
     flex-direction: row;
     height: 100%;
+   min-height: 25rem;
+   .dark{
+    backdrop-filter: blur(0px) saturate(200%);
+    -webkit-backdrop-filter: blur(0px) saturate(200%);
+    background-color: rgba(17, 25, 40, 0.02);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.005);
+   }
   }
   .login {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    /* flex-flow: column; */
     flex-direction: column;
     box-shadow: 0px 0px 15px -3px rgba(0, 0, 0, 0.1);
     background-color: white;
@@ -88,6 +102,19 @@ const Wrapper = styled.div`
     min-width: var(--min-normal-width-inside);
     position: relative;
     transition: all ease-out 0.25s;
+    backdrop-filter: blur(0px) saturate(200%);
+    background-color: rgba(255, 255, 255, 0.52);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    &.dark{
+      backdrop-filter: blur(0px) saturate(200%);
+    -webkit-backdrop-filter: blur(0px) saturate(200%);
+    background-color: rgba(17, 25, 40, 0.52);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+
+    }
+    
   }
   .title {
     top: 50px;
@@ -95,5 +122,6 @@ const Wrapper = styled.div`
     font-weight: bold;
     font-family: var(--f11);
     color: var(--c11);
+    
   }
 `;

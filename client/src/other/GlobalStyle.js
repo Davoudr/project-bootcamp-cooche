@@ -57,6 +57,7 @@ export default createGlobalStyle`
 		--navbar-height: 4rem;
 		--header-height: 20rem;
 		/* --------------- */
+		--box-shadow-0: 0px 10px 15px -3px rgba(224, 122, 95,0.4);
 		--box-shadow-1: 0px 10px 15px -3px rgba(0,0,0,0.1);
 		--box-shadow-2: 0px 10px 15px -3px rgba(0,0,0,0.2);
 		--box-shadow-3: 0px 10px 15px -3px rgba(0,0,0,0.3);
@@ -102,7 +103,7 @@ export default createGlobalStyle`
 	    padding: 0;
 	    border: 0;
 	    vertical-align: baseline;
-		transition: all ease-out 0.25s;
+		
 	  }
 	  /* HTML5 display-role reset for older browsers */
 	  article, aside, details, figcaption, figure,
@@ -141,10 +142,7 @@ export default createGlobalStyle`
 	        isolation: isolate;
 	    }
 
-		div{
-			transition: all ease-out 0.25s;
-			
-		}
+	
 		
 
 		body{

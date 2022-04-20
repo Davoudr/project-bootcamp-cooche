@@ -34,6 +34,8 @@ export default MsgBox;
 const Wrapper = styled.button`
 .btn{
   color: var(--c13);
+  padding: 0.5rem 2rem;
+  font-weight: bold;
 }
   &:active {
     box-shadow: none;
