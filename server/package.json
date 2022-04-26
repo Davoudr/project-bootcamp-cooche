@@ -11,7 +11,9 @@
     "moment": "^2.29.2",
     "mongodb": "^4.5.0",
     "mongoose": "^6.3.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "react-google-maps": "^9.4.5",
+    "react-map-google": "^0.0.1-0"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server.js",

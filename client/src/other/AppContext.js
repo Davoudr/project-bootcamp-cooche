@@ -114,7 +114,14 @@ export const AppProvider = ({ children }) => {
   const capitalizeFirstLetterInArr = (arr) =>
     arr.map((ele) => capitalizeFirstLetter(ele));
   // ========================================================================
+  // to switch between tabs in dashboard/new-suggestion 
+  const [pages, setPages] = useState("infoTab");
   // ========================================================================
+  const [validationErr, setvalidationErr] = useState({
+    information: false,
+    address: false,
+    connections: false,
+  });
   // ========================================================================
   // ========================================================================
   // ========================================================================
@@ -123,6 +130,11 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        validationErr, setvalidationErr,
+        // ---------------
+        pages,
+        setPages,
+        // ---------------
         businessInfo,
         setBusinessInfo,
         // ---------------

@@ -33,6 +33,8 @@ import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import "tippy.js/themes/material.css";
 import "tippy.js/animations/scale.css";
+import Address from "./Address";
+import Menu from "./Menu";
 // ======================================================================================component
 /**
  * The main component for the New Suggestion page.
@@ -41,6 +43,10 @@ import "tippy.js/animations/scale.css";
 const NewSuggestion = () => {
   // ====================================================================================useContext
   const {
+    validationErr,
+    setvalidationErr,
+    pages,
+    setPages,
     businessInfo,
     setBusinessInfo,
     setDarkMode,
@@ -56,10 +62,6 @@ const NewSuggestion = () => {
     userSession,
     setUserSession,
   } = useContext(AppContext);
-  const [validationErr, setvalidationErr] = useState({
-    information: false,
-    connections: false,
-  });
   const [languagesValue, setLanguagesValue] = useState([]);
   // ======================================================================================auto-suggestion by Google Places Api
   // ------------------------------------------------------useStates
@@ -247,23 +249,6 @@ const NewSuggestion = () => {
     setBusinessInfo({ ...businessInfo, [theKey]: theValue });
   };
 
-  // ------------------------------------------------------some states to perfomrm switching between tabs
-  const [pages, setPages] = useState("details");
-  const handleInfoBtn = (ev) => {
-    setPages("details");
-    return false;
-  };
-  const handleConnecitonBtn = (ev) => {
-    setPages("connections");
-    return false;
-  };
-  const handleDescriptionBtn = (ev) => {
-    setPages("description");
-    return false;
-  };
-  const nextBtnHandle = (ev) => {
-    pages === "details" ? setPages("connections") : setPages("description");
-  };
   // ------------------------------------------------------clear-form button handle
   const handleClrearForm = (ev) => {
     document.getElementById("business-form").reset();
@@ -282,6 +267,12 @@ const NewSuggestion = () => {
     });
     setLanguagesValue([]);
   };
+  // ======================================================================================next button handle
+  const nextBtnHandle = (ev) => {
+    const tabs = ["infoTab", "address", "connections", "description"];
+    let nextPage = tabs[tabs.indexOf(pages) + 1];
+    setPages(nextPage);
+  };
   // ======================================================================================
   return (
     // -----------------------------------------------------------------containers
@@ -296,49 +287,12 @@ const NewSuggestion = () => {
           >
             <div className="columns">
               {/* ---------------------------------------------------------left menu*/}
-              <div className="menu">
-                <button
-                  className="btn  info-btn"
-                  type="button"
-                  onClick={handleInfoBtn}
-                >
-                  <MenuBtn
-                    darkMode={darkMode}
-                    trigger={validationErr.information}
-                    btnText="Information"
-                    className="btn info-btn"
-                  />
-                </button>
-                <button
-                  className="btn connections-btn"
-                  type="button"
-                  onClick={handleConnecitonBtn}
-                >
-                  <MenuBtn
-                    darkMode={darkMode}
-                    trigger={validationErr.connections}
-                    btnText="Connecitons"
-                    className="btn info-btn"
-                  />
-                </button>
-                <button
-                  className="btn description-btn"
-                  type="button"
-                  onClick={handleDescriptionBtn}
-                >
-                  <MenuBtn
-                    darkMode={darkMode}
-                    trigger={false}
-                    btnText="Description"
-                    className="btn info-btn"
-                  />
-                </button>
-              </div>
+              <Menu />
               {/* ---------------------------------------------------------3 tabs */}
               <div className="pages">
                 {/* ----------------------------------------------1st tab*/}
-                {pages === "details" && (
-                  <div className="details">
+                {pages === "infoTab" && (
+                  <div className="infoTab">
                     {/* --------------------------------next-btn*/}
                     <div className="btn-box">
                       <div className=" next-info" onClick={nextBtnHandle}>
@@ -777,31 +731,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   margin-top: 1rem;
 
-  .menu {
-    background-color: var(--c21);
-    width: 10rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 1rem;
-    gap: 1rem;
-    min-height: 50rem;
-    text-align: center;
-    margin-left: 3rem;
-  }
-  .btn {
-    width: 100%;
-    background-color: transparent;
 
-    font-size: var(--font-size-3);
-    font-family: var(--f12);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    box-shadow: none;
-  }
+
   .box {
   }
   .columns {
@@ -867,7 +798,7 @@ const Wrapper = styled.div`
     background-color: var(--c11);
     padding: 0.5rem;
   }
-  .details {
+  .infoTab {
     padding: 1rem;
     padding: 2rem;
     margin: auto;
@@ -986,18 +917,7 @@ const Wrapper = styled.div`
   .lng-label {
     margin-right: 4.2rem;
   }
-  .info-btn {
-    margin-bottom: ${(props) => (props.pages === "details" ? "5rem" : "0")};
-    transition: all ease-in-out 0.5s;
-  }
-  .connections-btn {
-    margin-bottom: ${(props) => (props.pages === "connections" ? "5rem" : "0")};
-    transition: all ease-in-out 0.5s;
-  }
-  .description-btn {
-    transition: all ease-in-out 0.5s;
-    margin-bottom: ${(props) => (props.pages === "description" ? "5rem" : "0")};
-  }
+
   .connection-type {
     margin-left: 2rem;
     &.dark {
