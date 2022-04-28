@@ -2,47 +2,64 @@ import styled from "styled-components";
 import GoogleMapReact from "google-map-react";
 import { useEffect, useState } from "react";
 import React, { useRef } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import DeckGL, { GeoJsonLayer } from "deck.gl";
+
+import GooglePlacesAutocomplete from "./GooglePlacesAutocomplete";
+import { AppContext } from "../../other/AppContext";
+import { useContext } from "react";
+import Button from "../Tools/Button";
+import MapBoxAddress from "./MapBoxAddress";
+
 // import Geocoder from 'react-mapbox-gl-geocoder';
 
 // import Geocoder from "react-map-gl-geocoder";
 // import 'mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 // ================================================================== main component
 const Address = () => {
-  const mapContainer = useRef(null);
-  const searchContainer = useRef(null);
-  const map = useRef(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiZGF2b3VkcmsiLCJhIjoiY2wyNWZzMWRlMDYzZzNpbWxuazd1MnA2NyJ9.ruoIQqWOvRFY11sDuYxNQg";
+  const [addressMethod, setAddresMethod] = useState("Google-Finder");
 
-  useEffect(() => {
-    if (!map.current) {
-      // initialize map only once
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: "mapbox://styles/mapbox/streets-v11",
-        center: [-79.4512, 43.6568],
-        zoom: 13,
-      });
-      const geocoder = new MapboxGeocoder({
-        container: searchContainer.current,
-        accessToken: mapboxgl.accessToken,
-        language: "EN",
-        mapboxgl: mapboxgl,
-      });
-      map.current.addControl(geocoder);
-    }
-  }, []);
+  const {
+    theAddress,
+    setTheAddress,
+    // ---------------
+  } = useContext(AppContext);
+
   return (
     <Div>
-      <div id="map" ref={mapContainer}></div>
-      <div id="geocoder" className="geocoder" ref={searchContainer}></div>
+      <div className="address-method">
+        <button
+          className="method-btn"
+          type="button"
+          onClick={() => setAddresMethod("Google-Finder")}
+        >
+          <Button className="address-method-btn" btnText="Google Finder" />
+        </button>
+        <button
+          className="method-btn"
+          type="button"
+          onClick={() => setAddresMethod("Locatiocn-on-Map")}
+        >
+          <Button className="address-method-btn" btnText="Location on Map" />
+        </button>
+      </div>
+      {theAddress !== null && (
+        <div className="full-address-box">
+          <span className="address-type light-text">
+            This address is for the types of:
+          </span>
+          <span className="address-type types search-result">
+            -- {theAddress.type} --
+          </span>{" "}
+          <span className="light-text">The full address is:</span>
+          <span className="search-result">-- {theAddress.address} --</span>
+        </div>
+      )}
+      <div className="tool-container">
+        {addressMethod === "Google-Finder" ? (
+          <GooglePlacesAutocomplete />
+        ) : (
+          <MapBoxAddress />
+        )}
+      </div>
     </Div>
   );
 };
@@ -50,34 +67,86 @@ const Address = () => {
 export default Address;
 
 const Div = styled.div`
-  .geocoder {
-    position: absolute;
-    z-index: 1;
-    /* width: 50%;
-    left: 50%; */
-    margin-left: -25%;
-    top: 10px;
+  width: 100%;
+  padding: 0 2rem;
+  .method-btn{
+    background-color: transparent;
   }
-  .mapboxgl-control-container {
-    min-width: 200px;
-    position: absolute;
-    z-index: 150;
-    left: -50px;
+  .tool-container {
+    width: 100%;
   }
-  .mapboxgl-ctrl-geocoder {
-    transition: all ease 10s;
-    z-index: 1000;
-    position: absolute;
-    margin-top: 410px;
+  .address-method {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+    margin: 3rem 2rem;
   }
-  #map {
-    position: absolute;
-    z-index: 100;
-    top: 0;
-    bottom: 0;
-    width: 200px;
-    margin: auto;
-    margin-top: 75px;
-    width: 50%;
+  .detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    min-height: 3rem;
+  }
+  .detail-label {
+    margin-right: 3rem;
+    height: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* flex-flow: row; */
+    flex-direction: row;
+    &.dark {
+      color: var(--c12);
+    }
+  }
+  .address-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    padding: 2rem;
+  }
+  .full-address-box {
+    border-radius: var(--border-radius9);
+    border: 1px solid var(--c51);
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    outline: none;
+    background-color: var(--c21);
+    text-align: left;
+    height: auto;
+    min-height: 2rem;
+    padding: 2rem 1rem;
+    backdrop-filter: blur(5px);
+    display: block;
+    &.dark {
+      background-color: var(--c51);
+    }
+    &:focus {
+      box-shadow: var(--box-shadow-1);
+    }
+    width: 100%;
+  }
+  .address-type {
+    display: block;
+  }
+  .types {
+    margin-bottom: 2rem;
+    /* display: inline-block; */
+  }
+  .light-text {
+    color: var(--c13);
+    display: block;
+    text-align: center;
+    font-size: var(--font-size-3);
+  }
+  .search-result {
+    display: block;
+    text-align: center;
+    font-size: var(--font-size-4);
   }
 `;

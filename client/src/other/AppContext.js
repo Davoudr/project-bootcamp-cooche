@@ -2,19 +2,23 @@ import { createContext } from "react";
 import { useState } from "react";
 import usePersistedSessionState from "../hook/usePersistedSessionState";
 import usePersistedLocalState from "../hook/usePersistedLocalState";
-// =======================================================================
+// ======================================================================= export
 export const AppContext = createContext(null);
 export const AppProvider = ({ children }) => {
-  // =====================================================================
-  const [logInMethod, setLogInMethod] = useState("sign-in");
+  // ===============================================================================================================
+  // ---------------------------------------------------------------------------------------------------------------
+  // ===============================================================================================================
+  // ===================================================================== to hvae message-alert
   const [message, setMessage] = useState({
     status: false,
     title: "",
     content: "",
     btnText: "",
   });
+  // ====================================================================== to have loading
   const [loading, setLoading] = useState(false);
-  // ======================================================================
+  // ====================================================================== to have dark-mode
+  // to handle dark mode - all elements can have a .dark style! in ther css
   const [darkMode, setDarkMode] = usePersistedLocalState(false, "darkmode");
   // on loading the website, we will use this func to toggle-update the .dark class for all elements based on last darkmode-state in local storage
   const updateMode = () => {
@@ -30,8 +34,20 @@ export const AppProvider = ({ children }) => {
       }
     }
   };
-  // to handle dark mode - all elements can have a .dark style!
-  // ======================================================================
+  // ====================================================================== to capitalize strings
+  // ---------------------------------------------
+  // a func to capitalaize first letter of the str
+  const capitalizeFirstLetter = (string) =>
+    string.trim().charAt(0).toUpperCase() + string.slice(1);
+  // ---------------------------------------------
+  // a func to conver arr of str to lowercase
+  const arrOfStrToLowerCase = (arr) =>
+    arr.map((ele) => ele.trim().toLowerCase());
+  // ---------------------------------------------
+  // a func to capitalaize fist leter of all str in an Arr
+  const capitalizeFirstLetterInArr = (arr) =>
+    arr.map((ele) => capitalizeFirstLetter(ele));
+  // ====================================================================== current-user info
   const [userSession, setUserSession] = usePersistedSessionState(null, "user");
   // any setUserSession must consider obj-rest; this state must have these keys
   // setUserSession({
@@ -45,30 +61,16 @@ export const AppProvider = ({ children }) => {
 
   // app should use userSession not auth0-user, bcuz user may signin/signup usinf from
   // meanwhile we will update userSession if there be any auth0-user which means user has used auth0-google signin/signup!
-  // ======================================================================
-  // to avoid loosing data in case of err and missing form-field-data, usePersistedSessionState is used and will be cleard by each submit or clear button
-  const [businessInfo, setBusinessInfo] = usePersistedSessionState(
-    {
-      category: "",
-      name: "",
-      nationality: "",
-      phone: "",
-      email: "",
-      website: "",
-      facebook: "",
-      instagram: "",
-      twitter: "",
-      description: "",
-      languages: [],
-    },
-    "businessForm"
-  );
-  // ======================================================================
+  // ===============================================================================================================
+  // -----------------------------------------------------/login----------------------------------------------------
+  // ===============================================================================================================
+  // -----------------------to switch between the tabs of sign-in/sign-up
+  const [logInMethod, setLogInMethod] = useState("sign-in");
+  // -----------------------to give password to thoes users who sign0up using auth0-google
   const [passwordGoogleSingUp, setPasswordGoogleSingUp] = useState({
     newUser: false,
     thePassword: null,
   });
-  // ======================================================================
   // -----------------------random password generator
   const randStr =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@$&";
@@ -101,36 +103,63 @@ export const AppProvider = ({ children }) => {
       });
     }
   };
-  // ========================================================================
-  // a func to capitalaize first letter of the str
-  const capitalizeFirstLetter = (string) =>
-    string.trim().charAt(0).toUpperCase() + string.slice(1);
-
-  // a func to conver arr of str to lowercase
-  const arrOfStrToLowerCase = (arr) =>
-    arr.map((ele) => ele.trim().toLowerCase());
-
-  // a func to capitalaize fist leter of all str in an Arr
-  const capitalizeFirstLetterInArr = (arr) =>
-    arr.map((ele) => capitalizeFirstLetter(ele));
-  // ========================================================================
-  // to switch between tabs in dashboard/new-suggestion 
+  // ===============================================================================================================
+  // ------------------------------------------/dashboard/new-suggestion/-------------------------------------------
+  // ===============================================================================================================
+  // ---------------------------------------------
+  // to avoid loosing data in case of err and missing form-field-data, usePersistedSessionState is used and will be cleard by each submit or clear button
+  const [businessInfo, setBusinessInfo] = usePersistedSessionState(
+    {
+      category: "",
+      name: "",
+      nationality: "",
+      phone: "",
+      email: "",
+      website: "",
+      facebook: "",
+      instagram: "",
+      twitter: "",
+      description: "",
+      languages: [],
+    },
+    "businessForm"
+  );
+  // ---------------------------------------------
+  // to switch between tabs in dashboard/new-suggestion
   const [pages, setPages] = useState("infoTab");
-  // ========================================================================
+  // ---------------------------------------------
+  // for new-suggestion form input validation
   const [validationErr, setvalidationErr] = useState({
     information: false,
     address: false,
     connections: false,
   });
-  // ========================================================================
-  // ========================================================================
-  // ========================================================================
-  // ========================================================================
-  // ========================================================================
+  // ---------------------------------------------
+  // language sellect value
+  const [languagesValue, setLanguagesValue] = useState([]);
+  // ---------------------------------------------
+  //  for new-suggestion/information/address
+  const [coordinates, setcoordinates] = useState({ lat: null, lng: null });
+  const [theAddress, setTheAddress] = useState(null);
+  // ===============================================================================================================
+  // ---------------------------------------------------------------------------------------------------------------
+  // ===============================================================================================================
   return (
     <AppContext.Provider
       value={{
-        validationErr, setvalidationErr,
+        // ---------------
+        theAddress,
+        setTheAddress,
+        // ---------------
+        coordinates,
+        setcoordinates,
+        // ---------------
+        // ---------------
+        languagesValue,
+        setLanguagesValue,
+        // ---------------
+        validationErr,
+        setvalidationErr,
         // ---------------
         pages,
         setPages,

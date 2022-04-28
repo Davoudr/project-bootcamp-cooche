@@ -35,7 +35,7 @@ const Menu = () => {
       >
         <MenuBtn
           darkMode={darkMode}
-          trigger={validationErr.information}
+          trigger={validationErr.address}
           btnText="Address"
           className="btn"
         />
@@ -70,6 +70,7 @@ const Menu = () => {
 export default Menu;
 // ========================================================================
 const Wrapper = styled.div`
+ 
   .menu {
     background-color: var(--c21);
     width: 10rem;
@@ -82,6 +83,7 @@ const Wrapper = styled.div`
     min-height: 50rem;
     text-align: center;
     margin-left: 3rem;
+
   }
   .btn {
     width: 100%;
@@ -95,6 +97,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     box-shadow: none;
     transition: all ease-in-out 0.5s;
+    margin-bottom: 0.5rem;
   }
   .active-tab {
     margin-bottom: 5rem;

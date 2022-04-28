@@ -6,11 +6,15 @@ import { useLocation } from "react-router-dom";
 
 const MyProfile = () => {
   const { userSession } = useContext(AppContext);
+  // ----------------------------------------------- to set border radius for profile-card after loading the page
   const [profileSellected, setProfileSellected] = useState(false);
   const location = useLocation();
   if (location.pathname === "/dashboard/profile") {
-    setTimeout(()=>{setProfileSellected(true)}, 500)
+    setTimeout(() => {
+      setProfileSellected(true);
+    }, 500);
   }
+  // -----------------------------------------------
   return (
     <Wrapper profileSellected={profileSellected}>
       <div className="card">
@@ -65,14 +69,14 @@ const Wrapper = styled.div`
     transform: all ease-out 2s;
   }
   .card {
-    
     background-color: var(--c10);
     height: 300px;
     z-index: 1;
     border-radius: var(--border-radius6);
-    border-start-start-radius: ${  (props) => (props.profileSellected ?  "10rem" : "var(--border-radius6)" )  };
-    border-bottom-right-radius:  ${  (props) => (props.profileSellected ?  "10rem" : "var(--border-radius6)" )  };
-    /* border-radius:  ${  (props) => (props.profileSellected ?  "10rem" : "var(--border-radius6)" )  };; */
+    border-start-start-radius: ${(props) =>
+      props.profileSellected ? "10rem" : "var(--border-radius6)"};
+    border-bottom-right-radius: ${(props) =>
+      props.profileSellected ? "10rem" : "var(--border-radius6)"};
     box-shadow: var(--box-shadow-1);
     &.dark {
       backdrop-filter: blur(16px) saturate(180%);
@@ -82,8 +86,8 @@ const Wrapper = styled.div`
     }
     transition: all ease-in-out 1.5s;
   }
-  .lng-label{
-  background-color: red;
+  .lng-label {
+    background-color: red;
   }
 `;
 
@@ -93,5 +97,4 @@ const Img = styled.img`
   position: relative;
   box-shadow: var(--box-shadow-3);
   position: absolute;
-  
 `;

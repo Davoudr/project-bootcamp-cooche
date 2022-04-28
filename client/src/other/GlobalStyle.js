@@ -46,7 +46,7 @@ export default createGlobalStyle`
         --border-radius4: 0.7rem;
 		--border-radius5: 0.9rem;
 		--border-radius6: 1.1rem;
-		--border-radius6: 1.2rem;
+		--border-radius7: 1.2rem;
 		--border-radius8: 1.5rem;
         --border-radius9: 2rem;
         --border-radius10: 5rem;
