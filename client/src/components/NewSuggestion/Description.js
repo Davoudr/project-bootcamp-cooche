@@ -56,6 +56,7 @@ const Description = () => {
 export default Description;
 
 const Wrapper = styled.div`
+margin-top: 3rem;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;

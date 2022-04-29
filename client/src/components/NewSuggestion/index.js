@@ -28,7 +28,6 @@ const NewSuggestion = () => {
     setLoading,
     setMessage,
     userSession,
-    coordinates,
   } = useContext(AppContext);
   // ====================================================================================submit
   const handleSubmit = (ev) => {
@@ -92,7 +91,7 @@ const NewSuggestion = () => {
           name: businessInfo.name,
           category: businessInfo.category,
           nationality: businessInfo.nationality,
-          languages: languagesValue,
+          languages: businessInfo.languages,
           address: {
             address: theAddress !==null ? theAddress.address : "",
             lat: theAddress !==null ? theAddress.lat : "",
@@ -188,12 +187,6 @@ const NewSuggestion = () => {
       languages: [],
     });
     setLanguagesValue([]);
-  };
-  // ======================================================================================next button handle
-  const nextBtnHandle = (ev) => {
-    const tabs = ["infoTab", "address", "connections", "description"];
-    let nextPage = tabs[tabs.indexOf(pages) + 1];
-    setPages(nextPage);
   };
   // ======================================================================================
   return (

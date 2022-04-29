@@ -139,20 +139,25 @@ export const AppProvider = ({ children }) => {
   const [languagesValue, setLanguagesValue] = useState([]);
   // ---------------------------------------------
   //  for new-suggestion/information/address
-  const [coordinates, setcoordinates] = useState({ lat: null, lng: null });
   const [theAddress, setTheAddress] = useState(null);
+  // ---------------------------------------------
+  // font the next-page-button
+  const nextBtnHandle = (ev) => {
+    const tabs = ["infoTab", "address", "connections", "description"];
+    let nextPage = tabs[tabs.indexOf(pages) + 1];
+    setPages(nextPage);
+  };
   // ===============================================================================================================
   // ---------------------------------------------------------------------------------------------------------------
   // ===============================================================================================================
   return (
     <AppContext.Provider
       value={{
+        nextBtnHandle,
         // ---------------
         theAddress,
         setTheAddress,
         // ---------------
-        coordinates,
-        setcoordinates,
         // ---------------
         // ---------------
         languagesValue,

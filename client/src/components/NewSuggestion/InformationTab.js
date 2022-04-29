@@ -7,7 +7,6 @@ import {
   categoriesArr,
   nationalitiesArr,
   languagesArr,
-  citiesArr,
   socialMediaArr,
 } from "../../other/variables";
 import { useState } from "react";
@@ -31,7 +30,7 @@ const InformationTab = () => {
 
     setDarkMode,
     updateMode,
-
+    nextBtnHandle,
     capitalizeFirstLetterInArr,
     capitalizeFirstLetter,
     arrOfStrToLowerCase,
@@ -42,11 +41,7 @@ const InformationTab = () => {
     userSession,
     setUserSession,
   } = useContext(AppContext);
-  const nextBtnHandle = (ev) => {
-    const tabs = ["infoTab", "address", "connections", "description"];
-    let nextPage = tabs[tabs.indexOf(pages) + 1];
-    setPages(nextPage);
-  };
+
 
   // ------------------------------------------------------input : language
   // ----------------------variable for the input
@@ -63,7 +58,8 @@ const InformationTab = () => {
   };
   // ----------------------handleChange
   const languagesHandleChange = (ev) => {
-    setLanguagesValue(reactSelectToValue(ev));
+    setLanguagesValue(ev);
+    setBusinessInfo({ ...businessInfo, languages: reactSelectToValue(ev) });
   };
 
   const onchangeHandle = (ev) => {
@@ -162,6 +158,7 @@ const InformationTab = () => {
           Languages supported<span className="asterisk">*</span>
         </label>
         <Select
+          value={languagesValue}
           onChange={languagesHandleChange}
           id="react-select"
           className="languages detail-input "
@@ -179,12 +176,12 @@ const InformationTab = () => {
 export default InformationTab;
 
 const Wrapper = styled.div`
-    display: flex;
-    
-    justify-content: space-around; 
-    align-items: stretch; 
-    /* flex-flow: column; */ 
-    flex-direction: column;  
+  display: flex;
+
+  justify-content: space-around;
+  align-items: stretch;
+  /* flex-flow: column; */
+  flex-direction: column;
   .btn-box {
     width: 100%;
     display: flex;
@@ -223,10 +220,10 @@ const Wrapper = styled.div`
   .detail {
     width: 100%;
     display: flex;
-    
-    justify-content: space-between; 
-    align-items: center;  
-    
+
+    justify-content: space-between;
+    align-items: center;
+
     min-height: 3rem;
   }
   .asterisk {
@@ -244,5 +241,21 @@ const Wrapper = styled.div`
   }
   .lng-label {
     margin-right: 4.2rem;
+  }
+  .btn-box {
+    width: 100%;
+    display: flex;
+    padding: 0;
+    margin-bottom: 1rem;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-direction: row;
+  }
+  .next-info {
+    color: var(--c15);
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    box-shadow: none;
   }
 `;

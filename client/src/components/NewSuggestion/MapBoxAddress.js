@@ -15,8 +15,7 @@ const MapBoxAddress = () => {
     darkMode,
     theAddress,
     setTheAddress,
-    coordinates,
-    setcoordinates,
+
     // ---------------
   } = useContext(AppContext);
   // ----------------------------------------------
@@ -86,31 +85,16 @@ const MapBoxAddress = () => {
           },
           labelLayerId
         );
-        // -----------------------------------------------------hillshading
-        map.current.addSource("dem", {
-          type: "raster-dem",
-          url: "mapbox://mapbox.mapbox-terrain-dem-v1",
-        });
-        map.current.addLayer(
-          {
-            id: "hillshading",
-            source: "dem",
-            type: "hillshade",
-            // insert below waterway-river-canal-shadow;
-            // where hillshading sits in the Mapbox Outdoors style
-          },
-          "waterway-river-canal-shadow"
-        );
       });
       // -----------------------------------------------------onclick ll
       //   map.current.on("click", (e) => {
       //     console.log(`A dblclick event has occurred at ${e.lngLat}`);
       //   });
-        map.current.on("click", "circle", (e) => {
-          map.current.flyTo({
-            center: e.features[0].geometry.coordinates,
-          });
-        });
+        // map.current.on("click", "circle", (e) => {
+        //   map.current.flyTo({
+        //     center: e.features[0].geometry.coordinates,
+        //   });
+        // });
       const geocoder = new MapboxGeocoder({
         // container: searchContainer.current,
         accessToken: mapboxgl.accessToken,
@@ -137,6 +121,7 @@ const MapBoxAddress = () => {
         mapboxgl: mapboxgl,
       });
       geocoder.on("result", function (result) {
+        console.log(result)//////////////////////
         let locationType = "";
         if (result.result.place_type.length > 0) {
           result.result.place_type.forEach((ele) => {
@@ -145,12 +130,6 @@ const MapBoxAddress = () => {
           locationType = locationType.slice(2).replace(`_`, ` `);
         }
         setTheAddress({
-          address: result.result.place_name,
-          lat: result.result.center[0],
-          lng: result.result.center[1],
-          type: locationType,
-        });
-        console.log({
           address: result.result.place_name,
           lat: result.result.center[0],
           lng: result.result.center[1],

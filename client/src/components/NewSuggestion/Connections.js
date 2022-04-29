@@ -10,6 +10,7 @@ import { IoLogoInstagram } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
 const Connections = () => {
   const {
+    nextBtnHandle,
     pages,
     setPages,
     businessInfo,
@@ -22,11 +23,7 @@ const Connections = () => {
     let theValue = ev.target.value;
     setBusinessInfo({ ...businessInfo, [theKey]: theValue });
   };
-  const nextBtnHandle = (ev) => {
-    const tabs = ["infoTab", "address", "connections", "description"];
-    let nextPage = tabs[tabs.indexOf(pages) + 1];
-    setPages(nextPage);
-  };
+
 
   return (
     <Wrapper>
@@ -207,5 +204,21 @@ const Wrapper = styled.div`
     width: 40rem;
     height: 2rem;
     padding-left: 1rem;
+  }
+  .btn-box {
+    width: 100%;
+    display: flex;
+    padding: 0;
+    margin-bottom: 1rem;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-direction: row;
+  }
+  .next-info {
+    color: var(--c15);
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    box-shadow: none;
   }
 `;

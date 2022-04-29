@@ -23,6 +23,7 @@ const nationalitiesList = [
   "Chinese",
   "Egyptian",
   "Indians",
+  "Syrians",
 ];
 const nationalitiesArr = arrOfStrToLowerCase(nationalitiesList).sort();
 // ====================================
@@ -31,19 +32,87 @@ const languagesList = ["Filipino", "Persian", "Arabic", "French", "English"];
 const languagesArr = arrOfStrToLowerCase(languagesList).sort();
 // ====================================
 // list of cities used to categorize businesses
-const citiesList = [
-  "Ottawa",
-  "Montreal",
-  "Toronto",
-  "Vancouver",
-  "Calgary",
-  "Edmonton",
+const canadaProvincesList = [
+  "Ontario",
   "Quebec",
-  "Hamilton",
-  "London",
-  "Kitchener",
+  "British Columbia",
+  "Alberta",
+  "Manitoba",
+  "Saskatchewan",
+  "Nova Scotia",
+  "New Brunswick",
+  "Newfoundland and Labrador",
+  "Prince Edward Island",
 ];
-const citiesArr = arrOfStrToLowerCase(citiesList).sort();
+const usProvincesList = [
+  "California",
+  "Texas",
+  "Florida",
+  "New York",
+  "Pennsylvania",
+  "Illinois",
+  "Ohio",
+  "Georgia",
+  "North Carolina",
+  "Michigan",
+  "New Jersey",
+  "Virginia",
+  "Washington",
+  "Arizona",
+  "Massachusetts",
+];
+const germanyProvincesList = [
+  "North Rhine-Westphalia",
+  "Bavaria",
+  "Baden-Württemberg",
+  "Lower Saxony",
+  "Hesse",
+  "Rhineland-Palatinate",
+  "Saxony",
+  "Berlin",
+  "Schleswig-Holstein",
+  "Brandenburg",
+  "Saxony-Anhalt",
+  "Thuringia",
+  "Hamburg",
+  "Mecklenburg-Western Pomerania",
+  "Saarland",
+  "Bremen",
+];
+const englandProvincesList = [
+  "South East",
+  "London",
+  "North West",
+  "East of England",
+  "West Midlands",
+  "South West",
+  "Yorkshire and the Humber",
+  "East Midlands",
+  "North East",
+];
+const franceProvincesList = [
+  "Island of France",
+  "Auvergne-Rhône-Alps",
+  "New Aquitaine",
+  "Upper France",
+  "Occitania",
+  "Great East",
+  "Provence-Alps-Azure Coast",
+  "Loire Countries",
+  "Brittany",
+  "Normandy",
+  "Burgundy-Free County",
+  "Centre-Loire Valley",
+];
+const countryllList = [
+  { name: "United States", ll: [-97.9222112121185, 39.3812661305678] },
+  { name: "Canada", ll: [-105.750595856519, 55.5859012851966] },
+  { name: "France", ll: [2.61878695312962, 47.8249046208979] },
+  { name: "England", ll: [-0.676181762467007, 52.38145972] },
+  { name: "Germany", ll: [10.0183432948567, 51.1334813439932] },
+]
+const countryList = ["United States", "Canada", "France", "England", "Germany"];
+const citiesArr = countryList.sort();
 // ====================================
 const categoriesList = [
   "Education",
@@ -64,12 +133,12 @@ const categoriesArr = arrOfStrToLowerCase(categoriesList).sort();
 const socialMediaList = ["instagram", "twitter", "facebook", "website"];
 const socialMediaArr = arrOfStrToLowerCase(socialMediaList).sort();
 // ========================================================================
+
 export {
   auth0,
   imgUrl,
   categoriesArr,
   nationalitiesArr,
   languagesArr,
-  citiesArr,
   socialMediaArr,
 };

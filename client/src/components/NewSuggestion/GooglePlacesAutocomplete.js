@@ -13,8 +13,6 @@ const GooglePlacesAutocomplete = () => {
     darkMode,
     theAddress,
     setTheAddress,
-    coordinates,
-    setcoordinates,
     // ---------------
   } = useContext(AppContext);
 
@@ -36,6 +34,7 @@ const GooglePlacesAutocomplete = () => {
       });
       locationType = locationType.slice(2).replace(`_`, ` `);
     }
+    console.log(results)//////////////////////
     setTheAddress({
       address: results[0].formatted_address,
       lat: latLng.lat,
@@ -43,7 +42,6 @@ const GooglePlacesAutocomplete = () => {
       type: locationType,
     });
     setGoogleAddress(ev);
-    setcoordinates(latLng);
     // .then((latLng) => console.log("Success", latLng))
     // .catch((error) => console.error("Error", error));
   };

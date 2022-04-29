@@ -36,12 +36,18 @@ const MapComponent = () => {
       setZoom(map.current.getZoom().toFixed(2));
     });
     map.current.on("click", function (e) {
+      console.log(e.lngLat)
       var coordinates = e.lngLat;
-      console.log(e.lngLat);
+      console.log(coordinates);
       new mapboxgl.Popup()
         .setLngLat(e.lngLat)
         .setHTML("you clicked here: <br/>" + coordinates)
         .addTo(map.current);
+
+        map.current.flyTo({
+          center: e.lngLat,
+          zoom: 15,
+        });
     });
 
     const marker2 = new mapboxgl.Marker()

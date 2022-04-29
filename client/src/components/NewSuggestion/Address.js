@@ -8,6 +8,7 @@ import { AppContext } from "../../other/AppContext";
 import { useContext } from "react";
 import Button from "../Tools/Button";
 import MapBoxAddress from "./MapBoxAddress";
+import NextBtn from "./NextBtn";
 
 // import Geocoder from 'react-mapbox-gl-geocoder';
 
@@ -18,6 +19,9 @@ const Address = () => {
   const [addressMethod, setAddresMethod] = useState("Google-Finder");
 
   const {
+    nextBtnHandle,
+    pages,
+    setPages,
     theAddress,
     setTheAddress,
     // ---------------
@@ -25,6 +29,11 @@ const Address = () => {
 
   return (
     <Div>
+      <div className="btn-box">
+        <div className="next-info" onClick={nextBtnHandle}>
+          <NextBtn btntext="Next" />
+        </div>
+      </div>
       <div className="address-method">
         <button
           className="method-btn"
@@ -68,8 +77,8 @@ export default Address;
 
 const Div = styled.div`
   width: 100%;
-  padding: 0 2rem;
-  .method-btn{
+  padding:  2rem;
+  .method-btn {
     background-color: transparent;
   }
   .tool-container {
@@ -148,5 +157,21 @@ const Div = styled.div`
     display: block;
     text-align: center;
     font-size: var(--font-size-4);
+  }
+  .btn-box {
+    width: 100%;
+    display: flex;
+    padding: 0;
+    margin-bottom: 1rem;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-direction: row;
+  }
+  .next-info {
+    color: var(--c15);
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    box-shadow: none;
   }
 `;
