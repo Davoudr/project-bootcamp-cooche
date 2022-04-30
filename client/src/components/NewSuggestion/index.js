@@ -13,6 +13,7 @@ import Description from "./Description";
 const NewSuggestion = () => {
   // ====================================================================================useContext
   const {
+    newSuggestionOnChangeHandle,
     theAddress,
     setTheAddress,
     languagesValue,
@@ -93,9 +94,9 @@ const NewSuggestion = () => {
           nationality: businessInfo.nationality,
           languages: businessInfo.languages,
           address: {
-            address: theAddress !==null ? theAddress.address : "",
-            lat: theAddress !==null ? theAddress.lat : "",
-            lng: theAddress !==null ? theAddress.lng : "",
+            address: theAddress !== null ? theAddress.address : "",
+            lat: theAddress !== null ? theAddress.lat : "",
+            lng: theAddress !== null ? theAddress.lng : "",
           },
           connections: {
             phone: businessInfo.phone,
@@ -161,15 +162,6 @@ const NewSuggestion = () => {
           .catch((err) => console.log("Error in add new user:", err));
     }
   };
-  // ======================================================================================onChage for all inputs
-
-  // ------------------------------------------------------rest of the inputs
-  const onchangeHandle = (ev) => {
-    let theKey = ev.target.id;
-    let theValue = ev.target.value;
-    setBusinessInfo({ ...businessInfo, [theKey]: theValue });
-  };
-
   // ------------------------------------------------------clear-form button handle
   const handleClrearForm = (ev) => {
     document.getElementById("business-form").reset();
@@ -275,10 +267,10 @@ const Wrapper = styled.div`
       box-shadow: var(--box-shadow-1);
     }
   }
-  .address{
+  .address {
     display: flex;
-    justify-content: flex-start; 
-    align-items: stretch; 
+    justify-content: flex-start;
+    align-items: stretch;
     flex-direction: column;
   }
   .infoTab {
@@ -286,11 +278,11 @@ const Wrapper = styled.div`
     padding: 2rem;
     margin: auto;
     display: flex;
-    
-    justify-content: space-around; 
-    align-items: stretch; 
-    /* flex-flow: column; */ 
-    flex-direction: column;  
+
+    justify-content: space-around;
+    align-items: stretch;
+    /* flex-flow: column; */
+    flex-direction: column;
   }
   .connections {
     padding: 2rem;

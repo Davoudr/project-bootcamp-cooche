@@ -8,6 +8,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { imgUrl } from "../../other/variables";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import { useSpring, animated } from "react-spring";
+import Darkmode from "./Darkmode";
+
 // -----------------------------------------------------component
 const NavBar = () => {
   // -------------------------------auth0
@@ -113,14 +115,14 @@ const NavBar = () => {
         <NavRight>
           {userSession || (!isLoading && user) ? (
             <>
-              <Link to="/dashboard">
+              <Link to="/dashboard/profile">
                 <Item>
                   <Img
                     src={!isLoading && user ? user.picture : userSession.pic}
                   />
                 </Item>
               </Link>
-              <Link to="/dashboard">
+              <Link to="/dashboard/profile">
                 <Item>
                   {!isLoading && user
                     ? `${user.given_name} ${user.family_name}`
@@ -146,18 +148,7 @@ const NavBar = () => {
               </>
             )
           )}
-          <ModeBtn onClick={() => setDarkMode(!darkMode)}>
-            <MdOutlineDarkMode
-              className={`mode ${!darkMode && "mode-active"}`}
-              size="1.5rem"
-              fill="var(--c13)"
-            />
-            <MdDarkMode
-              className={`mode ${darkMode && "mode-active"}`}
-              size="1.5rem"
-              fill="var(--c1)"
-            />
-          </ModeBtn>
+          <Darkmode />
         </NavRight>
       </Content>
     </Wrapper>
@@ -197,7 +188,7 @@ const LogBtn = styled.button`
   background-color: transparent;
   box-shadow: none;
   padding: 0;
-  margin:0 1rem;
+  margin: 0 1rem;
 `;
 const Wrapper = styled.div`
   border-radius: 0%;

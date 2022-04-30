@@ -2,12 +2,12 @@ import styled from "styled-components";
 import { AppContext } from "../../other/AppContext";
 import { useContext, useState } from "react";
 const Description = () => {
-  const { businessInfo, darkMode, setBusinessInfo } = useContext(AppContext);
-  const onchangeHandle = (ev) => {
-    let theKey = ev.target.id;
-    let theValue = ev.target.value;
-    setBusinessInfo({ ...businessInfo, [theKey]: theValue });
-  };
+  const {
+    businessInfo,
+    darkMode,
+    setBusinessInfo,
+    newSuggestionOnChangeHandle,
+  } = useContext(AppContext);
   return (
     <Wrapper>
       <label htmlFor="description" form="business-form">
@@ -47,7 +47,7 @@ const Description = () => {
         value={businessInfo.description}
         className="descriprion-textArea"
         id="description"
-        onChange={onchangeHandle}
+        onChange={newSuggestionOnChangeHandle}
       />
     </Wrapper>
   );
@@ -56,7 +56,7 @@ const Description = () => {
 export default Description;
 
 const Wrapper = styled.div`
-margin-top: 3rem;
+  margin-top: 3rem;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;

@@ -10,6 +10,7 @@ import { IoLogoInstagram } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
 const Connections = () => {
   const {
+    newSuggestionOnChangeHandle,
     nextBtnHandle,
     pages,
     setPages,
@@ -17,13 +18,6 @@ const Connections = () => {
     setBusinessInfo,
     darkMode,
   } = useContext(AppContext);
-
-  const onchangeHandle = (ev) => {
-    let theKey = ev.target.id;
-    let theValue = ev.target.value;
-    setBusinessInfo({ ...businessInfo, [theKey]: theValue });
-  };
-
 
   return (
     <Wrapper>
@@ -50,7 +44,7 @@ const Connections = () => {
             id="phone"
             type="tel"
             placeholder=""
-            onChange={onchangeHandle}
+            onChange={newSuggestionOnChangeHandle}
           />
         </div>
 
@@ -74,7 +68,7 @@ const Connections = () => {
             id="email"
             type="email"
             placeholder="cooche@gmail.com"
-            onChange={onchangeHandle}
+            onChange={newSuggestionOnChangeHandle}
           />
         </div>
         {/* ------------------------------website*/}
@@ -95,7 +89,7 @@ const Connections = () => {
             id="website"
             type="url"
             placeholder="www.cooche.com"
-            onChange={onchangeHandle}
+            onChange={newSuggestionOnChangeHandle}
           />
         </div>
 
@@ -116,7 +110,7 @@ const Connections = () => {
             id="facebook"
             type="url"
             placeholder="https://facebook.com/cooche"
-            onChange={onchangeHandle}
+            onChange={newSuggestionOnChangeHandle}
           />
         </div>
 
@@ -137,7 +131,7 @@ const Connections = () => {
             id="instagram"
             type="url"
             placeholder="https://www.instagram.com/cooche"
-            onChange={onchangeHandle}
+            onChange={newSuggestionOnChangeHandle}
           />
         </div>
 
@@ -158,7 +152,7 @@ const Connections = () => {
             id="twitter"
             type="url"
             placeholder="https://twitter.com/cooche"
-            onChange={onchangeHandle}
+            onChange={newSuggestionOnChangeHandle}
           />
         </div>
       </div>

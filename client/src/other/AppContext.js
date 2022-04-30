@@ -124,6 +124,14 @@ export const AppProvider = ({ children }) => {
     },
     "businessForm"
   );
+
+  // ---------------------------------------------
+  //  0n-change handle for inputs in nuew-suggestion form of /dashboard
+  const newSuggestionOnChangeHandle = (ev) => {
+    let theKey = ev.target.id;
+    let theValue = ev.target.value;
+    setBusinessInfo({ ...businessInfo, [theKey]: theValue });
+  };
   // ---------------------------------------------
   // to switch between tabs in dashboard/new-suggestion
   const [pages, setPages] = useState("infoTab");
@@ -153,6 +161,7 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        newSuggestionOnChangeHandle,
         nextBtnHandle,
         // ---------------
         theAddress,

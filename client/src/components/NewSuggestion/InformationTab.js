@@ -18,6 +18,7 @@ import AsyncSelect from "react-select/async";
 const InformationTab = () => {
   // ========================================================================
   const {
+    newSuggestionOnChangeHandle,
     languagesValue,
     setLanguagesValue,
     pages,
@@ -42,7 +43,6 @@ const InformationTab = () => {
     setUserSession,
   } = useContext(AppContext);
 
-
   // ------------------------------------------------------input : language
   // ----------------------variable for the input
   const langOptions = languagesArr.map((lang) => {
@@ -62,11 +62,6 @@ const InformationTab = () => {
     setBusinessInfo({ ...businessInfo, languages: reactSelectToValue(ev) });
   };
 
-  const onchangeHandle = (ev) => {
-    let theKey = ev.target.id;
-    let theValue = ev.target.value;
-    setBusinessInfo({ ...businessInfo, [theKey]: theValue });
-  };
 
   return (
     <Wrapper>
@@ -86,7 +81,7 @@ const InformationTab = () => {
         </label>
         <input
           value={businessInfo.name}
-          onChange={onchangeHandle}
+          onChange={newSuggestionOnChangeHandle}
           className="input detail-input"
           id="name"
           type="text"
@@ -105,7 +100,7 @@ const InformationTab = () => {
         </label>
         <select
           value={businessInfo.category}
-          onChange={onchangeHandle}
+          onChange={newSuggestionOnChangeHandle}
           id="category"
           className="detail-input input"
         >
@@ -132,7 +127,7 @@ const InformationTab = () => {
         </label>
         <select
           value={businessInfo.nationality}
-          onChange={onchangeHandle}
+          onChange={newSuggestionOnChangeHandle}
           id="nationality"
           className=" detail-input input"
         >

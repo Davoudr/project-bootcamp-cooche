@@ -102,12 +102,12 @@ const MapBoxAddress = () => {
         render: function (item) {
           const maki = item.properties.maki || "marker";
           // console.log(item)
-          return `<div class='geocoder-dropdown-item'>
-                    <img class='geocoder-dropdown-icon' src='https://unpkg.com/@mapbox/maki@6.1.0/icons/${maki}-15.svg'>
-                    <span class='geocoder-dropdown-title'>
+          return `<div className='geocoder-dropdown-item'>
+                    <img className='geocoder-dropdown-icon' src='https://unpkg.com/@mapbox/maki@6.1.0/icons/${maki}-15.svg'>
+                    <span className='geocoder-dropdown-title'>
                     ${item.place_name.split(",")[0]}
                     </span>
-                    <span class='geocoder-dropdown-text'>
+                    <span className='geocoder-dropdown-text'>
                     ${
                       item.place_name.split(",")[1] !== undefined
                         ? item.place_name.slice(

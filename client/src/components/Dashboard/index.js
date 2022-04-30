@@ -4,7 +4,8 @@ import { useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import DashboardHeader from "./DashboardHeader";
 import styled from "styled-components";
-import bg from "../../img/points.png";
+
+
 
 // ------------------------------
 const Dashboard = () => {

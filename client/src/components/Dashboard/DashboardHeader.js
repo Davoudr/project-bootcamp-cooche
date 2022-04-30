@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import logo from "../../img/world-points.png";
-import bg from "../../img/yellow-city.png";
+import logo from "../../assets/img/world-points.png";
+import bg from "../../assets/img/yellow-city.png";
 const DashboardHeader = () => {
   return (
     <Wrapper>

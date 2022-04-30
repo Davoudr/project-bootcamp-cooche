@@ -8,7 +8,8 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { useRef } from "react";
 import { AppContext } from "../../other/AppContext";
-import icon from "../../img/marker.png";
+import icon from "../../assets/img/marker.png";
+import Select from "react-select";
 const Map = () => {
   const {
     darkMode,

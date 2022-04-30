@@ -28,6 +28,7 @@
     "react-spring": "^9.4.4",
     "styled-component": "^2.8.0",
     "styled-components": "^5.3.5",
+    "use-sound": "^4.0.1",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
