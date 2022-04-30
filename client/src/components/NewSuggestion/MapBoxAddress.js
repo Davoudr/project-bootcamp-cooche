@@ -11,10 +11,9 @@ const MapBoxAddress = () => {
   const [lng, setLng] = useState(-70.9);
   const [lat, setLat] = useState(42.35);
   const [zoom, setZoom] = useState(9);
-  const {
+  const {businessInfo,setBusinessInfo,
     darkMode,
-    theAddress,
-    setTheAddress,
+
 
     // ---------------
   } = useContext(AppContext);
@@ -90,11 +89,11 @@ const MapBoxAddress = () => {
       //   map.current.on("click", (e) => {
       //     console.log(`A dblclick event has occurred at ${e.lngLat}`);
       //   });
-        // map.current.on("click", "circle", (e) => {
-        //   map.current.flyTo({
-        //     center: e.features[0].geometry.coordinates,
-        //   });
-        // });
+      // map.current.on("click", "circle", (e) => {
+      //   map.current.flyTo({
+      //     center: e.features[0].geometry.coordinates,
+      //   });
+      // });
       const geocoder = new MapboxGeocoder({
         // container: searchContainer.current,
         accessToken: mapboxgl.accessToken,
@@ -121,19 +120,14 @@ const MapBoxAddress = () => {
         mapboxgl: mapboxgl,
       });
       geocoder.on("result", function (result) {
-        console.log(result)//////////////////////
-        let locationType = "";
-        if (result.result.place_type.length > 0) {
-          result.result.place_type.forEach((ele) => {
-            locationType = locationType.concat(`, ${ele}`);
-          });
-          locationType = locationType.slice(2).replace(`_`, ` `);
-        }
-        setTheAddress({
-          address: result.result.place_name,
-          lat: result.result.center[0],
-          lng: result.result.center[1],
-          type: locationType,
+        setBusinessInfo({
+          ...businessInfo,
+          address: {
+            ...businessInfo.address,
+            address: result.result.place_name,
+            lat: result.result.center[0],
+            lng: result.result.center[1],
+          },
         });
       });
       geocoder.on("click", function (results) {

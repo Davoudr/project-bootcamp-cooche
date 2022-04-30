@@ -14,8 +14,6 @@ const NewSuggestion = () => {
   // ====================================================================================useContext
   const {
     newSuggestionOnChangeHandle,
-    theAddress,
-    setTheAddress,
     languagesValue,
     setLanguagesValue,
     setvalidationErr,
@@ -51,10 +49,33 @@ const NewSuggestion = () => {
         });
         setLoading(false); // for turning loading status of submint button
         setInterval(() => {
-          setvalidationErr({ connections: false, information: true });
+          setvalidationErr({
+            information: true,
+            address: false,
+            connections: false,
+          });
         }, 3000); // for visual effect of error
         break;
       // -------------------------second-tab validation
+      case businessInfo.address.country === "-----Sellect-----" ||
+        businessInfo.address.province === "-----Sellect-----":
+        setMessage({
+          status: true,
+          title: "Missing Information",
+          content:
+            "Please note that for the address, filling the country and the province is requried! You can choose ADDRESS tab from laft menu to go back and complete missing informations; Thank You!",
+          btnText: "Ok",
+        });
+        setLoading(false); // for turning loading status of submint button
+        setInterval(() => {
+          setvalidationErr({
+            information: false,
+            address: true,
+            connections: false,
+          });
+        }, 3000); // for visual effect of error
+        break;
+      // -------------------------third-tab validation
       case businessInfo.phone.length === 0 &&
         businessInfo.email.length === 0 &&
         businessInfo.website.length === 0 &&
@@ -72,6 +93,7 @@ const NewSuggestion = () => {
         setInterval(() => {
           setvalidationErr({
             information: false,
+            address: false,
             connections: true,
           });
         }, 3000); // for visual effect of error
@@ -94,9 +116,18 @@ const NewSuggestion = () => {
           nationality: businessInfo.nationality,
           languages: businessInfo.languages,
           address: {
-            address: theAddress !== null ? theAddress.address : "",
-            lat: theAddress !== null ? theAddress.lat : "",
-            lng: theAddress !== null ? theAddress.lng : "",
+            address:
+              typeof businessInfo.address.address === "string"
+                ? businessInfo.address.address
+                : "",
+            lat:
+              typeof businessInfo.address.lat === "string"
+                ? businessInfo.address.lat
+                : "",
+            lng:
+              typeof businessInfo.address.lng === "string"
+                ? businessInfo.address.lng
+                : "",
           },
           connections: {
             phone: businessInfo.phone,
@@ -140,6 +171,13 @@ const NewSuggestion = () => {
                 twitter: "",
                 description: "",
                 languages: [],
+                address: {
+                  address: "",
+                  lat: "",
+                  lng: "",
+                  country: "",
+                  province: "",
+                },
               });
               ev.target.reset();
               setMessage({
@@ -177,6 +215,7 @@ const NewSuggestion = () => {
       twitter: "",
       description: "",
       languages: [],
+      address: { address: "", lat: "", lng: "", country: "", province: "" },
     });
     setLanguagesValue([]);
   };

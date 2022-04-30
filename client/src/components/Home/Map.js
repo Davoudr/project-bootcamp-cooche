@@ -8,13 +8,17 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { useRef } from "react";
 import { AppContext } from "../../other/AppContext";
-import icon from "../../assets/img/marker.png";
+import icon from "../../assets/img/location-icon-1.png";
 import Select from "react-select";
+import { BsInfoCircleFill, BsInfoCircle } from "react-icons/bs";
+import { IoSchoolOutline, IoSchool } from "react-icons/io";
+
 const Map = () => {
   const {
+    filterValue,
     darkMode,
-    theAddress,
-    setTheAddress,
+
+  
 
     // ---------------
   } = useContext(AppContext);
@@ -61,171 +65,6 @@ const Map = () => {
           state: "D.C.",
         },
       },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.043929, 38.910525],
-        },
-        properties: {
-          phoneFormatted: "(202) 387-9338",
-          phone: "2023879338",
-          address: "1512 Connecticut Ave NW",
-          city: "Washington DC",
-          country: "United States",
-          crossStreet: "at Dupont Circle",
-          postalCode: "20036",
-          state: "D.C.",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.0672, 38.90516896],
-        },
-        properties: {
-          phoneFormatted: "(202) 337-9338",
-          phone: "2023379338",
-          address: "3333 M St NW",
-          city: "Washington DC",
-          country: "United States",
-          crossStreet: "at 34th St NW",
-          postalCode: "20007",
-          state: "D.C.",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.002583742142, 38.887041080933],
-        },
-        properties: {
-          phoneFormatted: "(202) 547-9338",
-          phone: "2025479338",
-          address: "221 Pennsylvania Ave SE",
-          city: "Washington DC",
-          country: "United States",
-          crossStreet: "btwn 2nd & 3rd Sts. SE",
-          postalCode: "20003",
-          state: "D.C.",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-76.933492720127, 38.99225245786],
-        },
-        properties: {
-          address: "8204 Baltimore Ave",
-          city: "College Park",
-          country: "United States",
-          postalCode: "20740",
-          state: "MD",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.097083330154, 38.980979],
-        },
-        properties: {
-          phoneFormatted: "(301) 654-7336",
-          phone: "3016547336",
-          address: "4831 Bethesda Ave",
-          cc: "US",
-          city: "Bethesda",
-          country: "United States",
-          postalCode: "20814",
-          state: "MD",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.359425054188, 38.958058116661],
-        },
-        properties: {
-          phoneFormatted: "(571) 203-0082",
-          phone: "5712030082",
-          address: "11935 Democracy Dr",
-          city: "Reston",
-          country: "United States",
-          crossStreet: "btw Explorer & Library",
-          postalCode: "20190",
-          state: "VA",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.10853099823, 38.880100922392],
-        },
-        properties: {
-          phoneFormatted: "(703) 522-2016",
-          phone: "7035222016",
-          address: "4075 Wilson Blvd",
-          city: "Arlington",
-          country: "United States",
-          crossStreet: "at N Randolph St.",
-          postalCode: "22203",
-          state: "VA",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-75.28784, 40.008008],
-        },
-        properties: {
-          phoneFormatted: "(610) 642-9400",
-          phone: "6106429400",
-          address: "68 Coulter Ave",
-          city: "Ardmore",
-          country: "United States",
-          postalCode: "19003",
-          state: "PA",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-75.20121216774, 39.954030175164],
-        },
-        properties: {
-          phoneFormatted: "(215) 386-1365",
-          phone: "2153861365",
-          address: "3925 Walnut St",
-          city: "Philadelphia",
-          country: "United States",
-          postalCode: "19104",
-          state: "PA",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.043959498405, 38.903883387232],
-        },
-        properties: {
-          phoneFormatted: "(202) 331-3355",
-          phone: "2023313355",
-          address: "1901 L St. NW",
-          city: "Washington DC",
-          country: "United States",
-          crossStreet: "at 19th St",
-          postalCode: "20036",
-          state: "D.C.",
-        },
-      },
     ],
   };
 
@@ -250,7 +89,7 @@ const Map = () => {
     const popup = new mapboxgl.Popup({ closeOnClick: false })
       .setLngLat(currentFeature.geometry.coordinates)
       .setHTML(
-        `<h3>Sweetgreen</h3><h4>${currentFeature.properties.address}</h4>`
+        `<div><h3>Sweetgreen</h3><h4>${currentFeature.properties.address}</h4></div>`
       )
       .addTo(map.current);
   }
@@ -331,6 +170,7 @@ const Map = () => {
           el.id = `marker-${store.properties.id}`;
           /* Assign the `marker` class to each store-div for styling. */
           el.className = "marker";
+          el.innerHTML = `<img src=${icon}>`;
 
           el.addEventListener("click", (e) => {
             /* Fly to the point */
@@ -361,27 +201,35 @@ const Map = () => {
 
   const handleLink = (ev) => {
     stores.features.map((feature) => {
-      console.log(ev.target.id, `link-${feature.properties.id}`);
       if (ev.target.id === `link-${feature.properties.id}`) {
         flyToStore(feature);
         createPopUp(feature);
       }
     });
 
-    // const activeItem = document.getElementsByClassName("active");
-    // if (activeItem[0]) {
-    //   activeItem[0].classList.remove("active");
-    // }
-    // ev.parentNode.classList.add("active");
+    const activeItem = document.getElementsByClassName("active");
+    if (activeItem[0]) {
+      activeItem[0].classList.remove("active");
+    }
+    ev.target.classList.add("active");
+    console.log(ev.target);
   };
 
   return (
-    <Wrapper theIcon={icon}>
+    <Wrapper>
+      <div className="heading">
+        <h1 className="title">
+          The services
+          {filterValue.category && ` related to the  ${filterValue.category},`}
+          {filterValue.province && ` in  ${filterValue.province}`}
+          {filterValue.nationality &&
+            ` provided by ${filterValue.nationality} people`}
+          {filterValue.language &&
+            ` offering customer service in ${filterValue.language}`}
+        </h1>
+      </div>
       <div className="map-and-side">
         <div className="sidebar">
-          <div className="heading">
-            <h1>Our locations</h1>
-          </div>
           <div id="listings" className="listings">
             {stores.features.map((store, index) => {
               return (
@@ -394,10 +242,20 @@ const Map = () => {
                     onClick={handleLink}
                     className="title"
                     id={`link-${store.properties.id}`}
-                  >{`${store.properties.address}`}</button>
-                  <div>{`${store.properties.city} ${
-                    store.properties.phone && store.properties.phoneFormatted
-                  }`}</div>
+                  >
+                    {" "}
+                    <div className="profile">
+                      {darkMode ? (
+                        <BsInfoCircleFill size="2rem" />
+                      ) : (
+                        <BsInfoCircle size="2rem" />
+                      )}
+                    </div>
+                    {`${store.properties.address}`}
+                    <div>{`${store.properties.city} ${
+                      store.properties.phone && store.properties.phoneFormatted
+                    }`}</div>
+                  </button>
                 </div>
               );
             })}
@@ -425,7 +283,6 @@ const Wrapper = styled.div`
     cursor: pointer;
     height: 56px;
     width: 56px;
-    background-image: url(${(props) => props.theIcon});
   }
   /* Marker tweaks */
   .mapboxgl-popup-close-button {
@@ -436,26 +293,41 @@ const Wrapper = styled.div`
     font: 400 15px/22px "Source Sans Pro", "Helvetica Neue", sans-serif;
     padding: 0;
     width: 180px;
+    background-color: transparent;
   }
-
+  .mapboxgl-popup-content div {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    border-radius: var(--border-radius7);
+    padding: 10rem;
+    background-color: var(--c21);
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(61, 64, 91, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    color: var(--c10);
+    font-size: var(--font-size-3);
+    font-family: var(--f13);
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    /* backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    color: var(--c41); */
+  }
   .mapboxgl-popup-content h3 {
-    background: #91c949;
-    color: #fff;
+    background: var(--c31);
+
     margin: 0;
     padding: 10px;
-    border-radius: 3px 3px 0 0;
-    font-weight: 700;
+    border-radius: var(--border-radius5);
     margin-top: -15px;
   }
 
   .mapboxgl-popup-content h4 {
     margin: 0;
-    padding: 10px;
-    font-weight: 400;
-  }
-
-  .mapboxgl-popup-content div {
-    padding: 10px;
+    padding: 1rem;
   }
 
   .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
@@ -467,55 +339,57 @@ const Wrapper = styled.div`
   }
 
   .listings {
-    height: 100%;
-    overflow: auto;
-    padding-bottom: 60px;
   }
 
   .listings .item {
-    border-bottom: 1px solid #eee;
-    padding: 10px;
     text-decoration: none;
-  }
 
-  .listings .item:last-child {
-    border-bottom: none;
+    margin: 1rem;
+    display: flex;
+
+    justify-content: space-between;
+    background-color: transparent;
   }
 
   .listings .item .title {
+    position: relative;
     display: block;
-    color: #00853e;
+    color: var(--c10);
     font-weight: 700;
+    transition: all ease 100ms;
+    background-color: var(--c51);
+    box-shadow: var(--box-shadow-4);
+    height: 10rem;
+    width: 100%;
+    border-radius: var(--border-radius8);
+    font-weight: normal;
+    &:active {
+      box-shadow: var(--box-shadow-1);
+    }
   }
-
+  .profile {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    transition: all ease-in 100ms;
+    &:hover {
+      transform: scale(1.2);
+      color: var(--c61);
+    }
+  }
   .listings .item .title small {
-    font-weight: 400;
   }
 
   .listings .item.active .title,
+  .listings .item .title.active,
   .listings .item .title:hover {
-    color: #8cc63f;
+    color: var(--c21);
+    background-color: var(--c41);
   }
 
   .listings .item.active {
-    background-color: #f8f8f8;
   }
 
-  ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-left: 0;
-    background: rgba(0, 0, 0, 0.1);
-  }
-
-  ::-webkit-scrollbar-track {
-    background: none;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #00853e;
-    border-radius: 0;
-  }
   .map-and-side {
     width: 100%;
 
@@ -523,15 +397,51 @@ const Wrapper = styled.div`
     gap: 16px;
   }
   .sidebar {
+    margin-right: 1.5rem;
+    overflow: auto;
+    margin-top: 2.5rem;
+    padding: 1rem 0;
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: var(--border-radius8);
+    border: 1px solid rgba(209, 213, 219, 0.3);
     flex-grow: 1;
     height: 100%;
+    max-height: 50rem;
+    box-shadow: var(--box-shadow-2);
+    &.dark {
+      backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(17, 25, 40, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.125);
+
+      color: var(--c21);
+    }
   }
   .heading {
-    background: #fff;
     border-bottom: 1px solid #eee;
-    height: 60px;
     line-height: 60px;
     padding: 0 10px;
+    text-align: center;
+    padding: 2rem;
+
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    &.dark {
+      backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(17, 25, 40, 0.75);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.125);
+      .title {
+        color: var(--c31);
+      }
+    }
+  }
+  .title {
+    font-family: var(--f13);
+    font-weight: normal;
+    color: var(--c41);
   }
 
   #map {

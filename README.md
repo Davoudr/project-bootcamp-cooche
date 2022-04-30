@@ -77,6 +77,7 @@ A hub to create profile for businesses or look for them; considering their geo-l
                               dislike: [....user_id....],
                               comments: [  
                                           {\_id: ,
+                                          user_photo_url: ,
                                           user_id: ,
                                           comment: ,
                                           date: ,

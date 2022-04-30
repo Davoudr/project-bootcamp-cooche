@@ -139,10 +139,11 @@ const categoriesList = [
   "Financial",
   "Judiciary",
   "Migration",
-  "vehicles",
+  "Vehicles",
   "Building and house",
   "Electronic devices",
   "Entertainment",
+  "Excursion"
 ];
 const categoriesArr = arrOfStrToLowerCase(categoriesList).sort();
 // ====================================

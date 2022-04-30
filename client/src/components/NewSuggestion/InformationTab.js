@@ -57,11 +57,14 @@ const InformationTab = () => {
     return theValue;
   };
   // ----------------------handleChange
+  // we can not retrive the react-select event value  as we do for other inputs,
+  // so we need to have this func as a seperate handleChange
   const languagesHandleChange = (ev) => {
+    // this is for temporary saving the input
     setLanguagesValue(ev);
+    // this is for updating the main state for bussiness
     setBusinessInfo({ ...businessInfo, languages: reactSelectToValue(ev) });
   };
-
 
   return (
     <Wrapper>

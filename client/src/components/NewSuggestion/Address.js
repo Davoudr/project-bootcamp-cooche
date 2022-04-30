@@ -9,7 +9,7 @@ import { useContext } from "react";
 import Button from "../Tools/Button";
 import MapBoxAddress from "./MapBoxAddress";
 import NextBtn from "./NextBtn";
-
+import CountryProvince from "./CountryProvince";
 // import Geocoder from 'react-mapbox-gl-geocoder';
 
 // import Geocoder from "react-map-gl-geocoder";
@@ -19,11 +19,8 @@ const Address = () => {
   const [addressMethod, setAddresMethod] = useState("Google-Finder");
 
   const {
+    businessInfo,
     nextBtnHandle,
-    pages,
-    setPages,
-    theAddress,
-    setTheAddress,
     // ---------------
   } = useContext(AppContext);
 
@@ -50,19 +47,21 @@ const Address = () => {
           <Button className="address-method-btn" btnText="Location on Map" />
         </button>
       </div>
-      {theAddress !== null && (
+      {businessInfo.address.address.length > 0 && (
         <div className="full-address-box">
-          <span className="address-type light-text">
-            This address is for the types of:
-          </span>
-          <span className="address-type types search-result">
-            -- {theAddress.type} --
-          </span>{" "}
           <span className="light-text">The full address is:</span>
-          <span className="search-result">-- {theAddress.address} --</span>
+          <span className="search-result">
+            -- {businessInfo.address.address} --
+          </span>
         </div>
       )}
+      <div className="country-province">
+        <CountryProvince />
+      </div>
       <div className="tool-container">
+        <lable form="business-form" htmlFor="address" className="address-lable">
+          Address
+        </lable>
         {addressMethod === "Google-Finder" ? (
           <GooglePlacesAutocomplete />
         ) : (
@@ -77,11 +76,25 @@ export default Address;
 
 const Div = styled.div`
   width: 100%;
-  padding:  2rem;
+  padding: 2rem;
+  .address-lable {
+    width: 100%;
+    text-align: left;
+    display: block;
+    margin: 0.7rem 0 1rem ;
+    font-size: var(--font-size-3);
+  }
+  .country-province {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-direction: column;
+  }
   .method-btn {
     background-color: transparent;
   }
   .tool-container {
+
     width: 100%;
   }
   .address-method {
@@ -140,13 +153,7 @@ const Div = styled.div`
     }
     width: 100%;
   }
-  .address-type {
-    display: block;
-  }
-  .types {
-    margin-bottom: 2rem;
-    /* display: inline-block; */
-  }
+
   .light-text {
     color: var(--c13);
     display: block;

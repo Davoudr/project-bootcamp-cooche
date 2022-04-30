@@ -121,6 +121,7 @@ export const AppProvider = ({ children }) => {
       twitter: "",
       description: "",
       languages: [],
+      address: { address: "", lat: "", lng: "", country: "", province: "" },
     },
     "businessForm"
   );
@@ -144,10 +145,13 @@ export const AppProvider = ({ children }) => {
   });
   // ---------------------------------------------
   // language sellect value
+  // for new-suggestion/information/
+  // using react-select needs different way than other inputs
+  // to save the value; so better to use another state to save it for now
+  // along with updating the main state (businessInfo) oin the fucntion of onChangeHandle
   const [languagesValue, setLanguagesValue] = useState([]);
   // ---------------------------------------------
-  //  for new-suggestion/information/address
-  const [theAddress, setTheAddress] = useState(null);
+
   // ---------------------------------------------
   // font the next-page-button
   const nextBtnHandle = (ev) => {
@@ -156,16 +160,21 @@ export const AppProvider = ({ children }) => {
     setPages(nextPage);
   };
   // ===============================================================================================================
+  // -------------------------------------------------------/-------------------------------------------------------
+  // ===============================================================================================================
+  const [filterValue, setFilterValue] = useState({});
+  // ===============================================================================================================
   // ---------------------------------------------------------------------------------------------------------------
   // ===============================================================================================================
   return (
     <AppContext.Provider
       value={{
+        filterValue,
+        setFilterValue,
         newSuggestionOnChangeHandle,
         nextBtnHandle,
         // ---------------
-        theAddress,
-        setTheAddress,
+
         // ---------------
         // ---------------
         // ---------------

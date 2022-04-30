@@ -10,9 +10,9 @@ import { useState } from "react";
 import styled from "styled-components";
 const GooglePlacesAutocomplete = () => {
   const {
+    businessInfo,
+    setBusinessInfo,
     darkMode,
-    theAddress,
-    setTheAddress,
     // ---------------
   } = useContext(AppContext);
 
@@ -27,20 +27,17 @@ const GooglePlacesAutocomplete = () => {
   const setGoogleAddressHandleSelect = async (ev) => {
     const results = await geocodeByAddress(ev); // suggestion detail
     const latLng = await getLatLng(results[0]); // suggestion ll
-    let locationType = "";
-    if (results.length > 0) {
-      results[0].types.forEach((ele) => {
-        locationType = locationType.concat(`, ${ele}`);
-      });
-      locationType = locationType.slice(2).replace(`_`, ` `);
-    }
-    console.log(results)//////////////////////
-    setTheAddress({
-      address: results[0].formatted_address,
-      lat: latLng.lat,
-      lng: latLng.lng,
-      type: locationType,
+
+    setBusinessInfo({
+      ...businessInfo,
+      address: {
+        ...businessInfo.address,
+        address: results[0].formatted_address,
+        lat: latLng.lat,
+        lng: latLng.lng,
+      },
     });
+
     setGoogleAddress(ev);
     // .then((latLng) => console.log("Success", latLng))
     // .catch((error) => console.error("Error", error));
@@ -60,7 +57,9 @@ const GooglePlacesAutocomplete = () => {
                 placeholder: "Search Places ...",
                 className: "location-search-input",
               })}
-              className= {`google-address-input  address detail-input ${!darkMode && "dark"}`} 
+              className={`google-address-input  address detail-input ${
+                !darkMode && "dark"
+              }`}
             />
             <div className="autocomplete-dropdown-container address address-results">
               {loading && <div>Loading...</div>}

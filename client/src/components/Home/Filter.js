@@ -13,8 +13,7 @@ import { BiSearchAlt } from "react-icons/bi";
 import SearchIcon from "./SearchIcon";
 // -----------------------------------------------------
 const Filter = () => {
-  const { capitalizeFirstLetter } = useContext(AppContext);
-  const [filterValue, setFilterValue] = useState({});
+  const { capitalizeFirstLetter ,filterValue, setFilterValue} = useContext(AppContext);
   const filterOnChangeHandle = (ev) => {
     let theKey = ev.target.id;
     let theValue = ev.target.value;
@@ -51,7 +50,7 @@ const Filter = () => {
                   </select>
                 </div>
                 <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="category" className="lable">
+                  <lable from="filter-form" htmlFor="country" className="lable">
                     Country
                   </lable>
                   <select
@@ -76,7 +75,7 @@ const Filter = () => {
                   </select>
                 </div>
                 <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="category" className="lable">
+                  <lable from="filter-form" htmlFor="province" className="lable">
                     Province
                   </lable>
                   <select
@@ -107,7 +106,7 @@ const Filter = () => {
                   </select>
                 </div>
                 <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="category" className="lable">
+                  <lable from="filter-form" htmlFor="language" className="lable">
                     Language
                   </lable>
                   <select
@@ -129,7 +128,7 @@ const Filter = () => {
                   </select>
                 </div>
                 <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="category" className="lable">
+                  <lable from="filter-form" htmlFor="nationality" className="lable">
                     Nationality
                   </lable>
                   <select
