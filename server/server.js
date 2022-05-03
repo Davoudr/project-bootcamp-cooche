@@ -24,8 +24,8 @@ const { handleUserAdd } = require("./handlers/handleUserAdd");
 const { handleUserGet } = require("./handlers/handleUserGet");
 const { handleBusinessAdd } = require("./handlers/handleBusinessAdd");
 const {
-  handleBusinessGetByCategory,
-} = require("./handlers/handleBusinessGetByCategory");
+  handleBusinessGetByFilter,
+} = require("./handlers/handleBusinessGetByFilter");
 
 // ----------------------------------------------------------
 if (process.env.NODE_ENV === "development") {
@@ -52,8 +52,8 @@ app
   .post("/business/add", (req, res) => {
     handleBusinessAdd(req, res, process.env.DB_NAME);
   })
-  .get("/business/by-category/:category", (req, res) => {
-    handleBusinessGetByCategory(req, res, process.env.DB_NAME);
+  .post("/business/find", (req, res) => {
+    handleBusinessGetByFilter(req, res, process.env.DB_NAME);
   })
 
   // ------------------------------------

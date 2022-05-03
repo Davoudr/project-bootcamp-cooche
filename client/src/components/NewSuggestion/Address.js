@@ -83,6 +83,9 @@ const Div = styled.div`
     display: block;
     margin: 0.7rem 0 1rem;
     font-size: var(--font-size-3);
+    &.dark{
+      color: var(--c21);
+    }
   }
   .country-province {
     display: flex;

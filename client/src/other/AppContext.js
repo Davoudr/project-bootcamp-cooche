@@ -46,7 +46,7 @@ export const AppProvider = ({ children }) => {
   // ---------------------------------------------
   // a func to capitalaize first letter of the str
   const capitalizeFirstLetter = (string) =>
-    string.trim().charAt(0).toUpperCase() + string.slice(1);
+    string.trim().charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   // ---------------------------------------------
   // a func to conver arr of str to lowercase
   const arrOfStrToLowerCase = (arr) =>
@@ -178,10 +178,10 @@ export const AppProvider = ({ children }) => {
           connections: {
             phone: "",
             email: "",
-            website: "",
-            facebook: "",
-            instagram: "",
-            twitter: "",
+            website: "www.",
+            facebook: "https://www.facebook.com/",
+            instagram: "https://www.instagram.com/",
+            twitter: "https://twitter.com/",
           },
           category: "",
           name: "",
@@ -287,7 +287,6 @@ export const AppProvider = ({ children }) => {
     });
   };
   // ---------------------------------------------
-  console.log(businessInfo);
   // ---------------------------------------------
   // to switch between tabs in dashboard/new-suggestion
   const [pages, setPages] = useState("infoTab");
@@ -312,7 +311,13 @@ export const AppProvider = ({ children }) => {
   // ===============================================================================================================
   // -------------------------------------------------------/-------------------------------------------------------
   // ===============================================================================================================
-  const [filterValue, setFilterValue] = useState({});
+  const [filterValue, setFilterValue] = useState({
+    category: "",
+    country: "",
+    language: "",
+    nationality: "",
+    province: "",
+  });
   // ===============================================================================================================
   // ---------------------------------------------------------------------------------------------------------------
   // ===============================================================================================================

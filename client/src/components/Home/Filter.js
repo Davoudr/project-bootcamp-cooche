@@ -11,16 +11,35 @@ import { AppContext } from "../../other/AppContext";
 import { useContext } from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import SearchIcon from "./SearchIcon";
+import SelectOption from "./SelectOption";
 // -----------------------------------------------------
 const Filter = () => {
   const { capitalizeFirstLetter, filterValue, setFilterValue } =
     useContext(AppContext);
   const filterOnChangeHandle = (ev) => {
     let theKey = ev.target.id;
-    let theValue = ev.target.value;
+    let theValue =
+      ev.target.value === "-----Sellect-----" ? "" : ev.target.value;
     setFilterValue({ ...filterValue, [theKey]: theValue });
   };
   // -----------------------------------------------------
+
+  const handleSearch = (ev) => {
+    console.log(filterValue);
+
+    fetch("/business/find", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(filterValue),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
   return (
     <Wrapper>
       <div id="cover">
@@ -28,132 +47,67 @@ const Filter = () => {
           <div className="td">
             <form id="filter-form" className="filter-form">
               <div className="filter-and-label">
-                <label from="filter-form" htmlFor="category" className="label">
-                  Category
-                </label>
-                <select
+                <SelectOption
+                  name={"category"}
+                  fomeName={"filter"}
                   value={filterValue.category}
-                  onChange={filterOnChangeHandle}
-                  id="category"
-                  className="category-input input"
-                >
-                  {["-----Sellect-----", ...categoriesArr.sort()].map(
-                    //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-                    (ele, index) => {
-                      return (
-                        <option key={index} value={ele} className="option">
-                          {capitalizeFirstLetter(ele)}
-                        </option>
-                      );
-                    }
-                  )}
-                </select>
+                  onChangeHandle={filterOnChangeHandle}
+                  optionsArr={categoriesArr}
+                  defaultValue={"-----Sellect-----"}
+                />
               </div>
               <div className="filter-and-label">
-                <label from="filter-form" htmlFor="country" className="label">
-                  Country
-                </label>
-                <select
+                <SelectOption
+                  name={"country"}
+                  fomeName={"filter"}
                   value={filterValue.country}
-                  onChange={filterOnChangeHandle}
-                  id="country"
-                  className="country-input input"
-                >
-                  {[
-                    "-----Sellect-----",
-                    ...Object.keys(locationList).sort(),
-                  ].map(
-                    //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-                    (ele, index) => {
-                      return (
-                        <option key={index} value={ele} className="option">
-                          {capitalizeFirstLetter(ele)}
-                        </option>
-                      );
-                    }
-                  )}
-                </select>
+                  onChangeHandle={filterOnChangeHandle}
+                  optionsArr={Object.keys(locationList).sort()}
+                  defaultValue={"-----Sellect-----"}
+                />
               </div>
               <div className="filter-and-label">
-                <label from="filter-form" htmlFor="province" className="label">
-                  Province
-                </label>
-                <select
+                <SelectOption
+                  name={"province"}
+                  fomeName={"filter"}
                   value={filterValue.province}
-                  onChange={filterOnChangeHandle}
-                  id="province"
-                  className="province-input input"
-                >
-                  {filterValue.country ? (
-                    [
-                      "-----Sellect-----",
-                      ...locationList[`${filterValue.country}`].provinces,
-                    ].map(
-                      //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-                      (ele, index) => {
-                        return (
-                          <option key={index} value={ele} className="option">
-                            {capitalizeFirstLetter(ele)}
-                          </option>
-                        );
-                      }
-                    )
-                  ) : (
-                    <option value={"-----Sellect-----"} className="option">
-                      Select Country
-                    </option>
-                  )}
-                </select>
+                  onChangeHandle={filterOnChangeHandle}
+                  optionsArr={
+                    filterValue.country
+                      ? locationList[`${filterValue.country}`].provinces
+                      : []
+                  }
+                  defaultValue={
+                    filterValue.country ? "-----Sellect-----" : "Select Country"
+                  }
+                />
               </div>
               <div className="filter-and-label">
-                <label from="filter-form" htmlFor="language" className="label">
-                  Language
-                </label>
-                <select
+                <SelectOption
+                  name={"language"}
+                  fomeName={"filter"}
                   value={filterValue.language}
-                  onChange={filterOnChangeHandle}
-                  id="language"
-                  className="language-input input"
-                >
-                  {["-----Sellect-----", ...languagesArr].map(
-                    //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-                    (ele, index) => {
-                      return (
-                        <option key={index} value={ele} className="option">
-                          {capitalizeFirstLetter(ele)}
-                        </option>
-                      );
-                    }
-                  )}
-                </select>
+                  onChangeHandle={filterOnChangeHandle}
+                  optionsArr={languagesArr}
+                  defaultValue={"-----Sellect-----"}
+                />
               </div>
               <div className="filter-and-label">
-                <label
-                  from="filter-form"
-                  htmlFor="nationality"
-                  className="label"
-                >
-                  Nationality
-                </label>
-                <select
+                <SelectOption
+                  name={"nationality"}
+                  fomeName={"filter"}
                   value={filterValue.nationality}
-                  onChange={filterOnChangeHandle}
-                  id="nationality"
-                  className="nationality-input input"
-                >
-                  {nationalitiesArr.map((ele, index) => {
-                    return (
-                      <option key={index} value={ele} className="option">
-                        {capitalizeFirstLetter(ele)}
-                      </option>
-                    );
-                  })}
-                </select>
+                  onChangeHandle={filterOnChangeHandle}
+                  optionsArr={nationalitiesArr}
+                  defaultValue={"-----Sellect-----"}
+                />
               </div>
             </form>
           </div>
           <div className="td" id="s-cover">
-            <SearchIcon />
+            <button onClick={handleSearch} className="search-btn" type="button">
+              <SearchIcon />
+            </button>
           </div>
         </div>
       </div>
@@ -167,9 +121,10 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  .search {
-    size: 5rem;
+  .search-btn {
+    background-color: transparent;
   }
+
   .filter-form {
     display: flex;
     justify-content: center;
@@ -187,22 +142,6 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
-  .input,
-  .label {
-    height: 2.5rem;
-    width: 12rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  .input {
-    border: 1.5px solid var(--c51);
-    border-radius: 12rem;
-    padding: 0 1rem;
-    background-color: transparent;
-    outline: none;
   }
 
   .tb {

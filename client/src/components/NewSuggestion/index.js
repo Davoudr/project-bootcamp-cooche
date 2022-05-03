@@ -13,6 +13,7 @@ import Description from "./Description";
 const NewSuggestion = () => {
   // ====================================================================================useContext
   const {
+    arrOfStrToLowerCase,
     newSuggestionResetFormHandle,
     newSuggestionOnChangeHandle,
     languagesValue,
@@ -108,27 +109,20 @@ const NewSuggestion = () => {
         const endpointBusinessObj = {
           creator: {
             id: "",
-            username: userSession.username,
-            email: userSession.email,
+            username: userSession.username.toLowerCase(),
+            email: userSession.email.toLowerCase(),
           },
           date: new Date(),
-          name: businessInfo.name,
-          category: businessInfo.category,
-          nationality: businessInfo.nationality,
-          languages: businessInfo.languages,
+          name: businessInfo.name.toLowerCase(),
+          category: businessInfo.category.toLowerCase(),
+          nationality: businessInfo.nationality.toLowerCase(),
+          languages: arrOfStrToLowerCase(businessInfo.languages),
           address: {
-            address:
-              typeof businessInfo.address.address === "string"
-                ? businessInfo.address.address
-                : "",
-            lat:
-              typeof businessInfo.address.lat === "string"
-                ? businessInfo.address.lat
-                : "",
-            lng:
-              typeof businessInfo.address.lng === "string"
-                ? businessInfo.address.lng
-                : "",
+            address: businessInfo.address.address,
+            lat: businessInfo.address.lat,
+            lng: businessInfo.address.lng,
+            country: businessInfo.address.country.toLowerCase(),
+            province: businessInfo.address.province.toLowerCase(),
           },
           connections: {
             phone: businessInfo.phone,
@@ -146,6 +140,7 @@ const NewSuggestion = () => {
             comments: [],
           },
         };
+        console.log(endpointBusinessObj)
         // -------------------------postin user-obj to db
         fetch("/business/add", {
           method: "POST",
@@ -226,7 +221,11 @@ const NewSuggestion = () => {
                   {/* ------------------------------buttons*/}
                   <div className="container-btns">
                     <div className="btns-div">
-                      <button type="button" onClick={handleClrearForm}>
+                      <button
+                        className="btn"
+                        type="button"
+                        onClick={handleClrearForm}
+                      >
                         <Button btnText="Clear" />
                       </button>
                       <button className="btn submit-btn" type="submit">
@@ -257,7 +256,9 @@ const Wrapper = styled.div`
   align-items: stretch;
   flex-direction: column;
   margin-top: 1rem;
-
+  .btn {
+    background-color: transparent;
+  }
   .columns {
     display: grid;
     grid-template-rows: 1fr;

@@ -178,6 +178,9 @@ const Wrapper = styled.div`
     align-items: center;
     /* flex-flow: row; */
     flex-direction: row;
+    &.dark {
+      background-color: var(--c21);
+    }
   }
   .detail {
     width: 100%;

@@ -83,9 +83,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   .cp-input {
     width: 15rem;
+    &.dark{
+      background-color: var(--c21);
+    }
   }
   .cp-label {
     width: 3rem;
+    &.dark{
+      color: var(--c21);
+    }
   }
   .cp,
   .cp-input {

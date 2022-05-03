@@ -29,17 +29,10 @@ const nationalitiesList = [
 const nationalitiesArr = arrOfStrToLowerCase(nationalitiesList).sort();
 // ====================================
 // list of language used to categorize businesses
-const languagesList = ["Filipino", "Persian", "Arabic", "French", "English"];
+const languagesList = ["Filipino", "Persian", "Arabic", "French", "English","Mandarin"];
 const languagesArr = arrOfStrToLowerCase(languagesList).sort();
 // ====================================
 // list of cities used to categorize businesses
-const countryllList = [
-  { name: "United-States", ll: [-97.9222112121185, 39.3812661305678] },
-  { name: "Canada", ll: [-105.750595856519, 55.5859012851966] },
-  { name: "France", ll: [2.61878695312962, 47.8249046208979] },
-  { name: "England", ll: [-0.676181762467007, 52.38145972] },
-  { name: "Germany", ll: [10.0183432948567, 51.1334813439932] },
-];
 const locationList = {
   "United-States": {
     ll: [-97.9222112121185, 39.3812661305678],

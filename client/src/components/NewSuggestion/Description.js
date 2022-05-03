@@ -104,5 +104,8 @@ const Wrapper = styled.div`
     box-shadow: var(--box-shadow-1);
     outline: none;
     height: 25rem;
+    &.dark{
+      background-color: var(--c21);
+    }
   }
 `;

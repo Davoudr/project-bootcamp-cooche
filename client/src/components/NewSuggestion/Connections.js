@@ -214,7 +214,7 @@ const Wrapper = styled.div`
     outline: none;
     display: block;
     &.dark {
-      background-color: var(--c51);
+      background-color: var(--c21);
     }
     &:focus {
       box-shadow: var(--box-shadow-1);

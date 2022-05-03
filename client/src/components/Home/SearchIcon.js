@@ -3,11 +3,16 @@ import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 import { useState } from "react";
 import { keyframes } from "styled-components";
+import { useContext } from "react";
+import { AppContext } from "../../other/AppContext";
 // --------------------------------------
 
 // --------------------------------------
 const SearchIcon = () => {
-  const [click, setClick] = useState(false);
+
+
+  const {darkMode} = useContext (AppContext);
+  const [click, setClick] = useState(true);
 
 //   const searchAnimate = useSpring({
 //     transform: click ? "rotate(50deg) scale(0.8)" : "rotate(0deg) scale(1)",
@@ -20,24 +25,16 @@ const SearchIcon = () => {
 //     },
 //   });
 
-  const handleSearch = (ev) => {
-    setClick(true);
-    // setTimeout(() => {
-    //   setClick(false);
-    // }, 5000);
-  };
+
 
   return (
     <Wrapper click={click}>
-      <button onClick={handleSearch} className="button" type="button">
-        <BiSearchAlt size="4rem" className="search" />
-      </button>
+        <BiSearchAlt size="4rem" className="search" fill={darkMode ? "white" : "#3D405B"}/>
     </Wrapper>
   );
 };
 export default SearchIcon;
 // --------------------------------------
-
 const animation = keyframes`
 	   
  0% { 
@@ -54,7 +51,7 @@ const animation = keyframes`
     transform: rotate(10deg) scale(1.0);}
 `;
 const Wrapper = styled.div`
-  .button {
+  .search {
     animation: ${(props) => props.click && animation} infinite;
     animation-duration: 2000ms;
   }
