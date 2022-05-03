@@ -8,16 +8,23 @@ import { GiWorld } from "react-icons/gi";
 import { AiOutlineFacebook } from "react-icons/ai";
 import { IoLogoInstagram } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css";
+import "tippy.js/themes/material.css";
+import "tippy.js/animations/scale.css";
+// -------------------------------------------
 const Connections = () => {
   const {
-    newSuggestionOnChangeHandle,
+    connectionsOnChangeHandle,
     nextBtnHandle,
     pages,
     setPages,
     businessInfo,
-    setBusinessInfo,
+ 
     darkMode,
   } = useContext(AppContext);
+
 
   return (
     <Wrapper>
@@ -39,12 +46,12 @@ const Connections = () => {
             </span>
           </label>
           <input
-            value={businessInfo.phone}
+            value={businessInfo.connections.phone}
             className="input phone conneciton-input"
             id="phone"
             type="tel"
             placeholder=""
-            onChange={newSuggestionOnChangeHandle}
+            onChange={connectionsOnChangeHandle}
           />
         </div>
 
@@ -62,13 +69,14 @@ const Connections = () => {
               E-Mail
             </span>
           </label>
+
           <input
-            value={businessInfo.email}
+            value={businessInfo.connections.email}
             className="input email conneciton-input"
             id="email"
             type="email"
             placeholder="cooche@gmail.com"
-            onChange={newSuggestionOnChangeHandle}
+            onChange={connectionsOnChangeHandle}
           />
         </div>
         {/* ------------------------------website*/}
@@ -84,12 +92,12 @@ const Connections = () => {
             </span>
           </label>
           <input
-            value={businessInfo.website}
+            value={businessInfo.connections.website}
             className="input conneciton-input"
             id="website"
             type="url"
             placeholder="www.cooche.com"
-            onChange={newSuggestionOnChangeHandle}
+            onChange={connectionsOnChangeHandle}
           />
         </div>
 
@@ -104,14 +112,20 @@ const Connections = () => {
               facebook
             </span>
           </label>
-          <input
-            value={businessInfo.facebook}
-            className="input conneciton-input"
-            id="facebook"
-            type="url"
-            placeholder="https://facebook.com/cooche"
-            onChange={newSuggestionOnChangeHandle}
-          />
+          <Tippy
+            theme={darkMode ? "material" : "light"}
+            animation="scale"
+            content="You need to just add the handle, like:  /cooche"
+          >
+            <input
+              value={businessInfo.connections.facebook}
+              className="input conneciton-input"
+              id="facebook"
+              type="url"
+              placeholder="https://facebook.com/cooche"
+              onChange={connectionsOnChangeHandle}
+            />
+          </Tippy>
         </div>
 
         <div className="connection-box">
@@ -125,14 +139,20 @@ const Connections = () => {
               Instagram
             </span>
           </label>
-          <input
-            value={businessInfo.instagram}
-            className="input conneciton-input"
-            id="instagram"
-            type="url"
-            placeholder="https://www.instagram.com/cooche"
-            onChange={newSuggestionOnChangeHandle}
-          />
+          <Tippy
+            theme={darkMode ? "material" : "light"}
+            animation="scale"
+            content="You need to just add the handle, like:  /cooche"
+          >
+            <input
+              value={businessInfo.connections.instagram}
+              className="input conneciton-input"
+              id="instagram"
+              type="url"
+              placeholder="https://www.instagram.com/cooche"
+              onChange={connectionsOnChangeHandle}
+            />
+          </Tippy>
         </div>
 
         <div className="connection-box">
@@ -146,14 +166,20 @@ const Connections = () => {
               Twitter
             </span>
           </label>
-          <input
-            value={businessInfo.twitter}
-            className="input conneciton-input"
-            id="twitter"
-            type="url"
-            placeholder="https://twitter.com/cooche"
-            onChange={newSuggestionOnChangeHandle}
-          />
+          <Tippy
+            theme={darkMode ? "material" : "light"}
+            animation="scale"
+            content="You need to just add the handle, like:  /cooche"
+          >
+            <input
+              value={businessInfo.connections.twitter}
+              className="input conneciton-input"
+              id="twitter"
+              type="url"
+              placeholder="https://twitter.com/cooche"
+              onChange={connectionsOnChangeHandle}
+            />
+          </Tippy>
         </div>
       </div>
     </Wrapper>

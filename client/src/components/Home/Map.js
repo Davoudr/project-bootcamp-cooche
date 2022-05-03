@@ -212,7 +212,6 @@ const Map = () => {
       activeItem[0].classList.remove("active");
     }
     ev.target.classList.add("active");
-    console.log(ev.target);
   };
 
   return (
@@ -243,7 +242,6 @@ const Map = () => {
                     className="title"
                     id={`link-${store.properties.id}`}
                   >
-                    {" "}
                     <div className="profile">
                       {darkMode ? (
                         <BsInfoCircleFill size="2rem" />
@@ -364,7 +362,6 @@ const Wrapper = styled.div`
     border-radius: var(--border-radius8);
     font-weight: normal;
     &:active {
-      box-shadow: var(--box-shadow-1);
     }
   }
   .profile {
@@ -376,12 +373,18 @@ const Wrapper = styled.div`
       transform: scale(1.2);
       color: var(--c61);
     }
+    &:active{transform: scale(1.1);
+    }
   }
   .listings .item .title small {
   }
 
   .listings .item.active .title,
-  .listings .item .title.active,
+  .listings .item .title.active {
+    color: var(--c21);
+    background-color: var(--c41);
+    box-shadow: var(--box-shadow-6);
+  }
   .listings .item .title:hover {
     color: var(--c21);
     background-color: var(--c41);

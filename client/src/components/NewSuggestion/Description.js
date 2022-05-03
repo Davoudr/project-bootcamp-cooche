@@ -5,7 +5,7 @@ const Description = () => {
   const {
     businessInfo,
     darkMode,
-    setBusinessInfo,
+
     newSuggestionOnChangeHandle,
   } = useContext(AppContext);
   return (

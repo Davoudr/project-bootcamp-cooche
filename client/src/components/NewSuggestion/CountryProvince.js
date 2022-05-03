@@ -7,41 +7,30 @@ import {
   nationalitiesArr,
   languagesArr,
 } from "../../other/variables";
+import Select from "react-select";
 // ---------------------------------------------------------
 const CountryProvince = () => {
   const {
+    countryProvincOnChangeHandle,
     businessInfo,
     capitalizeFirstLetter,
-    setBusinessInfo,
+
     // ---------------
   } = useContext(AppContext);
-
-  const CountryProvincOnChangeHandle = (ev) => {
-    let theKey = ev.target.id;
-    let theValue = ev.target.value;
-    setBusinessInfo({
-      ...businessInfo,
-      address: {
-        ...businessInfo.address,
-        [theKey]: theValue,
-      },
-    });
-  };
 
   return (
     <Wrapper>
       <div className="cp country-box">
-        <lable form="business-form" htmlFor="country" className="cp-lable">
+        <label form="business-form" htmlFor="country" className="cp-label">
           Country
-        </lable>
+        </label>
         <select
           value={businessInfo.address.country}
-          onChange={CountryProvincOnChangeHandle}
+          onChange={countryProvincOnChangeHandle}
           id="country"
           className="country-input cp-input"
         >
           {["-----Sellect-----", ...Object.keys(locationList).sort()].map(
-            //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
             (ele, index) => {
               return (
                 <option key={index} value={ele} className="option">
@@ -53,29 +42,27 @@ const CountryProvince = () => {
         </select>
       </div>
       <div className="cp province-box">
-        <lable form="business-form" htmlFor="province" className="cp-lable">
+        <label form="business-form" htmlFor="province" className="cp-label">
           Province
-        </lable>
+        </label>
         <select
           value={businessInfo.address.province}
-          onChange={CountryProvincOnChangeHandle}
+          onChange={countryProvincOnChangeHandle}
           id="province"
           className="province-input cp-input"
         >
-          {businessInfo.address.country !== "-----Sellect-----" ? (
+          {businessInfo.address.country.length > 0 &&
+          businessInfo.address.country !== "-----Sellect-----" ? (
             [
               "-----Sellect-----",
               ...locationList[`${businessInfo.address.country}`].provinces,
-            ].map(
-              //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-              (ele, index) => {
-                return (
-                  <option key={index} value={ele} className="option">
-                    {capitalizeFirstLetter(ele)}
-                  </option>
-                );
-              }
-            )
+            ].map((ele, index) => {
+              return (
+                <option key={index} value={ele} className="option">
+                  {capitalizeFirstLetter(ele)}
+                </option>
+              );
+            })
           ) : (
             <option value={"-----Sellect-----"} className="option">
               Select Country
@@ -97,7 +84,7 @@ const Wrapper = styled.div`
   .cp-input {
     width: 15rem;
   }
-  .cp-lable {
+  .cp-label {
     width: 3rem;
   }
   .cp,

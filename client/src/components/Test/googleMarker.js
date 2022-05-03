@@ -36,7 +36,6 @@ const MapComponent = () => {
   // -------------------------------- storing location lat-lng
   const onClickHandle = (map, ev) => {
     setSelectedLocation({ lat: map.lat, lng: map.lng });
-    console.log(selectedLocation);
   };
   // -------------------------------- creating marker on selected location
   useEffect(() => {

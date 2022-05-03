@@ -13,7 +13,8 @@ import { BiSearchAlt } from "react-icons/bi";
 import SearchIcon from "./SearchIcon";
 // -----------------------------------------------------
 const Filter = () => {
-  const { capitalizeFirstLetter ,filterValue, setFilterValue} = useContext(AppContext);
+  const { capitalizeFirstLetter, filterValue, setFilterValue } =
+    useContext(AppContext);
   const filterOnChangeHandle = (ev) => {
     let theKey = ev.target.id;
     let theValue = ev.target.value;
@@ -23,45 +24,70 @@ const Filter = () => {
   return (
     <Wrapper>
       <div id="cover">
-        <form method="get" action="">
-          <div className="tb">
-            <div className="td">
-              <form id="filter-form" className="filter-form">
-                <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="category" className="lable">
-                    Category
-                  </lable>
-                  <select
-                    value={filterValue.category}
-                    onChange={filterOnChangeHandle}
-                    id="category"
-                    className="category-input input"
-                  >
-                    {["-----Sellect-----", ...categoriesArr.sort()].map(
-                      //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-                      (ele, index) => {
-                        return (
-                          <option key={index} value={ele} className="option">
-                            {capitalizeFirstLetter(ele)}
-                          </option>
-                        );
-                      }
-                    )}
-                  </select>
-                </div>
-                <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="country" className="lable">
-                    Country
-                  </lable>
-                  <select
-                    value={filterValue.country}
-                    onChange={filterOnChangeHandle}
-                    id="country"
-                    className="country-input input"
-                  >
-                    {[
+        <div className="tb">
+          <div className="td">
+            <form id="filter-form" className="filter-form">
+              <div className="filter-and-label">
+                <label from="filter-form" htmlFor="category" className="label">
+                  Category
+                </label>
+                <select
+                  value={filterValue.category}
+                  onChange={filterOnChangeHandle}
+                  id="category"
+                  className="category-input input"
+                >
+                  {["-----Sellect-----", ...categoriesArr.sort()].map(
+                    //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
+                    (ele, index) => {
+                      return (
+                        <option key={index} value={ele} className="option">
+                          {capitalizeFirstLetter(ele)}
+                        </option>
+                      );
+                    }
+                  )}
+                </select>
+              </div>
+              <div className="filter-and-label">
+                <label from="filter-form" htmlFor="country" className="label">
+                  Country
+                </label>
+                <select
+                  value={filterValue.country}
+                  onChange={filterOnChangeHandle}
+                  id="country"
+                  className="country-input input"
+                >
+                  {[
+                    "-----Sellect-----",
+                    ...Object.keys(locationList).sort(),
+                  ].map(
+                    //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
+                    (ele, index) => {
+                      return (
+                        <option key={index} value={ele} className="option">
+                          {capitalizeFirstLetter(ele)}
+                        </option>
+                      );
+                    }
+                  )}
+                </select>
+              </div>
+              <div className="filter-and-label">
+                <label from="filter-form" htmlFor="province" className="label">
+                  Province
+                </label>
+                <select
+                  value={filterValue.province}
+                  onChange={filterOnChangeHandle}
+                  id="province"
+                  className="province-input input"
+                >
+                  {filterValue.country ? (
+                    [
                       "-----Sellect-----",
-                      ...Object.keys(locationList).sort(),
+                      ...locationList[`${filterValue.country}`].provinces,
                     ].map(
                       //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
                       (ele, index) => {
@@ -71,88 +97,65 @@ const Filter = () => {
                           </option>
                         );
                       }
-                    )}
-                  </select>
-                </div>
-                <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="province" className="lable">
-                    Province
-                  </lable>
-                  <select
-                    value={filterValue.province}
-                    onChange={filterOnChangeHandle}
-                    id="province"
-                    className="province-input input"
-                  >
-                    {filterValue.country ? (
-                      [
-                        "-----Sellect-----",
-                        ...locationList[`${filterValue.country}`].provinces,
-                      ].map(
-                        //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-                        (ele, index) => {
-                          return (
-                            <option key={index} value={ele} className="option">
-                              {capitalizeFirstLetter(ele)}
-                            </option>
-                          );
-                        }
-                      )
-                    ) : (
-                      <option value={"-----Sellect-----"} className="option">
-                        Select Country
-                      </option>
-                    )}
-                  </select>
-                </div>
-                <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="language" className="lable">
-                    Language
-                  </lable>
-                  <select
-                    value={filterValue.language}
-                    onChange={filterOnChangeHandle}
-                    id="language"
-                    className="language-input input"
-                  >
-                    {["-----Sellect-----", ...languagesArr].map(
-                      //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-                      (ele, index) => {
-                        return (
-                          <option key={index} value={ele} className="option">
-                            {capitalizeFirstLetter(ele)}
-                          </option>
-                        );
-                      }
-                    )}
-                  </select>
-                </div>
-                <div className="filter-and-lable">
-                  <lable from="filter-form" htmlFor="nationality" className="lable">
-                    Nationality
-                  </lable>
-                  <select
-                    value={filterValue.nationality}
-                    onChange={filterOnChangeHandle}
-                    id="nationality"
-                    className="nationality-input input"
-                  >
-                    {nationalitiesArr.map((ele, index) => {
+                    )
+                  ) : (
+                    <option value={"-----Sellect-----"} className="option">
+                      Select Country
+                    </option>
+                  )}
+                </select>
+              </div>
+              <div className="filter-and-label">
+                <label from="filter-form" htmlFor="language" className="label">
+                  Language
+                </label>
+                <select
+                  value={filterValue.language}
+                  onChange={filterOnChangeHandle}
+                  id="language"
+                  className="language-input input"
+                >
+                  {["-----Sellect-----", ...languagesArr].map(
+                    //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
+                    (ele, index) => {
                       return (
                         <option key={index} value={ele} className="option">
                           {capitalizeFirstLetter(ele)}
                         </option>
                       );
-                    })}
-                  </select>
-                </div>
-              </form>
-            </div>
-            <div className="td" id="s-cover">
-              <SearchIcon/>
-            </div>
+                    }
+                  )}
+                </select>
+              </div>
+              <div className="filter-and-label">
+                <label
+                  from="filter-form"
+                  htmlFor="nationality"
+                  className="label"
+                >
+                  Nationality
+                </label>
+                <select
+                  value={filterValue.nationality}
+                  onChange={filterOnChangeHandle}
+                  id="nationality"
+                  className="nationality-input input"
+                >
+                  {nationalitiesArr.map((ele, index) => {
+                    return (
+                      <option key={index} value={ele} className="option">
+                        {capitalizeFirstLetter(ele)}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </form>
           </div>
-        </form>
+          <div className="td" id="s-cover">
+            <SearchIcon />
+          </div>
+        </div>
       </div>
     </Wrapper>
   );
@@ -164,9 +167,9 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-.search{
-  size: 5rem
-}
+  .search {
+    size: 5rem;
+  }
   .filter-form {
     display: flex;
     justify-content: center;
@@ -179,14 +182,14 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
   }
-  .filter-and-lable {
+  .filter-and-label {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
   }
   .input,
-  .lable {
+  .label {
     height: 2.5rem;
     width: 12rem;
     display: flex;

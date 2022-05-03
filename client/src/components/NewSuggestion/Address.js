@@ -59,9 +59,9 @@ const Address = () => {
         <CountryProvince />
       </div>
       <div className="tool-container">
-        <lable form="business-form" htmlFor="address" className="address-lable">
+        <label form="business-form" htmlFor="address" className="address-label">
           Address
-        </lable>
+        </label>
         {addressMethod === "Google-Finder" ? (
           <GooglePlacesAutocomplete />
         ) : (
@@ -77,11 +77,11 @@ export default Address;
 const Div = styled.div`
   width: 100%;
   padding: 2rem;
-  .address-lable {
+  .address-label {
     width: 100%;
     text-align: left;
     display: block;
-    margin: 0.7rem 0 1rem ;
+    margin: 0.7rem 0 1rem;
     font-size: var(--font-size-3);
   }
   .country-province {
@@ -94,7 +94,6 @@ const Div = styled.div`
     background-color: transparent;
   }
   .tool-container {
-
     width: 100%;
   }
   .address-method {

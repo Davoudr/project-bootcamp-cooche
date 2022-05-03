@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
 import { useState } from "react";
 import usePersistedSessionState from "../hook/usePersistedSessionState";
 import usePersistedLocalState from "../hook/usePersistedLocalState";
@@ -33,6 +33,14 @@ export const AppProvider = ({ children }) => {
         allElements[i].classList.add("dark");
       }
     }
+  };
+  // ====================================================================== to capitalize strings
+  //  for react-Select, the event is an arr of objs, so we need to retrive the value from these objs
+  const reactSelectToValue = (ev) => {
+    let theValue = ev.map((ele) => {
+      return ele.value;
+    });
+    return theValue;
   };
   // ====================================================================== to capitalize strings
   // ---------------------------------------------
@@ -107,32 +115,179 @@ export const AppProvider = ({ children }) => {
   // ------------------------------------------/dashboard/new-suggestion/-------------------------------------------
   // ===============================================================================================================
   // ---------------------------------------------
-  // to avoid loosing data in case of err and missing form-field-data, usePersistedSessionState is used and will be cleard by each submit or clear button
-  const [businessInfo, setBusinessInfo] = usePersistedSessionState(
-    {
-      category: "",
-      name: "",
-      nationality: "",
+  // for all inputs in new suggestion form
+
+  const reducer = (businessInfo, action) => {
+    let theKey = "";
+    let theValue = "";
+    switch (action.type) {
+      // ---------------------
+      case "new-suggestion-normal-handleChange":
+        theKey = action.event.target.id;
+        theValue =
+          action.event.target.value === "-----Sellect-----"
+            ? ""
+            : action.event.target.value;
+        return {
+          ...businessInfo,
+          [theKey]: theValue,
+        };
+      // ---------------------
+      case "new-suggstion-Object-inputs-handleChange":
+        theKey = action.event.target.id;
+        theValue =
+          action.event.target.value === "-----Sellect-----"
+            ? ""
+            : action.event.target.value;
+        return {
+          ...businessInfo,
+          [action.objectKey]: {
+            ...businessInfo[action.objectKey],
+            [theKey]: theValue,
+          },
+        };
+      // ---------------------
+      case "new-suggestion-laguage-input-handleChange":
+        return {
+          ...businessInfo,
+          languages: reactSelectToValue(action.event), //  for react-Select, the event is an arr of objs, so we need to retrive the value from these objs
+        };
+      // ---------------------
+      case "new-suggstion-reset-countryProvince": // in case of selecting default value for country, we should empty both country and province
+        return {
+          ...businessInfo,
+          address: {
+            ...businessInfo.address,
+            country: "",
+            province: "",
+          },
+        };
+      // ---------------------
+      case "new-suggstion-update-form-map":
+        return {
+          ...businessInfo,
+          address: {
+            ...businessInfo.address,
+            address: action.address,
+            lat: action.lat,
+            lng: action.lng,
+          },
+        };
+      case "new-suggstion-clear-data":
+        return {
+          connections: {
+            phone: "",
+            email: "",
+            website: "",
+            facebook: "",
+            instagram: "",
+            twitter: "",
+          },
+          category: "",
+          name: "",
+          nationality: "",
+          description: "",
+          languages: [],
+          address: {
+            address: "",
+            lat: "",
+            lng: "",
+            country: "",
+            province: "",
+          },
+        };
+      default:
+        console.log("Error in new-suggestion-form reducer switch!");
+        throw new Error(
+          `${action.type} is an unrecognized action in businessInfoDispatch!`
+        );
+    }
+  };
+  // -------------------------------------------------reducer-acitons
+
+  // language sellect value
+  // for new-suggestion/information/
+  // using react-select needs different way than other inputs
+  // to save the value; so better to use another state to save it for now
+  // along with updating the main state (businessInfo) oin the fucntion of onChangeHandle
+  const [languagesValue, setLanguagesValue] = useState(null);
+  // -----------
+  const languagesHandleChange = (data) => {
+    businessInfoDispatch({
+      type: "new-suggestion-laguage-input-handleChange",
+      event: data,
+    });
+    // this is for temporary saving the input; we can not use businessInfo to do this
+    // bcuz react-select event is an array of objs
+    setLanguagesValue(data);
+  };
+  // ---------------------
+  //  0n-change handle for inputs in nuew-suggestion form of /dashboard
+  const newSuggestionOnChangeHandle = (data) => {
+    businessInfoDispatch({
+      type: "new-suggestion-normal-handleChange",
+      event: data,
+    });
+  };
+  // ---------------------
+  const connectionsOnChangeHandle = (data) => {
+    businessInfoDispatch({
+      type: "new-suggstion-Object-inputs-handleChange",
+      objectKey: "connections",
+      event: data,
+    });
+  };
+  // ---------------------
+  const countryProvincOnChangeHandle = (data) => {
+    let theKey = data.target.id;
+    let theValue = data.target.value;
+    switch (true) {
+      //  in case of selecting the default value of country, we need to empty province-value
+      case theKey === "country" && theValue === "-----Sellect-----":
+        businessInfoDispatch({
+          type: "new-suggstion-reset-countryProvince",
+        });
+        break;
+      default:
+        businessInfoDispatch({
+          type: "new-suggstion-Object-inputs-handleChange",
+          objectKey: "address",
+          event: data,
+        });
+        break;
+    }
+  };
+  // ---------------------
+  const addressFromMapOnChangeHandle = (data) => {
+    businessInfoDispatch({
+      type: "new-suggstion-update-form-map",
+      ...data,
+    });
+  };
+  const [businessInfo, businessInfoDispatch] = useReducer(reducer, {
+    connections: {
       phone: "",
       email: "",
-      website: "",
-      facebook: "",
-      instagram: "",
-      twitter: "",
-      description: "",
-      languages: [],
-      address: { address: "", lat: "", lng: "", country: "", province: "" },
+      website: "https://www.",
+      facebook: "https://www.facebook.com/",
+      instagram: "https://www.instagram.com/",
+      twitter: "https://twitter.com/",
     },
-    "businessForm"
-  );
-
-  // ---------------------------------------------
-  //  0n-change handle for inputs in nuew-suggestion form of /dashboard
-  const newSuggestionOnChangeHandle = (ev) => {
-    let theKey = ev.target.id;
-    let theValue = ev.target.value;
-    setBusinessInfo({ ...businessInfo, [theKey]: theValue });
+    category: "",
+    name: "",
+    nationality: "",
+    description: "",
+    languages: [],
+    address: { address: "", lat: "", lng: "", country: "", province: "" },
+  });
+  // -----------------
+  const newSuggestionResetFormHandle = () => {
+    businessInfoDispatch({
+      type: "new-suggstion-clear-data",
+    });
   };
+  // ---------------------------------------------
+  console.log(businessInfo);
   // ---------------------------------------------
   // to switch between tabs in dashboard/new-suggestion
   const [pages, setPages] = useState("infoTab");
@@ -144,12 +299,7 @@ export const AppProvider = ({ children }) => {
     connections: false,
   });
   // ---------------------------------------------
-  // language sellect value
-  // for new-suggestion/information/
-  // using react-select needs different way than other inputs
-  // to save the value; so better to use another state to save it for now
-  // along with updating the main state (businessInfo) oin the fucntion of onChangeHandle
-  const [languagesValue, setLanguagesValue] = useState([]);
+
   // ---------------------------------------------
 
   // ---------------------------------------------
@@ -169,9 +319,15 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        newSuggestionResetFormHandle,
+        newSuggestionOnChangeHandle,
+        addressFromMapOnChangeHandle,
+        countryProvincOnChangeHandle,
+        languagesHandleChange,
+        connectionsOnChangeHandle,
         filterValue,
         setFilterValue,
-        newSuggestionOnChangeHandle,
+
         nextBtnHandle,
         // ---------------
 
@@ -188,7 +344,7 @@ export const AppProvider = ({ children }) => {
         setPages,
         // ---------------
         businessInfo,
-        setBusinessInfo,
+        businessInfoDispatch,
         // ---------------
         capitalizeFirstLetterInArr,
         capitalizeFirstLetter,

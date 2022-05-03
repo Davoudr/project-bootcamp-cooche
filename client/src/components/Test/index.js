@@ -36,9 +36,7 @@ const MapComponent = () => {
       setZoom(map.current.getZoom().toFixed(2));
     });
     map.current.on("click", function (e) {
-      console.log(e.lngLat)
       var coordinates = e.lngLat;
-      console.log(coordinates);
       new mapboxgl.Popup()
         .setLngLat(e.lngLat)
         .setHTML("you clicked here: <br/>" + coordinates)

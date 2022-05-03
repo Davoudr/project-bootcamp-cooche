@@ -63,6 +63,7 @@ export default createGlobalStyle`
 		--box-shadow-3: 0px 10px 15px -3px rgba(0,0,0,0.3);
 		--box-shadow-4: 0px 10px 15px -3px rgba(0,0,0,0.4);
 		--box-shadow-5: 0px 10px 15px -3px rgba(0,0,0,0.5);
+		--box-shadow-6: 5px 5px 5px -3px rgba(0,0,0,0.5);
         /* ------dashboard------- */
 		
 

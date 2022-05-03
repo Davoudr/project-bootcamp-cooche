@@ -18,29 +18,14 @@ import AsyncSelect from "react-select/async";
 const InformationTab = () => {
   // ========================================================================
   const {
+    languagesHandleChange,
     newSuggestionOnChangeHandle,
     languagesValue,
     setLanguagesValue,
-    pages,
-    setPages,
     darkMode,
-    validationErr,
-    setvalidationErr,
     businessInfo,
-    setBusinessInfo,
-
-    setDarkMode,
-    updateMode,
     nextBtnHandle,
-    capitalizeFirstLetterInArr,
     capitalizeFirstLetter,
-    arrOfStrToLowerCase,
-    loading,
-    setLoading,
-    message,
-    setMessage,
-    userSession,
-    setUserSession,
   } = useContext(AppContext);
 
   // ------------------------------------------------------input : language
@@ -49,22 +34,7 @@ const InformationTab = () => {
     return { label: capitalizeFirstLetter(lang), value: lang };
   });
   const animatedComponents = makeAnimated();
-  // ----------------------func to get language-input value
-  const reactSelectToValue = (ev) => {
-    let theValue = ev.map((ele) => {
-      return ele.value;
-    });
-    return theValue;
-  };
-  // ----------------------handleChange
-  // we can not retrive the react-select event value  as we do for other inputs,
-  // so we need to have this func as a seperate handleChange
-  const languagesHandleChange = (ev) => {
-    // this is for temporary saving the input
-    setLanguagesValue(ev);
-    // this is for updating the main state for bussiness
-    setBusinessInfo({ ...businessInfo, languages: reactSelectToValue(ev) });
-  };
+
 
   return (
     <Wrapper>
@@ -107,16 +77,13 @@ const InformationTab = () => {
           id="category"
           className="detail-input input"
         >
-          {["-----Sellect-----", ...categoriesArr].map(
-            //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-            (ele, index) => {
-              return (
-                <option key={index} value={ele} className="detail-input input">
-                  {capitalizeFirstLetter(ele)}
-                </option>
-              );
-            }
-          )}
+          {["-----Sellect-----", ...categoriesArr].map((ele, index) => {
+            return (
+              <option key={index} value={ele} className="detail-input input">
+                {capitalizeFirstLetter(ele)}
+              </option>
+            );
+          })}
         </select>
       </div>
 
@@ -134,16 +101,13 @@ const InformationTab = () => {
           id="nationality"
           className=" detail-input input"
         >
-          {["-----Sellect-----", ...nationalitiesArr].map(
-            //-----Sellect----- has been considerd like no answer; if you edit it, validation should be edited
-            (ele, index) => {
-              return (
-                <option key={index} value={ele} className=" detail-input input">
-                  {capitalizeFirstLetter(ele)}
-                </option>
-              );
-            }
-          )}
+          {["-----Sellect-----", ...nationalitiesArr].map((ele, index) => {
+            return (
+              <option key={index} value={ele} className=" detail-input input">
+                {capitalizeFirstLetter(ele)}
+              </option>
+            );
+          })}
         </select>
       </div>
 

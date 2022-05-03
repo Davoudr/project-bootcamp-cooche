@@ -13,6 +13,7 @@ import Description from "./Description";
 const NewSuggestion = () => {
   // ====================================================================================useContext
   const {
+    newSuggestionResetFormHandle,
     newSuggestionOnChangeHandle,
     languagesValue,
     setLanguagesValue,
@@ -21,7 +22,6 @@ const NewSuggestion = () => {
     pages,
     setPages,
     businessInfo,
-    setBusinessInfo,
     darkMode,
     loading,
     setLoading,
@@ -37,70 +37,71 @@ const NewSuggestion = () => {
     switch (true) {
       // -------------------------first-tab validation
       case businessInfo.name.length === 0 ||
-        businessInfo.category === "-----Sellect-----" ||
-        businessInfo.nationality === "-----Sellect-----" ||
+        businessInfo.category.length === 0 ||
+        businessInfo.nationality.length === 0 ||
         languagesValue.length === 0:
         setMessage({
           status: true,
           title: "Missing Information",
           content:
-            "Please note that all the fields which have red-asterisk, should be filled! You can choose INFORMATION tab from laft menu to go back and complete missing informations; Thank You!",
+            "Please note that all the fields which have red-asterisk in INFORMATION tab, should be filled!",
           btnText: "Ok",
         });
         setLoading(false); // for turning loading status of submint button
-        setInterval(() => {
+        setTimeout(() => {
           setvalidationErr({
             information: true,
             address: false,
             connections: false,
           });
-        }, 3000); // for visual effect of error
+        }, 2000); // for visual effect of error
         break;
       // -------------------------second-tab validation
-      case businessInfo.address.country === "-----Sellect-----" ||
-        businessInfo.address.province === "-----Sellect-----":
+      case businessInfo.address.country.length === 0 ||
+        businessInfo.address.province.length === 0:
         setMessage({
           status: true,
           title: "Missing Information",
           content:
-            "Please note that for the address, filling the country and the province is requried! You can choose ADDRESS tab from laft menu to go back and complete missing informations; Thank You!",
+            "Please note that for the address, filling the country and the province is requried!",
           btnText: "Ok",
         });
         setLoading(false); // for turning loading status of submint button
-        setInterval(() => {
+        setTimeout(() => {
           setvalidationErr({
             information: false,
             address: true,
             connections: false,
           });
-        }, 3000); // for visual effect of error
+        }, 2000); // for visual effect of error
         break;
       // -------------------------third-tab validation
-      case businessInfo.phone.length === 0 &&
-        businessInfo.email.length === 0 &&
-        businessInfo.website.length === 0 &&
-        businessInfo.facebook.length === 0 &&
-        businessInfo.instagram.length === 0 &&
-        businessInfo.twitter.length === 0:
+      case businessInfo.connections.phone.length === 0 &&
+        businessInfo.connections.email.length === 0 &&
+        businessInfo.connections.website.length === 0 &&
+        businessInfo.connections.facebook.length === 0 &&
+        businessInfo.connections.instagram.length === 0 &&
+        businessInfo.connections.twitter.length === 0:
         setMessage({
           status: true,
           title: "Missing Information",
           content:
-            "Please provide at least one option for connecting to this bussiness! You can choose CONNECTION tab from to go back and complete missing informations; Thank You!",
+            "Please provide at least one option for connecting to this bussiness!",
           btnText: "Ok",
         });
         setLoading(false); // for turning loading status of submint button
-        setInterval(() => {
+        setTimeout(() => {
           setvalidationErr({
             information: false,
             address: false,
             connections: true,
           });
-        }, 3000); // for visual effect of error
+        }, 2000); // for visual effect of error
         break;
       default:
         setvalidationErr({
           information: false,
+          address: false,
           connections: false,
         });
         // -------------------------till here data is validated! now it is going to be added to db
@@ -159,26 +160,7 @@ const NewSuggestion = () => {
             // ------------------------proper action based on server-res
             if (data.status === 201) {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
-              setBusinessInfo({
-                category: "",
-                name: "",
-                nationality: "",
-                phone: "",
-                email: "",
-                website: "",
-                facebook: "",
-                instagram: "",
-                twitter: "",
-                description: "",
-                languages: [],
-                address: {
-                  address: "",
-                  lat: "",
-                  lng: "",
-                  country: "",
-                  province: "",
-                },
-              });
+              newSuggestionResetFormHandle();
               ev.target.reset();
               setMessage({
                 status: true,
@@ -203,20 +185,7 @@ const NewSuggestion = () => {
   // ------------------------------------------------------clear-form button handle
   const handleClrearForm = (ev) => {
     document.getElementById("business-form").reset();
-    setBusinessInfo({
-      category: "",
-      name: "",
-      nationality: "",
-      phone: "",
-      email: "",
-      website: "",
-      facebook: "",
-      instagram: "",
-      twitter: "",
-      description: "",
-      languages: [],
-      address: { address: "", lat: "", lng: "", country: "", province: "" },
-    });
+    newSuggestionResetFormHandle();
     setLanguagesValue([]);
   };
   // ======================================================================================
@@ -330,7 +299,7 @@ const Wrapper = styled.div`
     align-items: stretch;
     flex-direction: column;
   }
-  .lable {
+  .label {
     text-align: left;
   }
   .input {

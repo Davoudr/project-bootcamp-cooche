@@ -20,7 +20,6 @@ const handleBusinessAdd = async (req, res, dbName) => {
     //
     // ------------------------------------adding bussiness to db
     result = await db.collection("businesses").insertOne(businessObj);
-    console.log(result)
     // -------------------------------------sending proper res to FE base on the result from server
     if (result.acknowledged === true) {
       res.status(201).json({

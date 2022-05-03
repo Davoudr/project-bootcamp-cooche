@@ -11,9 +11,9 @@ const MapBoxAddress = () => {
   const [lng, setLng] = useState(-70.9);
   const [lat, setLat] = useState(42.35);
   const [zoom, setZoom] = useState(9);
-  const {businessInfo,setBusinessInfo,
+  const {
+    addressFromMapOnChangeHandle,
     darkMode,
-
 
     // ---------------
   } = useContext(AppContext);
@@ -120,18 +120,14 @@ const MapBoxAddress = () => {
         mapboxgl: mapboxgl,
       });
       geocoder.on("result", function (result) {
-        setBusinessInfo({
-          ...businessInfo,
-          address: {
-            ...businessInfo.address,
-            address: result.result.place_name,
-            lat: result.result.center[0],
-            lng: result.result.center[1],
-          },
+        addressFromMapOnChangeHandle({
+          address: result.result.place_name,
+          lat: result.result.center[0],
+          lng: result.result.center[1],
         });
       });
       geocoder.on("click", function (results) {
-        console.log(results);
+        // console.log(results);
       });
 
       document

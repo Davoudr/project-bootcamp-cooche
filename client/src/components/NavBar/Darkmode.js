@@ -8,13 +8,6 @@ import useSound from "use-sound";
 import clickSound from "../../assets/sound/click.mp3";
 const Darkmode = () => {
   const {
-    updateMode,
-    message,
-    setMessage,
-    userSession,
-    setUserSession,
-    passwordGenerator,
-    setLogInMethod,
     darkMode,
     setDarkMode,
   } = useContext(AppContext);

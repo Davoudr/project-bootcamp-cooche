@@ -22,7 +22,6 @@ const handleBusinessGetByCategory = async (req, res, dbName) => {
       .collection("businesses")
       .find({category : request})
       .toArray();
-      console.log(foundByCategory)
     // ------------------------------------sending proper res based on db-result
     if (foundByCategory.length === 0) {
       res.status(400).json({

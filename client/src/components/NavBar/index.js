@@ -157,27 +157,6 @@ const NavBar = () => {
 export default NavBar;
 // ----------------------------------------------------------------
 
-const ModeBtn = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  background-color: transparent;
-  box-shadow: none;
-  padding: none;
-
-  .mode-active {
-    display: none;
-  }
-
-  &:active {
-    background-color: transparent;
-    box-shadow: none;
-    transform: translate(1);
-    transform: rotate(60deg);
-  }
-`;
-
 const Content = styled.div`
   display: flex;
   justify-content: space-between;
