@@ -61,6 +61,8 @@ A hub to create profile for businesses or look for them; considering their geo-l
                               address: "",
                               lat: "",
                               lng: "",
+                              country: "",
+                              province: "",
                         },
                   connections: {
                               phone: "",
@@ -89,7 +91,7 @@ A hub to create profile for businesses or look for them; considering their geo-l
             }
 
 ---
-
+## Endpoints
 -      /user/add ----> POST ---> req.body  {
             username: ,
             email: ,
@@ -101,6 +103,19 @@ A hub to create profile for businesses or look for them; considering their geo-l
       };
 
 \*base64 ---> if pic-value is base64-binary (true) or not and is a url (false) // this key won't save in user-colleciton in db ; this key is included in order to clarifying for BE if pic-value is url or base64 (if it should be converted to url or not)
+
+---
+
+-      /user/sign-in ----> POST ---> req.body  {
+               email: "",
+               password: "",
+responses: 
+
+      -"There is no user associated with this E-mail address!"
+
+      -"Wrong password has been inserted!"
+
+      -"User has been found successfully!", user: userObjFE,
 
 ---
 
