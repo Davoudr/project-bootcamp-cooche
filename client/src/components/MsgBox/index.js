@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import { AppContext } from "../../other/AppContext";
+import { keyframes } from "styled-components";
 // -----------------------------------------------
 const MsgBox = () => {
   // -----------------------------------------------
@@ -23,7 +24,9 @@ const MsgBox = () => {
         <div className="msg-box" onClick={boxHandle}>
           <span className="title text">{message.title}</span>
           <p className="text msg">{message.content}</p>
-          <button className="btn" onClick={btnHandle}>{message.btnText}</button>
+          <button className="btn" onClick={btnHandle}>
+            {message.btnText}
+          </button>
         </div>
       )}
     </Wrapper>
@@ -31,12 +34,30 @@ const MsgBox = () => {
 };
 export default MsgBox;
 // -----------------------------------------------
+const theAnimation = keyframes`
+    0% { 
+    opacity: 0;
+    transform: scale(1);
+        } 
+    33% {
+    transform: scale(1.04);
+    }
+    66% {
+    transform: scale(0.98);
+    }
+    100% {
+    opacity: 100%;
+    transform: scale(1);
+    }
+`;
 const Wrapper = styled.button`
-.btn{
-  color: var(--c13);
-  padding: 0.5rem 2rem;
-  font-weight: bold;
-}
+  animation: ${theAnimation};
+  animation-duration: 250ms;
+  .btn {
+    color: var(--c13);
+    padding: 0.5rem 2rem;
+    font-weight: bold;
+  }
   &:active {
     box-shadow: none;
     background-color: transparent;
@@ -78,10 +99,8 @@ const Wrapper = styled.button`
     border-radius: 12px;
     border: 1px solid rgba(209, 213, 219, 0.3);
     display: flex;
-
     justify-content: space-around;
     align-items: center;
-    /* flex-flow: column; */
     flex-direction: column;
   }
 `;

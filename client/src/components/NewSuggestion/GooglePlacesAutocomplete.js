@@ -10,9 +10,7 @@ import { useState } from "react";
 import styled from "styled-components";
 const GooglePlacesAutocomplete = () => {
   const {
-    addressFromMapOnChangeHandle,
-    businessInfo,
-  
+    businessInfoReducerActions: { addressFromMapOnChangeHandle },
     darkMode,
     // ---------------
   } = useContext(AppContext);
@@ -28,7 +26,6 @@ const GooglePlacesAutocomplete = () => {
   const setGoogleAddressHandleSelect = async (ev) => {
     const results = await geocodeByAddress(ev); // suggestion detail
     const latLng = await getLatLng(results[0]); // suggestion ll
-
     addressFromMapOnChangeHandle({
       address: results[0].formatted_address,
       lat: latLng.lat,

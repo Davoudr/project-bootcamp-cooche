@@ -12,72 +12,31 @@ import icon from "../../assets/img/location-icon-1.png";
 import Select from "react-select";
 import { BsInfoCircleFill, BsInfoCircle } from "react-icons/bs";
 import { IoSchoolOutline, IoSchool } from "react-icons/io";
-
+import Loading from "../Loading";
+import { useSpring, animated } from "react-spring";
+import Text from "./Text";
+import { keyframes } from "styled-components";
 const Map = () => {
   const {
+    capitalizeFirstLetter,
+    loading,
+    setLoading,
+    allServices,
+    setAllServices,
     filterValue,
     darkMode,
-
-  
 
     // ---------------
   } = useContext(AppContext);
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOXGL_ACCESSTOKEN;
   // ----------------------------------------------
   const mapContainer = useRef(null);
-  const searchContainer = useRef(null);
   const map = useRef(null);
-
-  let stores = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.034084142948, 38.909671288923],
-        },
-        properties: {
-          phoneFormatted: "(202) 234-7336",
-          phone: "2022347336",
-          address: "1471 P St NW",
-          city: "Washington DC",
-          country: "United States",
-          crossStreet: "at 15th St NW",
-          postalCode: "20005",
-          state: "D.C.",
-        },
-      },
-      {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [-77.049766, 38.900772],
-        },
-        properties: {
-          phoneFormatted: "(202) 507-8357",
-          phone: "2025078357",
-          address: "2221 I St NW",
-          city: "Washington DC",
-          country: "United States",
-          crossStreet: "at 22nd St NW",
-          postalCode: "20037",
-          state: "D.C.",
-        },
-      },
-    ],
-  };
-
-  /* Assign a unique ID to each store */
-  stores.features.forEach(function (store, i) {
-    store.properties.id = i;
-  });
-
   // --------------------------
   function flyToStore(currentFeature) {
     map.current.flyTo({
       center: currentFeature.geometry.coordinates,
-      zoom: 15,
+      zoom: 17,
     });
   }
 
@@ -85,19 +44,18 @@ const Map = () => {
     const popUps = document.getElementsByClassName("mapboxgl-popup");
     /** Check if there is already a popup on the map and if so, remove it */
     if (popUps[0]) popUps[0].remove();
-
     const popup = new mapboxgl.Popup({ closeOnClick: false })
       .setLngLat(currentFeature.geometry.coordinates)
       .setHTML(
-        `<div><h3>Sweetgreen</h3><h4>${currentFeature.properties.address}</h4></div>`
+        `<div><h3>${currentFeature.properties.name}</h3><h4>${currentFeature.properties.address}</h4></div>`
       )
       .addTo(map.current);
   }
   // ---------------------------
-
+  console.log("allServices", allServices);
   useEffect(() => {
     // -----------------------------------------------------initializing the map
-    if (!map.current) {
+    if (allServices && !loading) {
       // initialize map only once
       map.current = new mapboxgl.Map({
         container: "map",
@@ -160,23 +118,23 @@ const Map = () => {
 
         map.current.addSource("places", {
           type: "geojson",
-          data: stores,
+          data: allServices,
         });
 
-        stores.features.map((store) => {
-          /* Create a div element for the store. */
+        allServices.features.map((business) => {
+          /* Create a div element for the business. */
           const el = document.createElement("div");
-          /* Assign a unique `id` to the store. */
-          el.id = `marker-${store.properties.id}`;
-          /* Assign the `marker` class to each store-div for styling. */
+          /* Assign a unique `id` to the business. */
+          el.id = `marker-${business.properties.id}`;
+          /* Assign the `marker` class to each business-div for styling. */
           el.className = "marker";
           el.innerHTML = `<img src=${icon}>`;
 
           el.addEventListener("click", (e) => {
             /* Fly to the point */
-            flyToStore(store);
-            /* Close all other popups and display popup for clicked store */
-            createPopUp(store);
+            flyToStore(business);
+            /* Close all other popups and display popup for clicked business */
+            createPopUp(business);
             /* Highlight listing in sidebar */
             const activeItem = document.getElementsByClassName("active");
             e.stopPropagation();
@@ -184,7 +142,7 @@ const Map = () => {
               activeItem[0].classList.remove("active");
             }
             const listing = document.getElementById(
-              `listing-${store.properties.id}`
+              `listing-${business.properties.id}`
             );
             listing.classList.add("active");
           });
@@ -192,18 +150,18 @@ const Map = () => {
           // Create a marker using the div element
           // defined above and add it to the map.
           new mapboxgl.Marker(el, { offset: [0, -23] })
-            .setLngLat(store.geometry.coordinates)
+            .setLngLat(business.geometry.coordinates)
             .addTo(map.current);
         });
       });
     }
-  }, []);
+  }, [allServices, loading]);
 
   const handleLink = (ev) => {
-    stores.features.map((feature) => {
-      if (ev.target.id === `link-${feature.properties.id}`) {
-        flyToStore(feature);
-        createPopUp(feature);
+    allServices.features.map((element) => {
+      if (ev.target.id === `link-${element.properties.id}`) {
+        flyToStore(element);
+        createPopUp(element);
       }
     });
 
@@ -214,65 +172,89 @@ const Map = () => {
     ev.target.classList.add("active");
   };
 
-  return (
-    <Wrapper>
-      <div className="heading">
-        <h1 className="title">
-          The services
-          {filterValue.category && ` related to the  ${filterValue.category},`}
-          {filterValue.province && ` in  ${filterValue.province}`}
-          {filterValue.nationality &&
-            ` provided by ${filterValue.nationality} people`}
-          {filterValue.language &&
-            ` offering customer service in ${filterValue.language}`}
-        </h1>
-      </div>
-      <div className="map-and-side">
-        <div className="sidebar">
-          <div id="listings" className="listings">
-            {stores.features.map((store, index) => {
-              return (
-                <div
-                  key={index}
-                  className="item"
-                  id={`listing-${store.properties.id}`}
-                >
-                  <button
-                    onClick={handleLink}
-                    className="title"
-                    id={`link-${store.properties.id}`}
-                  >
-                    <div className="profile">
-                      {darkMode ? (
-                        <BsInfoCircleFill size="2rem" />
-                      ) : (
-                        <BsInfoCircle size="2rem" />
-                      )}
+  switch (true) {
+    case loading:
+      return (
+        <LoadingDiv>
+          <Text />
+        </LoadingDiv>
+      );
+    case allServices && !loading:
+      return (
+        <Wrapper active={loading}>
+          <div className="map-and-side">
+            <div className="sidebar">
+              <div id="listings" className="listings">
+                {allServices.features.map((businessObj, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="item"
+                      id={`listing-${businessObj.properties.id}`}
+                    >
+                      <button
+                        onClick={handleLink}
+                        className="title"
+                        id={`link-${businessObj.properties.id}`}
+                      >
+                        <div className="profile">
+                          {darkMode ? (
+                            <BsInfoCircleFill size="2rem" />
+                          ) : (
+                            <BsInfoCircle size="2rem" />
+                          )}
+                        </div>
+                        <div>{`${capitalizeFirstLetter(
+                          businessObj.properties.name
+                        )}`}</div>
+                        <div>{`${capitalizeFirstLetter(
+                          businessObj.properties.country
+                        )} ${capitalizeFirstLetter(
+                          businessObj.properties.province
+                        )}`}</div>
+                        <div>
+                          {capitalizeFirstLetter(
+                            businessObj.properties.address
+                          )}
+                        </div>
+                      </button>
                     </div>
-                    {`${store.properties.address}`}
-                    <div>{`${store.properties.city} ${
-                      store.properties.phone && store.properties.phoneFormatted
-                    }`}</div>
-                  </button>
-                </div>
-              );
-            })}
+                  );
+                })}
+              </div>
+            </div>
+            <div id="map" className="map ball" ref={mapContainer}>
+              <span className="shadow"></span>
+            </div>
           </div>
-        </div>
-        <div id="map" className="map ball" ref={mapContainer}>
-          <span className="shadow"></span>
-        </div>
-      </div>
-    </Wrapper>
-  );
+        </Wrapper>
+      );
+    default:
+      return <></>;
+  }
 };
 
 export default Map;
-
+const theAnimation = keyframes`
+    0% { 
+    opacity: 0;
+    margin-top: 10rem;
+        } 
+        100% {
+    opacity: 100%;
+    margin-top: 0rem;}
+`;
+const LoadingDiv = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const Wrapper = styled.div`
   position: relative;
   margin: 0;
   padding: 0;
+
   .mapboxgl-popup {
     padding-bottom: 50px;
   }
@@ -373,7 +355,8 @@ const Wrapper = styled.div`
       transform: scale(1.2);
       color: var(--c61);
     }
-    &:active{transform: scale(1.1);
+    &:active {
+      transform: scale(1.1);
     }
   }
   .listings .item .title small {
@@ -394,6 +377,8 @@ const Wrapper = styled.div`
   }
 
   .map-and-side {
+    animation: ${theAnimation};
+    animation-duration: 4000ms;
     width: 100%;
 
     display: flex;
@@ -419,32 +404,6 @@ const Wrapper = styled.div`
 
       color: var(--c21);
     }
-  }
-  .heading {
-    border-bottom: 1px solid #eee;
-    line-height: 60px;
-    padding: 0 10px;
-    text-align: center;
-    padding: 2rem;
-
-    backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(255, 255, 255, 0.75);
-    border-radius: 12px;
-    border: 1px solid rgba(209, 213, 219, 0.3);
-    &.dark {
-      backdrop-filter: blur(16px) saturate(180%);
-      background-color: rgba(17, 25, 40, 0.75);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.125);
-      .title {
-        color: var(--c31);
-      }
-    }
-  }
-  .title {
-    font-family: var(--f13);
-    font-weight: normal;
-    color: var(--c41);
   }
 
   #map {

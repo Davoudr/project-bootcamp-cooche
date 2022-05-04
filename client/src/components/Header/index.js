@@ -51,6 +51,9 @@ const animate = keyframes`
 const Wrapper = styled.div`
   width: 100%;
   background-color: var(--c61);
+  &.dark{
+    background-color: var(--c51);
+  }
   height: var(--header-height);
   display: flex;
   justify-content: flex-start;
@@ -104,10 +107,14 @@ const Content = styled.div`
     list-style: none;
     width: 20px;
     height: 20px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.35);
     animation: ${animate} 25s linear infinite;
     border-radius: 20%;
     opacity: 0;
+    &.dark{
+      
+      background: rgba(61, 64, 91, 0.35);
+    }
   }
 
   .circles li:nth-child(1) {

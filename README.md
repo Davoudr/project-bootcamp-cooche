@@ -47,7 +47,7 @@ A hub to create profile for businesses or look for them; considering their geo-l
 ---
 
 - MongoDB have this object in bussinesses collection ; {
--                creator:{
+-                 creator:{
                               id:
                               username:
                               email:
@@ -56,7 +56,7 @@ A hub to create profile for businesses or look for them; considering their geo-l
                   name: "",
                   category: "",
                   nationality: "",
-                  languages: "",
+                  languages: [],
                   address: {
                               address: "",
                               lat: "",
@@ -77,7 +77,7 @@ A hub to create profile for businesses or look for them; considering their geo-l
                               rates: [....user_id....],
                               like: [....user_id....],
                               dislike: [....user_id....],
-                              comments: [  
+                              comments: [
                                           {\_id: ,
                                           user_photo_url: ,
                                           user_id: ,
@@ -91,7 +91,9 @@ A hub to create profile for businesses or look for them; considering their geo-l
             }
 
 ---
+
 ## Endpoints
+
 -      /user/add ----> POST ---> req.body  {
             username: ,
             email: ,
@@ -107,17 +109,65 @@ A hub to create profile for businesses or look for them; considering their geo-l
 ---
 
 -      /user/sign-in ----> POST ---> req.body  {
-               email: "",
-               password: "",
-responses: 
+                 email: "",
+                 password: "",
+        }
 
-      -"There is no user associated with this E-mail address!"
+  responses:
 
-      -"Wrong password has been inserted!"
+        -"There is no user associated with this E-mail address!"
 
-      -"User has been found successfully!", user: userObjFE,
+        -"Wrong password has been inserted!"
+
+        -"User has been found successfully!", user: userObjFE,
 
 ---
+
+-      /business/add ----> POST --->
+-             req.body  {
+                  creator:{
+                              id:
+                        }
+                  date: "",
+                  name: "",
+                  category: "",
+                  nationality: "",
+                  languages: [],
+                  address: {
+                              address: "",
+                              lat: "",
+                              lng: "",
+                              country: "",
+                              province: "",
+                        },
+                  connections: {
+                              phone: "",
+                              email: "",
+                              website: "",
+                              facebook: "",
+                              instagram: "",
+                              twitter: "",
+                  },
+                  description: "",
+
+---
+
+-      /business/find ----> POST --->
+-             req.body  {
+                        category: "",
+                        country: "",
+                        language: "",
+                        nationality: "",
+                        province: "",
+                        }
+The req.body-obj should include all this keys either with the length of the value equal to zeor or more than zero.
+The response will contain ---> 
+
+_id, name, address-obj
+
+---
+
+
 
 ## Cloudinary
 

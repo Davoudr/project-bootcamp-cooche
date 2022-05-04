@@ -16,15 +16,12 @@ import "tippy.js/animations/scale.css";
 // -------------------------------------------
 const Connections = () => {
   const {
-    connectionsOnChangeHandle,
+    businessInfoReducerActions: { connectionsOnChangeHandle },
     nextBtnHandle,
-    pages,
-    setPages,
     businessInfo,
- 
+
     darkMode,
   } = useContext(AppContext);
-
 
   return (
     <Wrapper>

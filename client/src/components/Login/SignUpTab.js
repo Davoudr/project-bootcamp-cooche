@@ -105,6 +105,7 @@ const SignUp = () => {
         .then((data) => {
           // ------------------------proper action based on server-res
           if (data.status === 201) {
+            console.log(data.endpointUserObj)
             console.log(`FE / POST / </userAdd> / res / ${data.message}`);
             setUserSession({
               username: data.user.username,
@@ -113,6 +114,7 @@ const SignUp = () => {
               family_name: data.user.family_name,
               pic: data.user.pic, // this should be set from server-res bcuz server is returning the file-Cloudinary-url as pic-value if there be any profile-pic uploaded by user
               userHasThePassword: true, // this is false if user sign-up using google, bcuz he will not set his password by himself; Then, FE will inform him/her in his/her first dashboard-page visiting
+              id: data.user.id,
             });
             navigate(`/`, { replace: true });
             setLoading(false);

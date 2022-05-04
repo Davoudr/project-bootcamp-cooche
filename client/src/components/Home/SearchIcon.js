@@ -11,24 +11,23 @@ import { AppContext } from "../../other/AppContext";
 const SearchIcon = () => {
 
 
-  const {darkMode} = useContext (AppContext);
-  const [click, setClick] = useState(true);
+  const {darkMode, loading} = useContext (AppContext);
 
-//   const searchAnimate = useSpring({
-//     transform: click ? "rotate(50deg) scale(0.8)" : "rotate(0deg) scale(1)",
-//     left: click ? "5px" : "0px",
-//     bottom: click ? "5px" : "0px",
-//     config: {
-//       mass: 3.1,
-//       tension: 339,
-//       friction: 12,
-//     },
-//   });
+
+  const searchAnimate = useSpring({
+    transform: loading ? "rotate(45deg) scale(0.9)" : "rotate(0deg) scale(1)",
+    left: loading ? "5px" : "0px",
+    bottom: loading ? "5px" : "0px",
+    config: {
+      tension: 280,
+      friction: 60
+    },
+  });
 
 
 
   return (
-    <Wrapper click={click}>
+    <Wrapper style={searchAnimate}  active={loading}>
         <BiSearchAlt size="4rem" className="search" fill={darkMode ? "white" : "#3D405B"}/>
     </Wrapper>
   );
@@ -50,9 +49,10 @@ const animation = keyframes`
  100% {     bottom: 00px;
     transform: rotate(10deg) scale(1.0);}
 `;
-const Wrapper = styled.div`
+const Wrapper = styled(animated.div)`
+
   .search {
-    animation: ${(props) => props.click && animation} infinite;
-    animation-duration: 2000ms;
+    animation: ${(props) => props.active && animation} infinite;
+    animation-duration: 1500ms;
   }
 `;

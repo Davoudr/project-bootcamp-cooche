@@ -40,6 +40,7 @@ const Div = styled.div`
   align-items: center;
   flex-direction: column;
   background-color: transparent;
+  margin-top: 11rem;
 
 `;
 

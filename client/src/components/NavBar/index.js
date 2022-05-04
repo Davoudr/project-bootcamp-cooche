@@ -78,7 +78,7 @@ const NavBar = () => {
           .then((data) => {
             if (data.status === 201) {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
-              setUserSession({ ...userSession, userHasThePassword: newPass }); //user is new, he/she has loged in using quth0-google; a random-pass will be created and we need to let him/her know what is the password!
+              setUserSession({ ...userSession, userHasThePassword: newPass , id: data.user.id}); //user is new, he/she has loged in using quth0-google; a random-pass will be created and we need to let him/her know what is the password!
             } else {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
             }

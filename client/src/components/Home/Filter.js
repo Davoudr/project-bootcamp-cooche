@@ -14,19 +14,31 @@ import SearchIcon from "./SearchIcon";
 import SelectOption from "./SelectOption";
 // -----------------------------------------------------
 const Filter = () => {
-  const { capitalizeFirstLetter, filterValue, setFilterValue } =
-    useContext(AppContext);
+  const {
+    objGeneratorForMabBox,
+    loading,
+    setLoading,
+    capitalizeFirstLetter,
+    filterValue,
+    setFilterValue,
+    setMessage,
+    allServices,
+    setAllServices,
+  } = useContext(AppContext);
   const filterOnChangeHandle = (ev) => {
     let theKey = ev.target.id;
     let theValue =
       ev.target.value === "-----Sellect-----" ? "" : ev.target.value;
-    setFilterValue({ ...filterValue, [theKey]: theValue });
+    if (theKey === "country" && theValue === "") {
+      setFilterValue({ ...filterValue, province: "", country: "" });
+    } else {
+      setFilterValue({ ...filterValue, [theKey]: theValue });
+    }
   };
   // -----------------------------------------------------
-
   const handleSearch = (ev) => {
     console.log(filterValue);
-
+    setLoading(true);
     fetch("/business/find", {
       method: "POST",
       headers: {
@@ -38,6 +50,36 @@ const Filter = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        switch (true) {
+          case data.status === 400:
+            setTimeout(() => {
+              setLoading(false);
+              setAllServices(null);
+              setMessage({
+                status: true,
+                title: "No service found",
+                content:
+                  "Filtering by a different felter may result in finding services!",
+                btnText: "Ok",
+              });
+            }, 3000);
+            break;
+          case data.status === 200:
+            setAllServices(objGeneratorForMabBox(data.data));
+            setTimeout(() => {
+              setLoading(false);
+            }, 3000);
+            break;
+          default:
+            setMessage({
+              status: true,
+              title: "Try again!",
+              content: "Something goes wrong, please try again!!",
+              btnText: "Ok",
+            });
+            setLoading(false);
+            break;
+        }
       });
   };
   return (
@@ -84,21 +126,21 @@ const Filter = () => {
               </div>
               <div className="filter-and-label">
                 <SelectOption
-                  name={"language"}
-                  fomeName={"filter"}
-                  value={filterValue.language}
-                  onChangeHandle={filterOnChangeHandle}
-                  optionsArr={languagesArr}
-                  defaultValue={"-----Sellect-----"}
-                />
-              </div>
-              <div className="filter-and-label">
-                <SelectOption
                   name={"nationality"}
                   fomeName={"filter"}
                   value={filterValue.nationality}
                   onChangeHandle={filterOnChangeHandle}
                   optionsArr={nationalitiesArr}
+                  defaultValue={"-----Sellect-----"}
+                />
+              </div>
+              <div className="filter-and-label">
+                <SelectOption
+                  name={"language"}
+                  fomeName={"filter"}
+                  value={filterValue.language}
+                  onChangeHandle={filterOnChangeHandle}
+                  optionsArr={languagesArr}
                   defaultValue={"-----Sellect-----"}
                 />
               </div>

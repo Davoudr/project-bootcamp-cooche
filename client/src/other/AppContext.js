@@ -74,11 +74,6 @@ export const AppProvider = ({ children }) => {
   // ===============================================================================================================
   // -----------------------to switch between the tabs of sign-in/sign-up
   const [logInMethod, setLogInMethod] = useState("sign-in");
-  // -----------------------to give password to thoes users who sign0up using auth0-google
-  const [passwordGoogleSingUp, setPasswordGoogleSingUp] = useState({
-    newUser: false,
-    thePassword: null,
-  });
   // -----------------------random password generator
   const randStr =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@$&";
@@ -268,7 +263,7 @@ export const AppProvider = ({ children }) => {
     connections: {
       phone: "",
       email: "",
-      website: "https://www.",
+      website: "www.",
       facebook: "https://www.facebook.com/",
       instagram: "https://www.instagram.com/",
       twitter: "https://twitter.com/",
@@ -285,6 +280,7 @@ export const AppProvider = ({ children }) => {
     businessInfoDispatch({
       type: "new-suggstion-clear-data",
     });
+    setLanguagesValue(null);
   };
   // ---------------------------------------------
   // ---------------------------------------------
@@ -318,18 +314,47 @@ export const AppProvider = ({ children }) => {
     nationality: "",
     province: "",
   });
+  const [allServices, setAllServices] = useState(null);
+
+  const objGeneratorForMabBox = (arr) => {
+    let result = { type: "FeatureCollection", features: [] };
+    arr.forEach((obj, index) => {
+      let locationObj = {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [obj.address.lng, obj.address.lat],
+        },
+        properties: {
+          id: index,
+          address: obj.address.address,
+          country: obj.address.country,
+          province: obj.address.province,
+          name: obj.name,
+        },
+      };
+      result.features.push(locationObj);
+    });
+    return result;
+  };
   // ===============================================================================================================
   // ---------------------------------------------------------------------------------------------------------------
   // ===============================================================================================================
   return (
     <AppContext.Provider
       value={{
-        newSuggestionResetFormHandle,
-        newSuggestionOnChangeHandle,
-        addressFromMapOnChangeHandle,
-        countryProvincOnChangeHandle,
-        languagesHandleChange,
-        connectionsOnChangeHandle,
+        objGeneratorForMabBox,
+        allServices,
+        setAllServices,
+        // --------------------
+        businessInfoReducerActions: {
+          newSuggestionResetFormHandle,
+          newSuggestionOnChangeHandle,
+          addressFromMapOnChangeHandle,
+          countryProvincOnChangeHandle,
+          languagesHandleChange,
+          connectionsOnChangeHandle,
+        },
         filterValue,
         setFilterValue,
 

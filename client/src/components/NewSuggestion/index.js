@@ -13,9 +13,10 @@ import Description from "./Description";
 const NewSuggestion = () => {
   // ====================================================================================useContext
   const {
+    businessInfoReducerActions: { newSuggestionResetFormHandle },
+
     arrOfStrToLowerCase,
-    newSuggestionResetFormHandle,
-    newSuggestionOnChangeHandle,
+
     languagesValue,
     setLanguagesValue,
     setvalidationErr,
@@ -59,7 +60,8 @@ const NewSuggestion = () => {
         break;
       // -------------------------second-tab validation
       case businessInfo.address.country.length === 0 ||
-        businessInfo.address.province.length === 0:
+        businessInfo.address.province.length === 0 ||
+        businessInfo.address.address.length === 0:
         setMessage({
           status: true,
           title: "Missing Information",
@@ -79,10 +81,10 @@ const NewSuggestion = () => {
       // -------------------------third-tab validation
       case businessInfo.connections.phone.length === 0 &&
         businessInfo.connections.email.length === 0 &&
-        businessInfo.connections.website.length === 0 &&
-        businessInfo.connections.facebook.length === 0 &&
-        businessInfo.connections.instagram.length === 0 &&
-        businessInfo.connections.twitter.length === 0:
+        businessInfo.connections.website.length < 5 &&
+        businessInfo.connections.facebook.length < 26 &&
+        businessInfo.connections.instagram.length < 27 &&
+        businessInfo.connections.twitter.length < 21:
         setMessage({
           status: true,
           title: "Missing Information",
@@ -108,9 +110,7 @@ const NewSuggestion = () => {
         // -------------------------till here data is validated! now it is going to be added to db
         const endpointBusinessObj = {
           creator: {
-            id: "",
-            username: userSession.username.toLowerCase(),
-            email: userSession.email.toLowerCase(),
+            id: userSession.id,
           },
           date: new Date(),
           name: businessInfo.name.toLowerCase(),
@@ -140,7 +140,7 @@ const NewSuggestion = () => {
             comments: [],
           },
         };
-        console.log(endpointBusinessObj)
+        console.log(endpointBusinessObj);
         // -------------------------postin user-obj to db
         fetch("/business/add", {
           method: "POST",

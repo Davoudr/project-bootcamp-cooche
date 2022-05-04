@@ -7,6 +7,8 @@ import Map from "./Map";
 // ------------------------------------
 const Home = () => {
   const {
+    allServices,
+    setAllServices,
     passwordAlertFunc,
 
     userSession,

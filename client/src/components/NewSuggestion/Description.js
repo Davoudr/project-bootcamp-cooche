@@ -3,10 +3,10 @@ import { AppContext } from "../../other/AppContext";
 import { useContext, useState } from "react";
 const Description = () => {
   const {
+    businessInfoReducerActions: { newSuggestionOnChangeHandle },
+
     businessInfo,
     darkMode,
-
-    newSuggestionOnChangeHandle,
   } = useContext(AppContext);
   return (
     <Wrapper>
@@ -104,7 +104,7 @@ const Wrapper = styled.div`
     box-shadow: var(--box-shadow-1);
     outline: none;
     height: 25rem;
-    &.dark{
+    &.dark {
       background-color: var(--c21);
     }
   }

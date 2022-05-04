@@ -43,6 +43,7 @@ const handleUserGet = async (req, res, dbName) => {
       default:
         const success = () => {
           const userObjFE = {
+            id: foundWithEamil._id,
             username: foundWithEamil.username,
             email: foundWithEamil.email,
             given_name: foundWithEamil.given_name,

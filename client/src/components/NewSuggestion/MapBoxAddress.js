@@ -8,13 +8,9 @@ import { useContext } from "react";
 import { useRef } from "react";
 import { AppContext } from "../../other/AppContext";
 const MapBoxAddress = () => {
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
   const {
-    addressFromMapOnChangeHandle,
+    businessInfoReducerActions: { addressFromMapOnChangeHandle },
     darkMode,
-
     // ---------------
   } = useContext(AppContext);
   // ----------------------------------------------
@@ -98,6 +94,13 @@ const MapBoxAddress = () => {
         // container: searchContainer.current,
         accessToken: mapboxgl.accessToken,
         inputPlaceholder: "Searchddd",
+        flyTo: {
+          padding: 5, // If you want some minimum space around your result
+          // easing: function (t) {
+          //   return t;
+          // },
+          maxZoom: 17, // If you want your result not to go further than a specific zoom
+        },
         render: function (item) {
           const maki = item.properties.maki || "marker";
           // console.log(item)
@@ -122,8 +125,8 @@ const MapBoxAddress = () => {
       geocoder.on("result", function (result) {
         addressFromMapOnChangeHandle({
           address: result.result.place_name,
-          lat: result.result.center[0],
-          lng: result.result.center[1],
+          lng: result.result.center[0],
+          lat: result.result.center[1],
         });
       });
       geocoder.on("click", function (results) {

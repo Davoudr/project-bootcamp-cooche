@@ -32,7 +32,11 @@ const handleBusinessGetByFilter = async (req, res, dbName) => {
   console.log(`Connected to MongoClient (db: ${dbName})`);
   try {
     // ------------------------------------looking for user using given info
-    let result = await db.collection("businesses").find(filter).toArray();
+    let result = await db
+      .collection("businesses")
+      .find({ ...filter })
+      .project({ _id: 1, name: 1, address: 1 })
+      .toArray();
     // ------------------------------------sending proper res based on db-result
     if (result.length === 0) {
       res.status(400).json({
@@ -43,7 +47,7 @@ const handleBusinessGetByFilter = async (req, res, dbName) => {
       res.status(200).json({
         status: 200,
         message: "Bussiness has been found successfully!",
-        user: result,
+        data: result,
       });
     }
     // ------------

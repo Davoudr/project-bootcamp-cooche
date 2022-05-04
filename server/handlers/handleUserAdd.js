@@ -59,9 +59,10 @@ const handleUserAdd = async (req, res, dbName) => {
     // -----------------------------------for new-user, sending secure user-obj (without his/her password)
     if (foundWithThisId.length === 0) {
       result = await db.collection("users").insertOne(userObj);
+      console.log(result)
       res.status(201).json({
         status: 201,
-        user: { ...userObj, password: null },
+        user: { ...userObj, password: null , id: result.insertedId },
         message: `User is added successfully to /db->${dbName}/cllection->users/by->handleUserAdd/using</user/add>!`,
       });
     } else {

@@ -11,10 +11,11 @@ import Select from "react-select";
 // ---------------------------------------------------------
 const CountryProvince = () => {
   const {
-    countryProvincOnChangeHandle,
+    businessInfoReducerActions: {
+      countryProvincOnChangeHandle,
+    },
     businessInfo,
     capitalizeFirstLetter,
-
     // ---------------
   } = useContext(AppContext);
 

@@ -18,10 +18,11 @@ import AsyncSelect from "react-select/async";
 const InformationTab = () => {
   // ========================================================================
   const {
-    languagesHandleChange,
-    newSuggestionOnChangeHandle,
+    businessInfoReducerActions: {
+      newSuggestionOnChangeHandle,
+      languagesHandleChange,
+    },
     languagesValue,
-    setLanguagesValue,
     darkMode,
     businessInfo,
     nextBtnHandle,
@@ -34,7 +35,6 @@ const InformationTab = () => {
     return { label: capitalizeFirstLetter(lang), value: lang };
   });
   const animatedComponents = makeAnimated();
-
 
   return (
     <Wrapper>
