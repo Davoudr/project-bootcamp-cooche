@@ -142,10 +142,6 @@ export default createGlobalStyle`
 	    #root, #__next {
 	        isolation: isolate;
 	    }
-
-	
-		
-
 		body{
 			
 			/* background-color: var(--c11); */

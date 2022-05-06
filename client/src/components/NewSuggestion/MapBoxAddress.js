@@ -1,25 +1,29 @@
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import DeckGL, { GeoJsonLayer } from "deck.gl";
 import styled from "styled-components";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useContext } from "react";
 import { useRef } from "react";
 import { AppContext } from "../../other/AppContext";
+// ------------------------------------------------------------------
 const MapBoxAddress = () => {
+  // -----------------------------------
   const {
     businessInfoReducerActions: { addressFromMapOnChangeHandle },
     darkMode,
-    // ---------------
   } = useContext(AppContext);
-  // ----------------------------------------------
+  // -----------------------------------
   const mapContainer = useRef(null);
   const searchContainer = useRef(null);
   const map = useRef(null);
+  // -----------------------------------
+  //  map-box token
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOXGL_ACCESSTOKEN;
+  // -----------------------------------
   useEffect(() => {
-    // -----------------------------------------------------initializing the map
+    // -----------------
+    // initializing the map
     if (!map.current) {
       // initialize map only once
       map.current = new mapboxgl.Map({
@@ -32,10 +36,10 @@ const MapBoxAddress = () => {
         bearing: -40, // bearing in degrees
         zoom: 10,
       });
-
+      // adding some features onLoading the map
       map.current.on("load", () => {
-        // -----------------------------------------------------3D buildings
-        // Insert the layer beneath any symbol layer.
+        // --------------
+        // 3D buildings layer
         const layers = map.current.getStyle().layers;
         const labelLayerId = layers.find(
           (layer) => layer.type === "symbol" && layer.layout["text-field"]
@@ -53,7 +57,6 @@ const MapBoxAddress = () => {
             minzoom: 15,
             paint: {
               "fill-extrusion-color": "#aaa",
-
               // Use an 'interpolate' expression to
               // add a smooth transition effect to
               // the buildings as the user zooms in.
@@ -81,29 +84,26 @@ const MapBoxAddress = () => {
           labelLayerId
         );
       });
-      // -----------------------------------------------------onclick ll
+      // --------------
+      // getting lat-lng onclick on map
       //   map.current.on("click", (e) => {
       //     console.log(`A dblclick event has occurred at ${e.lngLat}`);
       //   });
-      // map.current.on("click", "circle", (e) => {
-      //   map.current.flyTo({
-      //     center: e.features[0].geometry.coordinates,
-      //   });
-      // });
+      // -----------------
+      // initlizing geocoder (search-bar)
       const geocoder = new MapboxGeocoder({
         // container: searchContainer.current,
         accessToken: mapboxgl.accessToken,
         inputPlaceholder: "Searchddd",
         flyTo: {
-          padding: 5, // If you want some minimum space around your result
-          // easing: function (t) {
-          //   return t;
-          // },
-          maxZoom: 17, // If you want your result not to go further than a specific zoom
+          // minimum space around your result
+          padding: 5,
+          // not to go further than a specific zoom
+          maxZoom: 17,
         },
         render: function (item) {
           const maki = item.properties.maki || "marker";
-          // console.log(item)
+          // rendering customized suggestion dropdown for feocoder
           return `<div className='geocoder-dropdown-item'>
                     <img className='geocoder-dropdown-icon' src='https://unpkg.com/@mapbox/maki@6.1.0/icons/${maki}-15.svg'>
                     <span className='geocoder-dropdown-title'>
@@ -122,6 +122,8 @@ const MapBoxAddress = () => {
         },
         mapboxgl: mapboxgl,
       });
+      // -------------------------------
+      // listener for sellecting a single suggestion from geocoder
       geocoder.on("result", function (result) {
         addressFromMapOnChangeHandle({
           address: result.result.place_name,
@@ -129,17 +131,14 @@ const MapBoxAddress = () => {
           lat: result.result.center[1],
         });
       });
-      geocoder.on("click", function (results) {
-        // console.log(results);
-      });
-
+      // listener for all suggestion from geocoder
+      geocoder.on("click", function (results) {});
       document
         .getElementById("geocoder")
         .appendChild(geocoder.onAdd(map.current));
     }
   }, []);
-
-  // ----------------------------------------------
+  // -----------------------------------
   return (
     <Wrapper>
       <div
@@ -152,13 +151,13 @@ const MapBoxAddress = () => {
   );
 };
 export default MapBoxAddress;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   position: relative;
   margin: 0;
   padding: 0;
+  // -----------------
   .geocoder {
-    /* position: absolute; */
     z-index: 1;
     width: 50%;
     box-shadow: none;
@@ -171,6 +170,7 @@ const Wrapper = styled.div`
       background-color: var(--c21);
     }
   }
+  // -----------------
   .mapboxgl-ctrl-geocoder {
     min-width: 100%;
     max-width: 100%;
@@ -186,6 +186,7 @@ const Wrapper = styled.div`
       background-color: var(--c21);
     }
   }
+  // -----------------
   .geocoder-dropdown-item {
     padding: 5px;
     background-color: var(--c21);
@@ -207,23 +208,27 @@ const Wrapper = styled.div`
       }
     }
   }
+  // -----------------
   .geocoder-dropdown-title {
     display: inline;
     font-weight: bold;
     font-size: var(--font-size-3);
     color: var(--c41);
   }
+  // -----------------
   .geocoder-dropdown-icon {
     fill: red;
     margin-right: 10px;
     display: inline;
   }
+  // -----------------
   .geocoder-dropdown-text {
     display: block;
     color: var(--c15);
     font-size: var(--font-size-3);
     margin-left: 2rem;
   }
+  // -----------------
   #map {
     margin-top: 2rem;
     width: 100%;
@@ -233,13 +238,8 @@ const Wrapper = styled.div`
     border-radius: 50%;
     box-shadow: var(--box-shadow-2);
   }
-
+  // -----------------
   .mapboxgl-control-container {
     outline: none;
-
-    /* min-width: 200px;
-    position: absolute;
-    z-index: 150;
-    left: -50px; */
   }
 `;

@@ -3,18 +3,22 @@ import { useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-
+// ------------------------------------------------------------------
 const MyProfile = () => {
+  // -----------------------------------
   const { userSession } = useContext(AppContext);
-  // ----------------------------------------------- to set border radius for profile-card after loading the page
+  // -----------------------------------
+  // for some visual effect
+  // to set border radius for profile-card after loading the page
   const [profileSellected, setProfileSellected] = useState(false);
+  // -----------------
   const location = useLocation();
   if (location.pathname === "/dashboard/profile") {
     setTimeout(() => {
       setProfileSellected(true);
     }, 500);
   }
-  // -----------------------------------------------
+  // -----------------------------------
   return (
     <Wrapper profileSellected={profileSellected}>
       <div className="card">
@@ -33,7 +37,7 @@ const MyProfile = () => {
   );
 };
 export default MyProfile;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   width: var(--website-width);
   margin: auto;
@@ -42,23 +46,28 @@ const Wrapper = styled.div`
   align-items: stretch;
   flex-direction: column;
   margin-top: 1rem;
+  transform: all ease-in 2s;
+  // -----------------
   .info {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
   }
+  // -----------------
   .name {
     font-size: var(--font-size-10);
     color: var(--c51);
   }
+  // -----------------
   .username {
     color: var(--c13);
   }
+  // -----------------
   .email {
     color: var(--c14);
   }
-  transform: all ease-in 2s;
+  // -----------------
   .content {
     height: 100%;
     width: 100%;
@@ -68,6 +77,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     transform: all ease-out 2s;
   }
+  // -----------------
   .card {
     background-color: var(--c10);
     height: 300px;
@@ -86,11 +96,12 @@ const Wrapper = styled.div`
     }
     transition: all ease-in-out 1.5s;
   }
+  // -----------------
   .lng-label {
     background-color: red;
   }
 `;
-
+// -----------------------------------
 const Img = styled.img`
   height: 100px;
   border-radius: 50%;

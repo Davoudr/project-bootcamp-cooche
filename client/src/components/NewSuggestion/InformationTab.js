@@ -7,16 +7,11 @@ import {
   categoriesArr,
   nationalitiesArr,
   languagesArr,
-  socialMediaArr,
 } from "../../other/variables";
-import { useState } from "react";
-import GooglePlacesAutocomplete from "./GooglePlacesAutocomplete";
 import Select from "react-select";
-
-import AsyncSelect from "react-select/async";
-// ========================================================================
+// ------------------------------------------------------------------
 const InformationTab = () => {
-  // ========================================================================
+  // -----------------------------------
   const {
     businessInfoReducerActions: {
       newSuggestionOnChangeHandle,
@@ -28,14 +23,15 @@ const InformationTab = () => {
     nextBtnHandle,
     capitalizeFirstLetter,
   } = useContext(AppContext);
-
-  // ------------------------------------------------------input : language
-  // ----------------------variable for the input
+  // -----------------------------------
+  // creating option-arr for react-select multi-option
   const langOptions = languagesArr.map((lang) => {
     return { label: capitalizeFirstLetter(lang), value: lang };
   });
+  // -----------------------------------
+  // a function called from react-select
   const animatedComponents = makeAnimated();
-
+  // -----------------------------------
   return (
     <Wrapper>
       <div className="btn-box">
@@ -43,7 +39,7 @@ const InformationTab = () => {
           <NextBtn btntext="Next" />
         </div>
       </div>
-
+      {/* // ----------------------------------- */}
       <div className="detail">
         <label
           htmlFor="name"
@@ -62,7 +58,7 @@ const InformationTab = () => {
           autoFocus
         />
       </div>
-
+      {/* // ----------------------------------- */}
       <div className="detail">
         <label
           htmlFor="category"
@@ -86,7 +82,7 @@ const InformationTab = () => {
           })}
         </select>
       </div>
-
+      {/* // ----------------------------------- */}
       <div className=" detail">
         <label
           htmlFor="nationality"
@@ -110,7 +106,7 @@ const InformationTab = () => {
           })}
         </select>
       </div>
-
+      {/* // ----------------------------------- */}
       <div className="language-box detail">
         <label
           htmlFor="languages"
@@ -134,16 +130,14 @@ const InformationTab = () => {
     </Wrapper>
   );
 };
-
 export default InformationTab;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   display: flex;
-
   justify-content: space-around;
   align-items: stretch;
-  /* flex-flow: column; */
   flex-direction: column;
+  // -----------------
   .btn-box {
     width: 100%;
     display: flex;
@@ -153,6 +147,7 @@ const Wrapper = styled.div`
     align-items: flex-end;
     flex-direction: row;
   }
+  // -----------------
   .next-info {
     color: var(--c15);
     padding: 0;
@@ -160,6 +155,7 @@ const Wrapper = styled.div`
     background-color: transparent;
     box-shadow: none;
   }
+  // -----------------
   .detail-label {
     margin-right: 3rem;
     height: 2rem;
@@ -171,6 +167,7 @@ const Wrapper = styled.div`
       color: var(--c12);
     }
   }
+  // -----------------
   .detail-input {
     height: 2rem;
     display: flex;
@@ -182,31 +179,33 @@ const Wrapper = styled.div`
       background-color: var(--c21);
     }
   }
+  // -----------------
   .detail {
     width: 100%;
     display: flex;
-
     justify-content: space-between;
     align-items: center;
-
     min-height: 3rem;
   }
+  // -----------------
   .asterisk {
     color: var(--c31);
     margin-left: 0.2rem;
     font-size: var(--font-size-4);
     font-weight: bold;
   }
-
+  // -----------------
   .language-box {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
   }
+  // -----------------
   .lng-label {
     margin-right: 4.2rem;
   }
+  // -----------------
   .btn-box {
     width: 100%;
     display: flex;
@@ -216,6 +215,7 @@ const Wrapper = styled.div`
     align-items: flex-end;
     flex-direction: row;
   }
+  // -----------------
   .next-info {
     color: var(--c15);
     padding: 0;

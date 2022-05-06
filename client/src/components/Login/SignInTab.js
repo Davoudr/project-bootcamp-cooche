@@ -7,24 +7,29 @@ import ErrBox from "./ErrBox";
 import { useNavigate } from "react-router-dom";
 import LoadingTiny from "../LoadingTiny";
 import Button from "../Tools/Button";
-// ------------------------------------------------------
+// ------------------------------------------------------------------
 const SignInTab = () => {
-  // ----------------------------------------------------
+  // -----------------------------------
   let navigate = useNavigate();
+  // -----------------
   const { loading, setLoading, setUserSession } = useContext(AppContext);
-  // -----------------------local states
+  // -----------------
+  // local states
   const [userInputSignIn, setuserInputSignIn] = useState({
     email: "",
     password: "",
   });
+  // -----------------
+  // local states
   const [err, setErr] = useState({
     email: { state: false, text: "" },
     password: { state: false, text: "" },
   });
-  // ----------------------------------------------------
+  // -----------------------------------
   const signInHandle = (ev) => {
     ev.preventDefault();
-    // ---------------------sending login-info to BE
+    // ---------------
+    // sending login-info to BE
     setLoading(true);
     fetch("/user/sign-in", {
       method: "POST",
@@ -36,8 +41,11 @@ const SignInTab = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // -----------------proper action based on server-res
+        // ---------------
+        // proper action based on server-res
         switch (true) {
+          // ---------------
+          // no user found
           case data.status === 400:
             setErr({
               password: { state: false, text: "" },
@@ -45,6 +53,8 @@ const SignInTab = () => {
             });
             setLoading(false);
             break;
+          // ---------------
+          // wrong password
           case data.status === 401:
             setErr({
               email: { state: false, text: "" },
@@ -52,6 +62,8 @@ const SignInTab = () => {
             });
             setLoading(false);
             break;
+          // ---------------
+          // user is found
           default:
             setErr({
               email: { state: false, text: "" },
@@ -64,7 +76,7 @@ const SignInTab = () => {
         }
       });
   };
-  // ----------------------------------------------------------
+  // ------------------------------------------------------------------
   return (
     <Wrapper>
       <div className="methods">
@@ -103,7 +115,7 @@ const SignInTab = () => {
               required
             />
             <button className="submit-btn" type="submit">
-              {!loading ? <Button btnText="Sign In"/> : <LoadingTiny />}
+              {!loading ? <Button btnText="Sign In" /> : <LoadingTiny />}
             </button>
           </form>
           <div className="err-box">
@@ -115,7 +127,7 @@ const SignInTab = () => {
   );
 };
 export default SignInTab;
-// ----------------------------------------------------------
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-around;
@@ -123,9 +135,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 20px;
   background-color: var(--c10);
+  // ------------
   .err-box {
     width: 200px;
   }
+  // ------------
   .methods {
     display: flex;
     justify-content: center;
@@ -133,6 +147,7 @@ const Wrapper = styled.div`
     flex-direction: row;
     height: 100%;
   }
+  // ------------
   .left,
   .right {
     flex: 1;
@@ -141,6 +156,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     gap: 20px;
   }
+  // ------------
   .center {
     margin: 20px;
     height: 300px;
@@ -149,6 +165,7 @@ const Wrapper = styled.div`
     justify-content: center;
     position: relative;
   }
+  // ------------
   .or {
     border: 2px solid lightgray;
     border-radius: 50%;
@@ -158,6 +175,7 @@ const Wrapper = styled.div`
     font-weight: bold;
     z-index: 1;
   }
+  // ------------
   .line {
     height: 70%;
     width: 1px;
@@ -168,13 +186,13 @@ const Wrapper = styled.div`
     left: 0;
     right: 0;
     margin: auto;
-    
-
   }
+  // ------------
   .input {
     font-size: var(--font-size-4);
     font-family: var(--f12);
   }
+  // ------------
   .input,
   .submit-btn {
     border: 2px solid var(--c11);
@@ -185,6 +203,7 @@ const Wrapper = styled.div`
     font-size: var(--font-size-4);
     color: var(--c41);
   }
+  // ------------
   .submit-btn {
     border: none;
     border: none;
@@ -194,6 +213,7 @@ const Wrapper = styled.div`
     font-family: var(--f12);
     background-color: transparent;
   }
+  // ------------
   .login {
     display: flex;
     justify-content: space-around;

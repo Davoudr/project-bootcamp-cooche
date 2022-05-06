@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import GoogleMapReact from "google-map-react";
-import { useEffect, useState } from "react";
-import React, { useRef } from "react";
-
+import { useState } from "react";
+import React from "react";
 import GooglePlacesAutocomplete from "./GooglePlacesAutocomplete";
 import { AppContext } from "../../other/AppContext";
 import { useContext } from "react";
@@ -10,20 +8,14 @@ import Button from "../Tools/Button";
 import MapBoxAddress from "./MapBoxAddress";
 import NextBtn from "./NextBtn";
 import CountryProvince from "./CountryProvince";
-// import Geocoder from 'react-mapbox-gl-geocoder';
-
-// import Geocoder from "react-map-gl-geocoder";
-// import 'mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-// ================================================================== main component
+// ------------------------------------------------------------------
 const Address = () => {
+  // -----------------------------------
+  //  to switch between two method of finding the addres
   const [addressMethod, setAddresMethod] = useState("Google-Finder");
-
-  const {
-    businessInfo,
-    nextBtnHandle,
-    // ---------------
-  } = useContext(AppContext);
-
+  // -----------------------------------
+  const { businessInfo, nextBtnHandle } = useContext(AppContext);
+  // -----------------------------------
   return (
     <Div>
       <div className="btn-box">
@@ -71,34 +63,38 @@ const Address = () => {
     </Div>
   );
 };
-// ==================================================================
 export default Address;
-
+// ------------------------------------------------------------------
 const Div = styled.div`
   width: 100%;
   padding: 2rem;
+  // -----------------
   .address-label {
     width: 100%;
     text-align: left;
     display: block;
     margin: 0.7rem 0 1rem;
     font-size: var(--font-size-3);
-    &.dark{
+    &.dark {
       color: var(--c21);
     }
   }
+  // -----------------
   .country-province {
     display: flex;
     justify-content: center;
     align-items: stretch;
     flex-direction: column;
   }
+  // -----------------
   .method-btn {
     background-color: transparent;
   }
+  // -----------------
   .tool-container {
     width: 100%;
   }
+  // -----------------
   .address-method {
     display: flex;
     justify-content: center;
@@ -107,6 +103,7 @@ const Div = styled.div`
     gap: 1rem;
     margin: 3rem 2rem;
   }
+  // -----------------
   .detail {
     display: flex;
     justify-content: space-between;
@@ -115,18 +112,19 @@ const Div = styled.div`
     width: 100%;
     min-height: 3rem;
   }
+  // -----------------
   .detail-label {
     margin-right: 3rem;
     height: 2rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    /* flex-flow: row; */
     flex-direction: row;
     &.dark {
       color: var(--c12);
     }
   }
+  // -----------------
   .address-box {
     display: flex;
     justify-content: space-between;
@@ -134,6 +132,7 @@ const Div = styled.div`
     flex-direction: row;
     padding: 2rem;
   }
+  // -----------------
   .full-address-box {
     border-radius: var(--border-radius9);
     border: 1px solid var(--c51);
@@ -155,18 +154,20 @@ const Div = styled.div`
     }
     width: 100%;
   }
-
+  // -----------------
   .light-text {
     color: var(--c13);
     display: block;
     text-align: center;
     font-size: var(--font-size-3);
   }
+  // -----------------
   .search-result {
     display: block;
     text-align: center;
     font-size: var(--font-size-4);
   }
+  // -----------------
   .btn-box {
     width: 100%;
     display: flex;
@@ -176,6 +177,7 @@ const Div = styled.div`
     align-items: flex-end;
     flex-direction: row;
   }
+  // -----------------
   .next-info {
     color: var(--c15);
     padding: 0;

@@ -1,15 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import About from "./components/About";
-
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
-import { Fragment } from "react";
-import { Navifate, Outlet } from "react";
 import NavBar from "./components/NavBar";
 import ContactUs from "./components/ContactUs";
 import BookmarkList from "./components/BookmarkList";
-import Comments from "./components/Comments";
 import Err404 from "./components/Err404";
 import MyProfile from "./components/MyProfile";
 import MySuggestions from "./components/MySuggestions";
@@ -19,14 +15,13 @@ import Auth0ProviderWithNavigate from "./other/auth0Provider";
 import Test from "./components/Test";
 import MsgBox from "./components/MsgBox";
 import Footer from "./components/Footer/Footer";
-// -----------------------
 import styled from "styled-components";
 import { useContext } from "react";
 import { AppContext } from "./other/AppContext";
-// -----------------------
+// ------------------------------------------------------------------
 const App = () => {
   // -----------------------
-  const { message, setMessage, darkMode } = useContext(AppContext);
+  const { message, darkMode } = useContext(AppContext);
   // -----------------------
   return (
     <Wrapper className={darkMode ? `dark` : `light`}>
@@ -59,14 +54,13 @@ const App = () => {
   );
 };
 export default App;
-
+// ------------------------------------------------------------------
 const Msg = styled.div`
   z-index: 100;
   position: absolute;
 `;
+// -----------------------
 const Wrapper = styled.div`
   display: block;
   margin: auto;
-
-
 `;

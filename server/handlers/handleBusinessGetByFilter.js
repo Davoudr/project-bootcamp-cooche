@@ -7,7 +7,7 @@ const options = {
   useUnifiedTopology: true,
 };
 const client = new MongoClient(MONGO_URI, options);
-// ----------------------------------------main func
+// ----------------------------------------creating dynamic query obj based on req.body (filter-value)
 const handleBusinessGetByFilter = async (req, res, dbName) => {
   let request = req.body;
   let filter = {};
@@ -35,7 +35,7 @@ const handleBusinessGetByFilter = async (req, res, dbName) => {
     let result = await db
       .collection("businesses")
       .find({ ...filter })
-      .project({ _id: 1, name: 1, address: 1 })
+      .project({ _id: 1, name: 1, address: 1 }) // sending sellection of the field not them all
       .toArray();
     // ------------------------------------sending proper res based on db-result
     if (result.length === 0) {

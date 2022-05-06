@@ -1,10 +1,7 @@
-
-
 import styled from "styled-components";
 import { GiShrug } from "react-icons/gi";
-// ---------------------------------------------------------------------
+// ------------------------------------------------------------------
 const Err404 = () => {
-  // ---------------------------------------------------------------------
   return (
     <Div>
       <GiShrug size={"10rem"} />
@@ -21,13 +18,11 @@ const Err404 = () => {
     </Div>
   );
 };
-// ---------------------------------------------------------------------
 export default Err404;
 // ---------------------------------------------------------------------
-
 const Div = styled.div`
   width: 100vw;
-  height:70vh;
+  height: 70vh;
   flex-direction: column;
   display: flex;
   justify-content: center;
@@ -35,15 +30,18 @@ const Div = styled.div`
   color: grey;
   size: 300px;
   border: solid 1px lightgray;
+  // -----------------
   .supportLink {
     color: blue;
   }
+  // -----------------
   .errTitle {
     margin: 100px 0 40px;
     color: black;
     font-size: 1.5rem;
     font-weight: bold;
   }
+  // -----------------
   .errMsg {
   }
 `;

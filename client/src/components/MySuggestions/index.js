@@ -1,4 +1,5 @@
 import styled from "styled-components";
+// ------------------------------------------------------------------
 const MySuggestions = () => {
   return (
     <Wrapper>
@@ -11,7 +12,7 @@ const MySuggestions = () => {
   );
 };
 export default MySuggestions;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   width: var(--website-width);
   margin: auto;
@@ -20,13 +21,14 @@ const Wrapper = styled.div`
   align-items: stretch;
   flex-direction: column;
   margin-top: 1rem;
+  // -----------------
   .info {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
   }
-
+  // -----------------
   .content {
     height: 100%;
     width: 100%;
@@ -35,6 +37,7 @@ const Wrapper = styled.div`
     align-items: center;
     flex-direction: column;
   }
+  // -----------------
   .card {
     background-color: var(--c10);
     height: 300px;
@@ -50,11 +53,4 @@ const Wrapper = styled.div`
     }
   }
 `;
-
-const Img = styled.img`
-  height: 100px;
-  border-radius: 50%;
-  position: relative;
-  box-shadow: var(--box-shadow-3);
-  position: absolute;
-`;
+// -----------------------------------

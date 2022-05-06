@@ -1,17 +1,18 @@
-import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import { MdDarkMode } from "react-icons/md";
 import { RiSunCloudyLine } from "react-icons/ri";
 import { useSpring, animated } from "react-spring";
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import styled from "styled-components";
 import useSound from "use-sound";
 import clickSound from "../../assets/sound/click.mp3";
+// ------------------------------------------------------------------
 const Darkmode = () => {
-  const {
-    darkMode,
-    setDarkMode,
-  } = useContext(AppContext);
+  // -----------------------------------
+  const { darkMode, setDarkMode } = useContext(AppContext);
+  // -----------------------------------
   const [play] = useSound(clickSound, { volume: 0.25 });
+  // -----------------------------------
   const sunStyle = useSpring({
     transform: darkMode ? "scale(1)" : "scale(1.3)",
     config: {
@@ -20,6 +21,7 @@ const Darkmode = () => {
       friction: 12,
     },
   });
+  // -----------------
   const moonStyle = useSpring({
     left: darkMode ? "40px" : "0px",
     config: {
@@ -27,10 +29,12 @@ const Darkmode = () => {
       friction: 12,
     },
   });
+  // -----------------------------------
   const handleClickDarkMode = (ev) => {
     play();
     setDarkMode(!darkMode);
   };
+  // -----------------------------------
   return (
     <>
       <ModeBtn style={sunStyle} onClick={handleClickDarkMode}>
@@ -51,6 +55,7 @@ const Darkmode = () => {
   );
 };
 export default Darkmode;
+// ------------------------------------------------------------------
 const ModeBtn = styled(animated.button)`
   position: relative;
   display: flex;
@@ -59,16 +64,14 @@ const ModeBtn = styled(animated.button)`
   flex-direction: row;
   background-color: transparent;
   box-shadow: none;
-
   padding: 0;
-  .mode-active {
-    display: none;
-  }
-
   &:active {
     background-color: transparent;
     box-shadow: none;
-
     transform: rotate(60deg);
+  }
+  // -----------------
+  .mode-active {
+    display: none;
   }
 `;

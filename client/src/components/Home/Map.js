@@ -1,83 +1,79 @@
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import * as turf from "@turf/turf";
-import styled from "styled-components";
 import "mapbox-gl/dist/mapbox-gl.css";
 import DeckGL, { GeoJsonLayer } from "deck.gl";
-import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useEffect } from "react";
 import { useContext } from "react";
 import { useRef } from "react";
 import { AppContext } from "../../other/AppContext";
 import icon from "../../assets/img/location-icon-1.png";
-import Select from "react-select";
 import { BsInfoCircleFill, BsInfoCircle } from "react-icons/bs";
-import { IoSchoolOutline, IoSchool } from "react-icons/io";
-import Loading from "../Loading";
-import { useSpring, animated } from "react-spring";
 import Text from "./Text";
 import { keyframes } from "styled-components";
+// ------------------------------------------------------------------
 const Map = () => {
-  const {
-    capitalizeFirstLetter,
-    loading,
-    setLoading,
-    allServices,
-    setAllServices,
-    filterValue,
-    darkMode,
-
-    // ---------------
-  } = useContext(AppContext);
+  // -----------------------------------
+  const { capitalizeFirstLetter, loading, allServices, darkMode } =
+    useContext(AppContext);
+  // -----------------------------------
+  // map-box token
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOXGL_ACCESSTOKEN;
-  // ----------------------------------------------
+  // useRef to asign element for map-box map and countainer
   const mapContainer = useRef(null);
   const map = useRef(null);
-  // --------------------------
-  function flyToStore(currentFeature) {
+  // -----------------------------------
+  // map-box / funciton to fly to the given location-obj
+  const flyToStore = (currentFeature) => {
     map.current.flyTo({
       center: currentFeature.geometry.coordinates,
       zoom: 17,
     });
-  }
-
-  function createPopUp(currentFeature) {
+  };
+  // -----------------------------------
+  // map-box / function to create popUp on the map
+  const createPopUp = (currentFeature) => {
     const popUps = document.getElementsByClassName("mapboxgl-popup");
-    /** Check if there is already a popup on the map and if so, remove it */
-    if (popUps[0]) popUps[0].remove();
+    // to check if there is already a popup on the map and if so, remove it
+    if (popUps[0]) {
+      popUps[0].remove();
+    }
+    // create popUp for the given obj
     const popup = new mapboxgl.Popup({ closeOnClick: false })
       .setLngLat(currentFeature.geometry.coordinates)
       .setHTML(
         `<div><h3>${currentFeature.properties.name}</h3><h4>${currentFeature.properties.address}</h4></div>`
       )
       .addTo(map.current);
-  }
-  // ---------------------------
-  console.log("allServices", allServices);
+  };
+  // -----------------------------------
+  // creating map
   useEffect(() => {
-    // -----------------------------------------------------initializing the map
+    // initializing the map if filtered-data is loaded
     if (allServices && !loading) {
-      // initialize map only once
+      // -----------------
       map.current = new mapboxgl.Map({
         container: "map",
         style: darkMode
           ? "mapbox://styles/mapbox/streets-v11"
           : "mapbox://styles/mapbox/dark-v10",
-        center: [-73.610364, 45.497216],
+        center: allServices.features[0].geometry.coordinates,
         pitch: 40, // pitch in degrees
         bearing: -40, // bearing in degrees
         zoom: 10,
       });
-
+      // -----------------
+      // to set some features onLoading the map
       map.current.on("load", () => {
-        // -----------------------------------------------------3D buildings
-        // Insert the layer beneath any symbol layer.
+        // ---------------
+        // to set 3D layer for buildings
         const layers = map.current.getStyle().layers;
         const labelLayerId = layers.find(
           (layer) => layer.type === "symbol" && layer.layout["text-field"]
         ).id;
         // The 'building' layer in the Mapbox Streets
-        // vector tileset contains building height data
-        // from OpenStreetMap.
+        // vector tileset contains building height data from OpenStreetMap.
         map.current.addLayer(
           {
             id: "add-3d-buildings",
@@ -88,7 +84,6 @@ const Map = () => {
             minzoom: 15,
             paint: {
               "fill-extrusion-color": "#aaa",
-
               // Use an 'interpolate' expression to
               // add a smooth transition effect to
               // the buildings as the user zooms in.
@@ -115,27 +110,25 @@ const Map = () => {
           },
           labelLayerId
         );
-
+        // -----------------
+        // adding filtered-data source to the map
         map.current.addSource("places", {
           type: "geojson",
           data: allServices,
         });
-
+        // creating marker on the map for each obj from arr of data
         allServices.features.map((business) => {
-          /* Create a div element for the business. */
           const el = document.createElement("div");
-          /* Assign a unique `id` to the business. */
           el.id = `marker-${business.properties.id}`;
-          /* Assign the `marker` class to each business-div for styling. */
           el.className = "marker";
           el.innerHTML = `<img src=${icon}>`;
-
+          // adding onClick event-listener to each marker
           el.addEventListener("click", (e) => {
-            /* Fly to the point */
+            // to fly to the point
             flyToStore(business);
-            /* Close all other popups and display popup for clicked business */
+            // to close all other popups and display popup for clicked business
             createPopUp(business);
-            /* Highlight listing in sidebar */
+            // to change highlight listing in sidebar to the sellected marker
             const activeItem = document.getElementsByClassName("active");
             e.stopPropagation();
             if (activeItem[0]) {
@@ -146,9 +139,7 @@ const Map = () => {
             );
             listing.classList.add("active");
           });
-
-          // Create a marker using the div element
-          // defined above and add it to the map.
+          // to create a marker using the div element defined above and add it to the map.
           new mapboxgl.Marker(el, { offset: [0, -23] })
             .setLngLat(business.geometry.coordinates)
             .addTo(map.current);
@@ -156,29 +147,33 @@ const Map = () => {
       });
     }
   }, [allServices, loading]);
-
+  // -----------------
+  // handle-onClick for listings in sidebar
   const handleLink = (ev) => {
+    // creating pop-up and fly to the point
     allServices.features.map((element) => {
       if (ev.target.id === `link-${element.properties.id}`) {
         flyToStore(element);
         createPopUp(element);
       }
     });
-
+    // conditional class for conditional styling
     const activeItem = document.getElementsByClassName("active");
     if (activeItem[0]) {
       activeItem[0].classList.remove("active");
     }
     ev.target.classList.add("active");
   };
-
+  // -----------------------------------
   switch (true) {
+    // showing loading while filtered-data is not loaded
     case loading:
       return (
         <LoadingDiv>
           <Text />
         </LoadingDiv>
       );
+    // showing map and linst of locaitons if filtered-data is not empjy
     case allServices && !loading:
       return (
         <Wrapper active={loading}>
@@ -192,11 +187,13 @@ const Map = () => {
                       className="item"
                       id={`listing-${businessObj.properties.id}`}
                     >
+                      {/* each business in lisstings */}
                       <button
                         onClick={handleLink}
                         className="title"
                         id={`link-${businessObj.properties.id}`}
                       >
+                        {/* button to navigate to the businesss's page */}
                         <div className="profile">
                           {darkMode ? (
                             <BsInfoCircleFill size="2rem" />
@@ -204,6 +201,7 @@ const Map = () => {
                             <BsInfoCircle size="2rem" />
                           )}
                         </div>
+                        {/* content for the pop-up */}
                         <div>{`${capitalizeFirstLetter(
                           businessObj.properties.name
                         )}`}</div>
@@ -233,8 +231,8 @@ const Map = () => {
       return <></>;
   }
 };
-
 export default Map;
+// ------------------------------------------------------------------
 const theAnimation = keyframes`
     0% { 
     opacity: 0;
@@ -244,37 +242,41 @@ const theAnimation = keyframes`
     opacity: 100%;
     margin-top: 0rem;}
 `;
+// -----------------
 const LoadingDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+// -----------------
 const Wrapper = styled.div`
   position: relative;
   margin: 0;
   padding: 0;
-
+  // -----------------
   .mapboxgl-popup {
     padding-bottom: 50px;
   }
+  // -----------------
   .marker {
     border: none;
     cursor: pointer;
     height: 56px;
     width: 56px;
   }
-  /* Marker tweaks */
+  // -----------------
   .mapboxgl-popup-close-button {
     display: none;
   }
-
+  // -----------------
   .mapboxgl-popup-content {
     font: 400 15px/22px "Source Sans Pro", "Helvetica Neue", sans-serif;
     padding: 0;
     width: 180px;
     background-color: transparent;
   }
+  // -----------------
   .mapboxgl-popup-content div {
     display: flex;
     align-items: stretch;
@@ -291,46 +293,40 @@ const Wrapper = styled.div`
     font-weight: bold;
     text-align: center;
     padding: 10px;
-    /* backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(209, 213, 219, 0.3);
-    color: var(--c41); */
   }
+  // -----------------
   .mapboxgl-popup-content h3 {
     background: var(--c31);
-
     margin: 0;
     padding: 10px;
     border-radius: var(--border-radius5);
     margin-top: -15px;
   }
-
+  // -----------------
   .mapboxgl-popup-content h4 {
     margin: 0;
     padding: 1rem;
   }
-
+  // -----------------
   .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
     margin-top: 15px;
   }
-
+  // -----------------
   .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
     border-bottom-color: #91c949;
   }
-
+  // -----------------
   .listings {
   }
-
+  // -----------------
   .listings .item {
     text-decoration: none;
-
     margin: 1rem;
     display: flex;
-
     justify-content: space-between;
     background-color: transparent;
   }
-
+  // -----------------
   .listings .item .title {
     position: relative;
     display: block;
@@ -346,6 +342,7 @@ const Wrapper = styled.div`
     &:active {
     }
   }
+  // -----------------
   .profile {
     position: absolute;
     top: 0.5rem;
@@ -359,35 +356,34 @@ const Wrapper = styled.div`
       transform: scale(1.1);
     }
   }
+  // -----------------
   .listings .item .title small {
   }
-
+  // -----------------
   .listings .item.active .title,
   .listings .item .title.active {
     color: var(--c21);
     background-color: var(--c41);
     box-shadow: var(--box-shadow-6);
   }
+  // -----------------
   .listings .item .title:hover {
     color: var(--c21);
     background-color: var(--c41);
   }
-
+  // -----------------
   .listings .item.active {
   }
-
+  // -----------------
   .map-and-side {
     animation: ${theAnimation};
     animation-duration: 4000ms;
     width: 100%;
-
     display: flex;
-    gap: 16px;
   }
+  // -----------------
   .sidebar {
-    margin-right: 1.5rem;
     overflow: auto;
-    margin-top: 2.5rem;
     padding: 1rem 0;
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgba(255, 255, 255, 0.75);
@@ -401,17 +397,27 @@ const Wrapper = styled.div`
       backdrop-filter: blur(16px) saturate(180%);
       background-color: rgba(17, 25, 40, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.125);
-
       color: var(--c21);
     }
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--c51);
+      border-radius: 20px;
+    }
   }
-
+  // -----------------
   #map {
-    margin-top: 2rem;
+    min-width: 50rem;
+    max-width: 50rem;
     width: 50rem;
     height: 50rem;
-    /* top: 0;
-    bottom: 0; */
+    margin-left: 2rem;
     border-radius: 50%;
     box-shadow: var(--box-shadow-2);
   }

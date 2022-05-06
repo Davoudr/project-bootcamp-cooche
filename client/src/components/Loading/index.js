@@ -1,10 +1,10 @@
 import styled, { keyframes } from "styled-components";
-// --------------------------------------------
+// ------------------------------------------------------------------
 const Loading = () => {
-  return <LoadingDiv/>;
+  return <LoadingDiv />;
 };
 export default Loading;
-// --------------------------------------------
+// ------------------------------------------------------------------
 const breakout = keyframes`
   0%,
   40% {
@@ -20,10 +20,9 @@ const breakout = keyframes`
     opacity: 0;
     -webkit-transform: scale(2);
             transform: scale(2); }
-  `
+  `;
 // --------------------------------------------
 const LoadingDiv = styled.div`
-
   position: relative;
   height: 50px;
   width: 50px;

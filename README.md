@@ -1,177 +1,73 @@
-# Cooche Website
+# Cooche 
 
-A hub to create profile for businesses or look for them; considering their geo-location and nationality!
+## Functionality
+A crowd source platform as a database of all the businesses for people to look for businesses based on their owners's nationality, supported languages for customer services and location.
 
----
-
----
-
----
-
-## Data structure
-
--        db : Cooche  ///  collections: users , businesses
-  ***
--        userSession : user object in browser memory {
-              username: ,
-              email: ,
-              given_name: ,
-              family_name: ,
-              pic: ,
-              userHasThePassword: true/false,
-             };
-
-\*userHasThePassword ---> true/pssword, // this is equdl to password if user sign-up using google, bcuz he will not set his password by himself; Then, FE will inform him/her in his/her first dashboard-page visiting
+## Demand
+In countries with a large immigrant population, most of the time, people refer to businesses which belong to or are operated by their compatriots due to various reasons, such as trust, language barriers, familiarity with their wants, being the only source for a particular product or services, and etc.
+And this website will be so handy for these kind of people.
 
 ---
 
--        MongoDB have this object in users collection ; {
-               username: ,
-               email: ,
-               given_name: ,
-               family_name: ,
-               password: ,
-               pic: ,
-               bookmarks: [....business_id....],
-               suggestions: [....business_id....],
-               comments: [....business_id....],
-               liked_businesses: [....business_id....],
-               disliked_businesse: [....business_id....],
-               rated_businesse: [{business_id: , rate: }, .....]
-               liked_comments: [....comment_id....],
-               disliked_comments: [....comment_id....],
-             };
+## Build With
 
-\*pic ---> this should be set from server-res bcuz server is returning the file-Cloudinary-url as pic-value if there be any profile-pic uploaded by user
+Front-End:
+- React
+- JavaScript
+- CSS
+- HTML
 
----
+Bak-End:
+- Node.js
+- Express.js
+- MongoDB
 
-- MongoDB have this object in bussinesses collection ; {
--                 creator:{
-                              id:
-                              username:
-                              email:
-                        }
-                  date: "",
-                  name: "",
-                  category: "",
-                  nationality: "",
-                  languages: [],
-                  address: {
-                              address: "",
-                              lat: "",
-                              lng: "",
-                              country: "",
-                              province: "",
-                        },
-                  connections: {
-                              phone: "",
-                              email: "",
-                              website: "",
-                              facebook: "",
-                              instagram: "",
-                              twitter: "",
-                  },
-                  description: "",
-                  feedbacks: {
-                              rates: [....user_id....],
-                              like: [....user_id....],
-                              dislike: [....user_id....],
-                              comments: [
-                                          {\_id: ,
-                                          user_photo_url: ,
-                                          user_id: ,
-                                          comment: ,
-                                          date: ,
-                                          like_by: [....user_id....] ,
-                                          dislike_by: [....user_id....]
-                                          } , ......
-                                    ]
-                  }
-            }
+API: 
+- MapBox-API
+- Auth0
+- Google-API
+- Cloudinary-API
 
 ---
+## Features: 
+- Authentication using Auth0
+- Using Cloudinary-API to upload medias from BE
+- Location-search using react-places-autocomplete
+- Location-search using mapBox autocomplete along with visualization on map - custom marker 
+- Location-list using mapBox 
+  - Locating result of searches on the map
+  - Listing result of search, paired with markers on the map
+  - Triggering location-markers and list-items as the pairs
+  - Conditional styling based on user interaction with map
+  - Loading data in pop-ups along with markers on the map
+  - Customized style for pop-ups on the map;
+- Using conditional option-sllect
+- Using react-select
+- Using reusable components 
+- Dynamic query using node.js pared with a main filter in home page
+- DarkMode 
+- Using Contexta and most of the hooks 
+- Real-time Form validation along with specific error-message
+- Delivering password to users signed-up with OAuth
 
-## Endpoints
+### Will be added soon:
+- Password change;
+- Edit Profile;
+- Bookmarking businesses;
+- Commenting on businesses;
+- Like/Dislike on businesses;
+- Like/Dislike on comments;
+- Features presentation clips on [Youtube-channel](https://www.youtube.com/playlist?list=PLLLQiihmrNNlZ0ytWwaEmlJmRqGosIJ63)
 
--      /user/add ----> POST ---> req.body  {
-            username: ,
-            email: ,
-            family_name: ,
-            given_name: ,
-            password: ,
-            pic: ,
-            base64: true/false,
-      };
-
-\*base64 ---> if pic-value is base64-binary (true) or not and is a url (false) // this key won't save in user-colleciton in db ; this key is included in order to clarifying for BE if pic-value is url or base64 (if it should be converted to url or not)
 
 ---
+## Challenges: 
 
--      /user/sign-in ----> POST ---> req.body  {
-                 email: "",
-                 password: "",
-        }
+1. I had a hard time deciding on authentication API at first; however, after implementing Google's authentication API, I continued searching for other options and found Auth0's authentication API to be more clear and handy, so I switched over to Auth0's authentication API.
 
-  responses:
+2. Cloudinary-API has multiple options such as widgets in FE, just doing the API call and sending media to Cloudinary, or uploading media on base64 to BE then Cloudinary; I chose the last option to learn more about this API rather than just adding a widget!
 
-        -"There is no user associated with this E-mail address!"
+3. It was quite challenging to use react-places-autocomplete to provide autocomplete address input, because there was not enogh detail provided in its docs. Therefore, after having its component working, I shared it as a public repository on Github [(An autocomplete address input)](https://github.com/Davoudr/location);
+Further, since I was not satisfied with this option for later use, I looked for another alternative; there I found Mapbox as the best answer, and I added it as the second option for address-autocompletion.
 
-        -"Wrong password has been inserted!"
-
-        -"User has been found successfully!", user: userObjFE,
-
----
-
--      /business/add ----> POST --->
--             req.body  {
-                  creator:{
-                              id:
-                        }
-                  date: "",
-                  name: "",
-                  category: "",
-                  nationality: "",
-                  languages: [],
-                  address: {
-                              address: "",
-                              lat: "",
-                              lng: "",
-                              country: "",
-                              province: "",
-                        },
-                  connections: {
-                              phone: "",
-                              email: "",
-                              website: "",
-                              facebook: "",
-                              instagram: "",
-                              twitter: "",
-                  },
-                  description: "",
-
----
-
--      /business/find ----> POST --->
--             req.body  {
-                        category: "",
-                        country: "",
-                        language: "",
-                        nationality: "",
-                        province: "",
-                        }
-The req.body-obj should include all this keys either with the length of the value equal to zeor or more than zero.
-The response will contain ---> 
-
-_id, name, address-obj
-
----
-
-
-
-## Cloudinary
-
-For storing user-img-profile;
-It hase a provier which icludes these properties
-
--        const { loginWithRedirect, logout, user, isLoading, isAuthenticated, error } = useAuth0();
+4. The business location had to be displayed on a map; I chose Mapbox because it offers powerful map features and amazing customization (styling map, creating color palette, customizing view angle, adding data-layers, styling pop-ups and etc), which I couldn't get with Google-API; Although, as I was trying google-api, before switching to Mapbox, I shared it as a public repository on Github[(A react component to return a google-map + marker onClick)](https://github.com/Davoudr/location);

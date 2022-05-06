@@ -17,7 +17,6 @@ const imgUrl = {
 // ========================================================================
 // list of nationalities coverd in the website services
 const nationalitiesList = [
-  "Any",
   "Iranians",
   "Canadian",
   "Filipino",
@@ -29,7 +28,7 @@ const nationalitiesList = [
 const nationalitiesArr = arrOfStrToLowerCase(nationalitiesList).sort();
 // ====================================
 // list of language used to categorize businesses
-const languagesList = ["Filipino", "Persian", "Arabic", "French", "English","Mandarin"];
+const languagesList = ["Filipino", "Persian", "Arabic", "French", "English","Mandarin", "Hindi"];
 const languagesArr = arrOfStrToLowerCase(languagesList).sort();
 // ====================================
 // list of cities used to categorize businesses

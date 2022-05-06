@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { AppContext } from "../../other/AppContext";
 import { useContext, useState } from "react";
+// ------------------------------------------------------------------
 const Description = () => {
   const {
     businessInfoReducerActions: { newSuggestionOnChangeHandle },
-
     businessInfo,
     darkMode,
   } = useContext(AppContext);
+  // -----------------------------------
   return (
     <Wrapper>
       <label htmlFor="description" form="business-form">
@@ -52,14 +53,14 @@ const Description = () => {
     </Wrapper>
   );
 };
-
 export default Description;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   margin-top: 3rem;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
+  // -----------------
   .description-span {
     margin-bottom: 1rem;
     display: block;
@@ -67,11 +68,13 @@ const Wrapper = styled.div`
       color: var(--c11);
     }
   }
+  // -----------------
   .connection-type {
     &.dark {
       color: var(--c21);
     }
   }
+  // -----------------
   .description-exp {
     display: block;
     list-style-type: square;
@@ -81,6 +84,7 @@ const Wrapper = styled.div`
       color: var(--c11);
     }
   }
+  // -----------------
   .input {
     width: 40rem;
     padding-left: 1rem;
@@ -93,6 +97,7 @@ const Wrapper = styled.div`
       box-shadow: var(--box-shadow-1);
     }
   }
+  // -----------------
   .descriprion-textArea {
     width: 100%;
     resize: none;

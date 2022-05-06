@@ -1,42 +1,47 @@
 import { useContext } from "react";
 import { AppContext } from "../../other/AppContext";
-import {
-  geocodeByAddress,
-  geocodeByPlaceId,
-  getLatLng,
-} from "react-places-autocomplete";
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import PlacesAutocomplete from "react-places-autocomplete";
 import { useState } from "react";
 import styled from "styled-components";
+// ------------------------------------------------------------------
 const GooglePlacesAutocomplete = () => {
+  // -----------------------------------
   const {
     businessInfoReducerActions: { addressFromMapOnChangeHandle },
     darkMode,
-    // ---------------
   } = useContext(AppContext);
 
-  // ======================================================================================auto-suggestion by Google Places Api
-  // ------------------------------------------------------useStates
+  // -----------------------------------
+  // auto-suggestion by Google Places Api
+  // -----------------
+  // useStates
   const [googleAddress, setGoogleAddress] = useState("");
-  // -----------------------------------------------------handleChange
+  // -----------------
+  // handleChange
   const googleAddressHandleChange = (ev) => {
     setGoogleAddress(ev);
   };
-  // -----------------------------------------------------calling Api
+  // -----------------
+  // calling Api
   const setGoogleAddressHandleSelect = async (ev) => {
-    const results = await geocodeByAddress(ev); // suggestion detail
-    const latLng = await getLatLng(results[0]); // suggestion ll
-    addressFromMapOnChangeHandle({
-      address: results[0].formatted_address,
-      lat: latLng.lat,
-      lng: latLng.lng,
-    });
-
-    setGoogleAddress(ev);
-    // .then((latLng) => console.log("Success", latLng))
-    // .catch((error) => console.error("Error", error));
+    try {
+      // suggestion detail
+      const results = await geocodeByAddress(ev);
+      // suggestion ll
+      const latLng = await getLatLng(results[0]);
+      addressFromMapOnChangeHandle({
+        address: results[0].formatted_address,
+        lat: latLng.lat,
+        lng: latLng.lng,
+      });
+      setGoogleAddress(ev);
+    } catch (error) {
+      console.error("Error", error);
+    }
   };
-  // ------------------------------------------------------creating full address from google-res to be shown in the form
+  // -----------------------------------
+  // creating full address from google-res to be shown in the form
   return (
     <Wrapper>
       <PlacesAutocomplete
@@ -81,8 +86,9 @@ const GooglePlacesAutocomplete = () => {
   );
 };
 export default GooglePlacesAutocomplete;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
+  // -----------------
   .suggestion-item--active {
     background-color: var(--c41);
     color: var(--c21);
@@ -91,12 +97,14 @@ const Wrapper = styled.div`
     transform: scale(1.02);
     transition: all ease-out 0.05s;
   }
+  // -----------------
   .suggestion-item {
     background-color: var(--c11);
     padding: 0.5rem;
     margin: 0.1rem 0;
     transition: all ease-out 0.05s;
   }
+  // -----------------
   .google-address-input {
     height: 3rem;
     width: 100%;
@@ -107,7 +115,7 @@ const Wrapper = styled.div`
       background-color: var(--c21);
     }
   }
-
+  // -----------------
   .full-address-box {
     border-radius: var(--border-radius9);
     border: 1px solid var(--c51);
@@ -129,24 +137,28 @@ const Wrapper = styled.div`
     }
     width: 100%;
   }
+  // -----------------
   .address-type {
     display: block;
   }
+  // -----------------
   .types {
     margin-bottom: 2rem;
-    /* display: inline-block; */
   }
+  // -----------------
   .light-text {
     color: var(--c13);
     display: block;
     text-align: center;
     font-size: var(--font-size-3);
   }
+  // -----------------
   .search-result {
     display: block;
     text-align: center;
     font-size: var(--font-size-4);
   }
+  // -----------------
   .address-results {
     width: 100%;
     margin: 0.2rem 0 2rem;

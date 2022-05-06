@@ -1,10 +1,13 @@
 import styled from "styled-components";
-// --------------------------------------------------------------
+// ------------------------------------------------------------------
 const Footer = () => {
   return (
     <Div>
       <Links>
-        <a className="link" href="https://en.wikipedia.org/wiki/Contractual_term">
+        <a
+          className="link"
+          href="https://en.wikipedia.org/wiki/Contractual_term"
+        >
           <span className="link">Contractual term</span>
         </a>
         <a className="link" href="https://en.wikipedia.org/wiki/Privacy_policy">
@@ -20,13 +23,14 @@ const Footer = () => {
           <span className="link">Notification</span>
         </a>
       </Links>
-      <Date>Copyright © 2010-2030 Cooche Company B.C. All rights reserved.</Date>
+      <Date>
+        Copyright © 2010-2030 Cooche Company B.C. All rights reserved.
+      </Date>
     </Div>
   );
 };
-// --------------------------------------------------------------
 export default Footer;
-// --------------------------------------------------------------
+// ------------------------------------------------------------------
 const Div = styled.div`
   text-align: center;
   display: block;
@@ -41,9 +45,8 @@ const Div = styled.div`
   flex-direction: column;
   background-color: transparent;
   margin-top: 11rem;
-
 `;
-
+// -----------------------------------
 const Links = styled.div`
   display: flex;
   justify-content: center;
@@ -51,13 +54,12 @@ const Links = styled.div`
   padding: 1rem;
   gap: 2rem;
   font-size: var(--font-size-3);
-
-.link{
-color: var(--c13);
+  // -----------------
+  .link {
+    color: var(--c13);
   }
-
 `;
-
+// -----------------------------------
 const Date = styled.div`
   font-size: var(--font-size-2);
   color: var(--c14);

@@ -5,9 +5,6 @@ import usePersistedLocalState from "../hook/usePersistedLocalState";
 // ======================================================================= export
 export const AppContext = createContext(null);
 export const AppProvider = ({ children }) => {
-  // ===============================================================================================================
-  // ---------------------------------------------------------------------------------------------------------------
-  // ===============================================================================================================
   // ===================================================================== to hvae message-alert
   const [message, setMessage] = useState({
     status: false,
@@ -20,7 +17,8 @@ export const AppProvider = ({ children }) => {
   // ====================================================================== to have dark-mode
   // to handle dark mode - all elements can have a .dark style! in ther css
   const [darkMode, setDarkMode] = usePersistedLocalState(false, "darkmode");
-  // on loading the website, we will use this func to toggle-update the .dark class for all elements based on last darkmode-state in local storage
+  // on loading the website, we will use this func to toggle-update
+  // the .dark class for all elements based on last darkmode-state in local storage
   const updateMode = () => {
     const allElements = document.getElementsByTagName("*");
     if (darkMode) {
@@ -35,7 +33,9 @@ export const AppProvider = ({ children }) => {
     }
   };
   // ====================================================================== to capitalize strings
-  //  for react-Select, the event is an arr of objs, so we need to retrive the value from these objs
+  // ---------------------------------------------
+  //  for react-Select, the event is an arr of objs,
+  // so we need to retrive the value from these objs
   const reactSelectToValue = (ev) => {
     let theValue = ev.map((ele) => {
       return ele.value;
@@ -110,8 +110,8 @@ export const AppProvider = ({ children }) => {
   // ------------------------------------------/dashboard/new-suggestion/-------------------------------------------
   // ===============================================================================================================
   // ---------------------------------------------
+  // --------------------------------------------- reducer function
   // for all inputs in new suggestion form
-
   const reducer = (businessInfo, action) => {
     let theKey = "";
     let theValue = "";
@@ -145,10 +145,14 @@ export const AppProvider = ({ children }) => {
       case "new-suggestion-laguage-input-handleChange":
         return {
           ...businessInfo,
-          languages: reactSelectToValue(action.event), //  for react-Select, the event is an arr of objs, so we need to retrive the value from these objs
+          // for react-Select, the event is an arr of objs,
+          // so we need to retrive the value from these objs
+          languages: reactSelectToValue(action.event),
         };
       // ---------------------
-      case "new-suggstion-reset-countryProvince": // in case of selecting default value for country, we should empty both country and province
+      // in case of selecting default value for country,
+      // we should empty both country and province
+      case "new-suggstion-reset-countryProvince":
         return {
           ...businessInfo,
           address: {
@@ -198,21 +202,23 @@ export const AppProvider = ({ children }) => {
         );
     }
   };
-  // -------------------------------------------------reducer-acitons
-
+  // ---------------------------------------------
+  // --------------------------------------------- reducer-acitons
+  // ---------------------
   // language sellect value
   // for new-suggestion/information/
   // using react-select needs different way than other inputs
   // to save the value; so better to use another state to save it for now
   // along with updating the main state (businessInfo) oin the fucntion of onChangeHandle
   const [languagesValue, setLanguagesValue] = useState(null);
-  // -----------
+  //
   const languagesHandleChange = (data) => {
     businessInfoDispatch({
       type: "new-suggestion-laguage-input-handleChange",
       event: data,
     });
-    // this is for temporary saving the input; we can not use businessInfo to do this
+    // this is for temporary saving the input;
+    // we can not use businessInfo to do this
     // bcuz react-select event is an array of objs
     setLanguagesValue(data);
   };
@@ -237,7 +243,8 @@ export const AppProvider = ({ children }) => {
     let theKey = data.target.id;
     let theValue = data.target.value;
     switch (true) {
-      //  in case of selecting the default value of country, we need to empty province-value
+      // in case of selecting the default value of country,
+      // we need to empty province-value
       case theKey === "country" && theValue === "-----Sellect-----":
         businessInfoDispatch({
           type: "new-suggstion-reset-countryProvince",
@@ -259,6 +266,15 @@ export const AppProvider = ({ children }) => {
       ...data,
     });
   };
+  // ---------------------
+  const newSuggestionResetFormHandle = () => {
+    businessInfoDispatch({
+      type: "new-suggstion-clear-data",
+    });
+    setLanguagesValue(null);
+  };
+  // ---------------------------------------------
+  // --------------------------------------------- reducer state
   const [businessInfo, businessInfoDispatch] = useReducer(reducer, {
     connections: {
       phone: "",
@@ -275,13 +291,6 @@ export const AppProvider = ({ children }) => {
     languages: [],
     address: { address: "", lat: "", lng: "", country: "", province: "" },
   });
-  // -----------------
-  const newSuggestionResetFormHandle = () => {
-    businessInfoDispatch({
-      type: "new-suggstion-clear-data",
-    });
-    setLanguagesValue(null);
-  };
   // ---------------------------------------------
   // ---------------------------------------------
   // to switch between tabs in dashboard/new-suggestion
@@ -294,19 +303,16 @@ export const AppProvider = ({ children }) => {
     connections: false,
   });
   // ---------------------------------------------
-
-  // ---------------------------------------------
-
-  // ---------------------------------------------
-  // font the next-page-button
+  // for the next-page-button
   const nextBtnHandle = (ev) => {
     const tabs = ["infoTab", "address", "connections", "description"];
     let nextPage = tabs[tabs.indexOf(pages) + 1];
     setPages(nextPage);
   };
   // ===============================================================================================================
-  // -------------------------------------------------------/-------------------------------------------------------
+  // -------------------------------------------------(home)----/---------------------------------------------------
   // ===============================================================================================================
+  // to store filter values
   const [filterValue, setFilterValue] = useState({
     category: "",
     country: "",
@@ -314,8 +320,13 @@ export const AppProvider = ({ children }) => {
     nationality: "",
     province: "",
   });
+  // ---------------------------------------------
+  //  to store received filtered-data from BE
   const [allServices, setAllServices] = useState(null);
-
+  // ---------------------------------------------
+  // to have markers on the map, we will need
+  // to generate the required obj for the map-box
+  // form arr of data received from BE
   const objGeneratorForMabBox = (arr) => {
     let result = { type: "FeatureCollection", features: [] };
     arr.forEach((obj, index) => {
@@ -344,8 +355,6 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         objGeneratorForMabBox,
-        allServices,
-        setAllServices,
         // --------------------
         businessInfoReducerActions: {
           newSuggestionResetFormHandle,
@@ -355,14 +364,13 @@ export const AppProvider = ({ children }) => {
           languagesHandleChange,
           connectionsOnChangeHandle,
         },
-        filterValue,
-        setFilterValue,
-
         nextBtnHandle,
         // ---------------
-
+        allServices,
+        setAllServices,
         // ---------------
-        // ---------------
+        filterValue,
+        setFilterValue,
         // ---------------
         languagesValue,
         setLanguagesValue,

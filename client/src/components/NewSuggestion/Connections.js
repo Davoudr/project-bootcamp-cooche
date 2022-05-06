@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { AppContext } from "../../other/AppContext";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import NextBtn from "./NextBtn";
 import { BsPhone } from "react-icons/bs";
 import { MdOutlineMail } from "react-icons/md";
@@ -13,16 +13,15 @@ import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import "tippy.js/themes/material.css";
 import "tippy.js/animations/scale.css";
-// -------------------------------------------
+// ------------------------------------------------------------------
 const Connections = () => {
   const {
     businessInfoReducerActions: { connectionsOnChangeHandle },
     nextBtnHandle,
     businessInfo,
-
     darkMode,
   } = useContext(AppContext);
-
+  // -----------------------------------
   return (
     <Wrapper>
       <div className="btn-box">
@@ -31,6 +30,7 @@ const Connections = () => {
         </div>
       </div>
       <div>
+        {/* // -------------------------------- */}
         <div className="connection-box">
           <label
             htmlFor="phone"
@@ -51,7 +51,7 @@ const Connections = () => {
             onChange={connectionsOnChangeHandle}
           />
         </div>
-
+        {/* // -------------------------------- */}
         <div className="connection-box">
           <label
             htmlFor="email"
@@ -66,7 +66,6 @@ const Connections = () => {
               E-Mail
             </span>
           </label>
-
           <input
             value={businessInfo.connections.email}
             className="input email conneciton-input"
@@ -76,7 +75,7 @@ const Connections = () => {
             onChange={connectionsOnChangeHandle}
           />
         </div>
-        {/* ------------------------------website*/}
+        {/* // -------------------------------- */}
         <div className="connection-box">
           <label
             htmlFor="website"
@@ -97,7 +96,7 @@ const Connections = () => {
             onChange={connectionsOnChangeHandle}
           />
         </div>
-
+        {/* // -------------------------------- */}
         <div className="connection-box">
           <label
             htmlFor="facebook"
@@ -124,7 +123,7 @@ const Connections = () => {
             />
           </Tippy>
         </div>
-
+        {/* // -------------------------------- */}
         <div className="connection-box">
           <label
             htmlFor="instagram"
@@ -151,7 +150,7 @@ const Connections = () => {
             />
           </Tippy>
         </div>
-
+        {/* // -------------------------------- */}
         <div className="connection-box">
           <label
             htmlFor="twitter"
@@ -178,33 +177,36 @@ const Connections = () => {
             />
           </Tippy>
         </div>
+        {/* // -------------------------------- */}
       </div>
     </Wrapper>
   );
 };
-
 export default Connections;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
+  // -----------------
   .connection-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
   }
+  // -----------------
   .connection-label {
     height: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+  // -----------------
   .connection-type {
     margin-left: 2rem;
     &.dark {
       color: var(--c21);
     }
   }
-
+  // -----------------
   .input {
     width: 40rem;
     padding-left: 1rem;
@@ -217,11 +219,13 @@ const Wrapper = styled.div`
       box-shadow: var(--box-shadow-1);
     }
   }
+  // -----------------
   .conneciton-input {
     width: 40rem;
     height: 2rem;
     padding-left: 1rem;
   }
+  // -----------------
   .btn-box {
     width: 100%;
     display: flex;
@@ -231,6 +235,7 @@ const Wrapper = styled.div`
     align-items: flex-end;
     flex-direction: row;
   }
+  // -----------------
   .next-info {
     color: var(--c15);
     padding: 0;

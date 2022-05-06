@@ -5,12 +5,12 @@ import { useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import SignIn from "./SignInTab";
 import SignUp from "./SignUpTab";
-// ----------------------------------------------------------
+// ------------------------------------------------------------------
 const Login = () => {
-  // ----------------------------------------------------------
+  // -----------------------------------
   const { user } = useAuth0();
   const { logInMethod, setLogInMethod } = useContext(AppContext);
-  // ----------------------------------------------------------
+  // -----------------------------------
   return user ? (
     <Navigate to="/dashboard" />
   ) : (
@@ -49,15 +49,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 50px;
   min-width: var(--min-normal-width);
-
   height: calc(100vh - var(--navbar-height));
+  // -----------------
   .header {
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
-   
   }
+  // -----------------
   .method-btn {
     font-family: var(--f11);
     margin: 20px 10px;
@@ -66,30 +66,33 @@ const Wrapper = styled.div`
     border-radius: 0%;
     font-weight: bold;
     padding-bottom: 1rem;
-    &.dark{
+    &.dark {
       color: var(--c12);
     }
-    
   }
+  // -----------------
   .active {
     border-bottom: 2px solid var(--c31);
     color: var(--c31);
   }
+  // -----------------
   .methods {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
     height: 100%;
-   min-height: 25rem;
-   .dark{
-    backdrop-filter: blur(0px) saturate(200%);
-    -webkit-backdrop-filter: blur(0px) saturate(200%);
-    background-color: rgba(17, 25, 40, 0.02);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.005);
-   }
+    min-height: 25rem;
+    // -----------------
+    .dark {
+      backdrop-filter: blur(0px) saturate(200%);
+      -webkit-backdrop-filter: blur(0px) saturate(200%);
+      background-color: rgba(17, 25, 40, 0.02);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.005);
+    }
   }
+  // -----------------
   .login {
     display: flex;
     justify-content: space-around;
@@ -106,22 +109,20 @@ const Wrapper = styled.div`
     background-color: rgba(255, 255, 255, 0.52);
     border-radius: 12px;
     border: 1px solid rgba(209, 213, 219, 0.3);
-    &.dark{
+    &.dark {
       backdrop-filter: blur(0px) saturate(200%);
-    -webkit-backdrop-filter: blur(0px) saturate(200%);
-    background-color: rgba(17, 25, 40, 0.52);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
-
+      -webkit-backdrop-filter: blur(0px) saturate(200%);
+      background-color: rgba(17, 25, 40, 0.52);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.125);
     }
-    
   }
+  // -----------------
   .title {
     top: 50px;
     font-size: var(--font-size-10);
     font-weight: bold;
     font-family: var(--f11);
     color: var(--c11);
-    
   }
 `;

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import styled from "styled-components";
-// -----------------------------
+// ------------------------------------------------------------------
 const SelectOption = ({
   name,
   fomeName,
@@ -11,6 +11,7 @@ const SelectOption = ({
   optionsArr
 }) => {
   const { capitalizeFirstLetter } = useContext(AppContext);
+  // -----------------------------------
   return (
     <Wrapper>
       <label from={`${fomeName}-form`} htmlFor={name.toLowerCase()} className="label">
@@ -35,9 +36,8 @@ const SelectOption = ({
     </Wrapper>
   );
 };
-
 export default SelectOption;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   .input,
   .label {
@@ -48,6 +48,7 @@ const Wrapper = styled.div`
     align-items: center;
     text-align: center;
   }
+  // -----------------------------------
   .input {
     border: 1.5px solid var(--c51);
     border-radius: 12rem;

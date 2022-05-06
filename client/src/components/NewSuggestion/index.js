@@ -9,35 +9,32 @@ import Menu from "./Menu";
 import InformationTab from "./InformationTab";
 import Connections from "./Connections";
 import Description from "./Description";
-// ======================================================================================component
+// ------------------------------------------------------------------
 const NewSuggestion = () => {
-  // ====================================================================================useContext
+  // -----------------------------------
   const {
     businessInfoReducerActions: { newSuggestionResetFormHandle },
-
     arrOfStrToLowerCase,
-
     languagesValue,
     setLanguagesValue,
     setvalidationErr,
-    validationErr,
-    pages,
     setPages,
+    pages,
     businessInfo,
-    darkMode,
     loading,
     setLoading,
     setMessage,
     userSession,
   } = useContext(AppContext);
-  // ====================================================================================submit
+  // -----------------------------------
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    // ----------------------------------------------converting submit-btn contetnt to loading-animation
+    // converting submit-btn contetnt to loading-animation
     setLoading(true);
-    // ----------------------------------------------retrieving information
+    // etrieving information
     switch (true) {
-      // -------------------------first-tab validation
+      // -----------------
+      //  first-tab validation
       case businessInfo.name.length === 0 ||
         businessInfo.category.length === 0 ||
         businessInfo.nationality.length === 0 ||
@@ -49,16 +46,19 @@ const NewSuggestion = () => {
             "Please note that all the fields which have red-asterisk in INFORMATION tab, should be filled!",
           btnText: "Ok",
         });
-        setLoading(false); // for turning loading status of submint button
+        // for turning loading status of submint button
+        setLoading(false);
+        // for visual effect of error
         setTimeout(() => {
           setvalidationErr({
             information: true,
             address: false,
             connections: false,
           });
-        }, 2000); // for visual effect of error
+        }, 2000);
         break;
-      // -------------------------second-tab validation
+      // -----------------
+      // second-tab validation
       case businessInfo.address.country.length === 0 ||
         businessInfo.address.province.length === 0 ||
         businessInfo.address.address.length === 0:
@@ -69,16 +69,19 @@ const NewSuggestion = () => {
             "Please note that for the address, filling the country and the province is requried!",
           btnText: "Ok",
         });
-        setLoading(false); // for turning loading status of submint button
+        // for turning loading status of submint button
+        setLoading(false);
+        // for visual effect of error
         setTimeout(() => {
           setvalidationErr({
             information: false,
             address: true,
             connections: false,
           });
-        }, 2000); // for visual effect of error
+        }, 2000);
         break;
-      // -------------------------third-tab validation
+      // -----------------
+      // third-tab validation
       case businessInfo.connections.phone.length === 0 &&
         businessInfo.connections.email.length === 0 &&
         businessInfo.connections.website.length < 5 &&
@@ -92,14 +95,16 @@ const NewSuggestion = () => {
             "Please provide at least one option for connecting to this bussiness!",
           btnText: "Ok",
         });
-        setLoading(false); // for turning loading status of submint button
+        // for turning loading status of submint button
+        setLoading(false);
+        // for visual effect of error
         setTimeout(() => {
           setvalidationErr({
             information: false,
             address: false,
             connections: true,
           });
-        }, 2000); // for visual effect of error
+        }, 2000);
         break;
       default:
         setvalidationErr({
@@ -107,7 +112,7 @@ const NewSuggestion = () => {
           address: false,
           connections: false,
         });
-        // -------------------------till here data is validated! now it is going to be added to db
+        // -----------------till here data is validated! now it is going to be added to db
         const endpointBusinessObj = {
           creator: {
             id: userSession.id,
@@ -141,7 +146,8 @@ const NewSuggestion = () => {
           },
         };
         console.log(endpointBusinessObj);
-        // -------------------------postin user-obj to db
+        // -----------------
+        // postin user-obj to db
         fetch("/business/add", {
           method: "POST",
           headers: {
@@ -152,7 +158,8 @@ const NewSuggestion = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            // ------------------------proper action based on server-res
+            // --------------
+            // proper action based on server-res
             if (data.status === 201) {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
               newSuggestionResetFormHandle();
@@ -163,6 +170,7 @@ const NewSuggestion = () => {
                 content: "The bussiness is added successfully!",
                 btnText: "Ok",
               });
+              setPages("infoTab");
               setLoading(false);
             } else {
               setLoading(false);
@@ -177,13 +185,14 @@ const NewSuggestion = () => {
           .catch((err) => console.log("Error in add new user:", err));
     }
   };
-  // ------------------------------------------------------clear-form button handle
+  // -----------------------------------
+  // clear-form button handle
   const handleClrearForm = (ev) => {
     document.getElementById("business-form").reset();
     newSuggestionResetFormHandle();
     setLanguagesValue([]);
   };
-  // ======================================================================================
+  // -----------------------------------
   return (
     // --------------------------------------------------------------------containers
     <Wrapper pages={pages}>
@@ -247,7 +256,7 @@ const NewSuggestion = () => {
   );
 };
 export default NewSuggestion;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   width: var(--website-width);
   margin: auto;
@@ -256,15 +265,17 @@ const Wrapper = styled.div`
   align-items: stretch;
   flex-direction: column;
   margin-top: 1rem;
+  // -----------------
   .btn {
     background-color: transparent;
   }
+  // -----------------
   .columns {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 4fr;
   }
-
+  // -----------------
   .input {
     width: 40rem;
     padding-left: 1rem;
@@ -276,23 +287,24 @@ const Wrapper = styled.div`
       box-shadow: var(--box-shadow-1);
     }
   }
+  // -----------------
   .address {
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
     flex-direction: column;
   }
+  // -----------------
   .infoTab {
     padding: 1rem;
     padding: 2rem;
     margin: auto;
     display: flex;
-
     justify-content: space-around;
     align-items: stretch;
-    /* flex-flow: column; */
     flex-direction: column;
   }
+  // -----------------
   .connections {
     padding: 2rem;
     display: flex;
@@ -300,12 +312,15 @@ const Wrapper = styled.div`
     align-items: stretch;
     flex-direction: column;
   }
+  // -----------------
   .label {
     text-align: left;
   }
+  // -----------------
   .input {
     display: block;
   }
+  // -----------------
   .card {
     background-color: var(--c10);
     z-index: 1;
@@ -321,6 +336,7 @@ const Wrapper = styled.div`
       align-items: stretch;
     }
   }
+  // -----------------
   .btn-box {
     width: 100%;
     display: flex;
@@ -330,9 +346,11 @@ const Wrapper = styled.div`
     align-items: flex-end;
     flex-direction: row;
   }
+  // -----------------
   .description-box {
     padding: 2rem;
   }
+  // -----------------
   .next-info {
     color: var(--c15);
     padding: 0;
@@ -340,18 +358,21 @@ const Wrapper = styled.div`
     background-color: transparent;
     box-shadow: none;
   }
+  // -----------------
   .submit-btn {
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+  // -----------------
   .asterisk {
     color: var(--c31);
     margin-left: 0.2rem;
     font-size: var(--font-size-4);
     font-weight: bold;
   }
+  // -----------------
   .btns-div {
     display: flex;
     justify-content: center;
@@ -359,11 +380,13 @@ const Wrapper = styled.div`
     flex-direction: row;
     width: 20rem;
   }
+  // -----------------
   .container-btns {
     display: flex;
     justify-content: center;
     align-items: center;
   }
+  // -----------------
   .left-menu {
     margin: 5rem 0 0 2rem;
     width: 13rem;

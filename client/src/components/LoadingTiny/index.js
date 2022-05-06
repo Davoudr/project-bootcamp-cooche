@@ -1,12 +1,11 @@
 import styled, { keyframes } from "styled-components";
-// --------------------------------------------
+// ------------------------------------------------------------------
 const LoadingTiny = () => {
   return <LoadingDiv/>;
 };
 export default LoadingTiny;
-// --------------------------------------------
+// ------------------------------------------------------------------
 const ani = keyframes`
-
    50% {
       box-shadow: 21px 0 0 3px, 42px 0 0 8px, 63px 0 0 3px;
    }

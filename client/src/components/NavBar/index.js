@@ -2,60 +2,65 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { imgUrl } from "../../other/variables";
-import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
-import { useSpring, animated } from "react-spring";
 import Darkmode from "./Darkmode";
-
-// -----------------------------------------------------component
+// ------------------------------------------------------------------
 const NavBar = () => {
-  // -------------------------------auth0
+  // -----------------------------------
+  // auth0
   const { loginWithRedirect, logout, user, isLoading, isAuthenticated, error } =
     useAuth0();
-  // -------------------------------hooks
+  // -----------------------------------
   let location = useLocation();
-  // -------------
+  // -----------------
   let navigate = useNavigate();
-  // -------------
+  // -----------------------------------
   const {
     updateMode,
-    message,
-    setMessage,
     userSession,
     setUserSession,
     passwordGenerator,
     setLogInMethod,
-    darkMode,
-    setDarkMode,
   } = useContext(AppContext);
-  // -------------to make sure userSession is uptodate and db has the user (litterally for the times user uses auth0-google singin/signup)
+  // -----------------------------------
+  //  to make sure userSession is uptodate and db has the user
+  // (litterally for the times user uses auth0-google singin/signup)
   useEffect(() => {
-    //------------if user has used auth0-google singin/signup
+    // -----------------
+    //  if user has used auth0-google singin/signup
     if (!isLoading && user) {
-      //----------update userSession by auth0-user if it is not uptodate
+      // ---------------
+      // update userSession by auth0-user if it is not uptodate
       if (userSession && user.email === userSession.email) {
         console.log(`Welcome ${user.name}`);
       } else {
-        //--------now we are sure user is new
+        // -------------
+        // now we are sure user is new
         const username = user.email.trim().split("@")[0];
         const newPass = passwordGenerator(10);
         const picUrl =
           user.picture === null ? imgUrl.defaultUserIcon : user.picture;
-        //--------creatin his/her obj for userSession
+        // -------------
+        // creatin his/her obj for userSession
         const info = {
           username: username,
           email: user.email,
           given_name: user.given_name,
           family_name: user.family_name,
           pic: picUrl,
-          userHasThePassword: true, //we dont know if she/he is new or not; for now, we update the userSession (navBar needs it) before entring server-res-delays
+          //we dont know if she/he is new or not;
+          // for now, we update the userSession (navBar needs it)
+          // before entring server-res-delays
+          userHasThePassword: true,
         };
-        //--------updating userSession
+        // ------------
+        // updating userSession
         setUserSession(info);
-        //--------updating db
+        // ------------
+        // updating db
         const endpointUserObj = {
           username: username,
           email: user.email,
@@ -65,7 +70,8 @@ const NavBar = () => {
           pic: picUrl,
           base64: false,
         };
-        //-------postin user-obj to db
+        // ------------
+        // postin user-obj to db
         fetch("/user/add", {
           method: "POST",
           headers: {
@@ -78,7 +84,14 @@ const NavBar = () => {
           .then((data) => {
             if (data.status === 201) {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
-              setUserSession({ ...userSession, userHasThePassword: newPass , id: data.user.id}); //user is new, he/she has loged in using quth0-google; a random-pass will be created and we need to let him/her know what is the password!
+              setUserSession({
+                ...userSession,
+                //user is new, he/she has loged in using quth0-google;
+                // a random-pass will be created
+                // and we need to let him/her know what is the password!
+                userHasThePassword: newPass,
+                id: data.user.id,
+              });
             } else {
               console.log(`FE / POST / </userAdd> / res / ${data.message}`);
             }
@@ -86,24 +99,26 @@ const NavBar = () => {
       }
     }
   }, [user]);
-
-  // -------------------------------
+  // -----------------------------------
   const hanleLogout = () => {
     logout();
     setUserSession(null);
-    // window.location.reload(false);
   };
-
+  // -----------------
   const hanleSignIn = () => {
     navigate(`/login`);
-    setLogInMethod("sign-in"); // to switch tabs in login page
+    // to switch tabs in login page
+    setLogInMethod("sign-in");
   };
-
+  // -----------------
   const hanleSignUp = () => {
     navigate(`/login`);
-    setLogInMethod("sign-up"); // to switch tabs in login page
+    // to switch tabs in login page
+    setLogInMethod("sign-up");
   };
-  // -------------------------------to toggle-update the .dark class for all elements based on last darkmode-state in local storage
+  // -----------------------------------
+  // to toggle-update the .dark class for all elements
+  // based on last darkmode-state in local storage
   updateMode();
   // ----------------------------------------------------------------
   return (
@@ -156,19 +171,19 @@ const NavBar = () => {
 };
 export default NavBar;
 // ----------------------------------------------------------------
-
 const Content = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
-
+// -----------------------------------
 const LogBtn = styled.button`
   background-color: transparent;
   box-shadow: none;
   padding: 0;
   margin: 0 1rem;
 `;
+// -----------------------------------
 const Wrapper = styled.div`
   border-radius: 0%;
   height: var(--navbar-height);
@@ -180,9 +195,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: stretch;
-  /* flex-flow: column; */
   flex-direction: column;
-
+  // -----------------
   .logo {
     background-color: rgba(0, 0, 0, 0);
     color: var(--c51);
@@ -191,12 +205,13 @@ const Wrapper = styled.div`
     font-weight: bold;
   }
 `;
-
+// -----------------------------------
 const NavRight = styled.ul`
   display: flex;
   align-items: center;
   list-style: none;
 `;
+// -----------------------------------
 const Item = styled.li`
   font-size: var(--font-size-5);
   font-family: var(--f12);
@@ -208,6 +223,7 @@ const Item = styled.li`
     transform: scale(1.03);
   }
 `;
+// -----------------------------------
 const Img = styled.img`
   margin-right: 1rem;
   height: 45px;

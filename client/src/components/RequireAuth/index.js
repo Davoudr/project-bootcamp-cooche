@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+// ------------------------------------------------------------------
 const RequireAuth = () => {
   return (
     <>
@@ -8,3 +9,4 @@ const RequireAuth = () => {
   );
 };
 export default RequireAuth;
+// ------------------------------------------------------------------

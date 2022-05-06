@@ -1,18 +1,27 @@
 import styled, { keyframes } from "styled-components";
-
-const MenuBtn = ({ trigger , btnText, darkMode}) => {
+// ------------------------------------------------------------------
+const MenuBtn = ({ trigger, btnText, darkMode }) => {
   return (
-    <DIV className="info" trigger={trigger} >
-      <div className={`button ${trigger && "button-acive"} ${darkMode && "darkMode"}`}>
-        <span className={`span ${trigger && "span-acive"} ${darkMode && "darkMode"}`}>{btnText}</span>
+    <DIV className="info" trigger={trigger}>
+      <div
+        className={`button ${trigger && "button-acive"} ${
+          darkMode && "darkMode"
+        }`}
+      >
+        <span
+          className={`span ${trigger && "span-acive"} ${
+            darkMode && "darkMode"
+          }`}
+        >
+          {btnText}
+        </span>
       </div>
     </DIV>
   );
 };
 export default MenuBtn;
-
+// ------------------------------------------------------------------
 const rotate = keyframes`
-
 0%
 	{transform: rotate(0deg) translate3d(0, 0, 0)}
 25%
@@ -24,9 +33,8 @@ const rotate = keyframes`
 100%
 	{transform: rotate(0deg) translate3d(0, 0, 0)}
 `;
-
+// -----------------------------------
 const storm = keyframes`
-
 0%
 	{transform: translate3d( 0, 0, 0) translateZ(0)}
 25%
@@ -38,17 +46,16 @@ const storm = keyframes`
 100%
 	{transform: translate3d( 0, 0, 0) translateZ(0);}
 `;
-
+// -----------------------------------
 const DIV = styled.div`
   width: 100%;
   height: 100%;
-
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  // -----------------
   .button {
     position: relative;
     outline: none;
@@ -63,30 +70,27 @@ const DIV = styled.div`
     width: 300px;
     opacity: 1;
     background-color: #ffffff;
-  
-    &.dark{
-     background-color: #3D405B;
-     color: #F4F1DE;
+    &.dark {
+      background-color: #3d405b;
+      color: #f4f1de;
     }
-
     &.button-acive {
       animation: ${rotate} 2s ease-in-out both;
       box-shadow: var(--box-shadow-0);
     }
   }
+  // -----------------
   .span {
-    color:#3D405B;
+    color: #3d405b;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.7px;
     &.span-acive {
       animation: ${storm} 2s ease-in-out both;
       animation-delay: 0.2s;
-      
     }
-    &.dark{
-
-     color: #F4F1DE;
+    &.dark {
+      color: #f4f1de;
     }
   }
 `;

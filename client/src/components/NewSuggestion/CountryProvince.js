@@ -1,24 +1,15 @@
 import styled from "styled-components";
 import { AppContext } from "../../other/AppContext";
 import { useContext } from "react";
-import {
-  locationList,
-  categoriesArr,
-  nationalitiesArr,
-  languagesArr,
-} from "../../other/variables";
-import Select from "react-select";
-// ---------------------------------------------------------
+import { locationList } from "../../other/variables";
+// ------------------------------------------------------------------
 const CountryProvince = () => {
   const {
-    businessInfoReducerActions: {
-      countryProvincOnChangeHandle,
-    },
+    businessInfoReducerActions: { countryProvincOnChangeHandle },
     businessInfo,
     capitalizeFirstLetter,
-    // ---------------
   } = useContext(AppContext);
-
+  // -----------------------------------
   return (
     <Wrapper>
       <div className="cp country-box">
@@ -74,35 +65,39 @@ const CountryProvince = () => {
     </Wrapper>
   );
 };
-
 export default CountryProvince;
-
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-direction: column;
+  // -----------------
   .cp-input {
     width: 15rem;
-    &.dark{
+    &.dark {
       background-color: var(--c21);
     }
   }
+  // -----------------
   .cp-label {
     width: 3rem;
-    &.dark{
+    &.dark {
       color: var(--c21);
     }
   }
+  // -----------------
   .cp,
   .cp-input {
     display: inline;
     height: 3rem;
     font-size: var(--font-size-3);
   }
+  // -----------------
   .cp-input {
     text-align: center;
   }
+  // -----------------
   .cp {
     display: flex;
     justify-content: center;

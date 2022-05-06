@@ -2,22 +2,25 @@ import { useContext } from "react";
 import styled from "styled-components";
 import { AppContext } from "../../other/AppContext";
 import { keyframes } from "styled-components";
-// -----------------------------------------------
+// ------------------------------------------------------------------
 const MsgBox = () => {
-  // -----------------------------------------------
+  // -----------------------------------
   const { message, setMessage } = useContext(AppContext);
+  // -----------------------------------
   const pageHandle = (ev) => {
     ev.stopPropagation();
     setMessage({ status: false, title: "", content: "", btnText: "" });
   };
+  // -----------------
   const boxHandle = (ev) => {
     ev.stopPropagation();
   };
+  // -----------------
   const btnHandle = (ev) => {
     ev.stopPropagation();
     setMessage({ status: false, title: "", content: "", btnText: "" });
   };
-  // -----------------------------------------------
+  // -----------------------------------
   return (
     <Wrapper onClick={pageHandle}>
       {message && (
@@ -33,7 +36,7 @@ const MsgBox = () => {
   );
 };
 export default MsgBox;
-// -----------------------------------------------
+// ------------------------------------------------------------------
 const theAnimation = keyframes`
     0% { 
     opacity: 0;
@@ -53,35 +56,40 @@ const theAnimation = keyframes`
 const Wrapper = styled.button`
   animation: ${theAnimation};
   animation-duration: 250ms;
-  .btn {
-    color: var(--c13);
-    padding: 0.5rem 2rem;
-    font-weight: bold;
-  }
-  &:active {
-    box-shadow: none;
-    background-color: transparent;
-  }
-  /* position: absolute; */
   width: 100vw;
   height: calc(100vh - var(--navbar-height));
   background-color: transparent;
   backdrop-filter: blur(2px);
   z-index: 10;
+  // -----------------
+  &:active {
+    box-shadow: none;
+    background-color: transparent;
+  }
+  // -----------------
+  .btn {
+    color: var(--c13);
+    padding: 0.5rem 2rem;
+    font-weight: bold;
+  }
+
+  // -----------------
   .text {
     color: var(--c10);
   }
+  // -----------------
   .title {
     font-size: var(--font-size-7);
     font-weight: bold;
   }
+  // -----------------
   .msg {
     z-index: 11;
     font-weight: normal;
     font-size: var(--font-size-4);
     margin: 40px 10px;
-    /* padding: auto; */
   }
+  // -----------------
   .msg-box {
     padding: 30px;
     min-height: 200px;

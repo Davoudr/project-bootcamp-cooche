@@ -2,17 +2,17 @@ import { useContext } from "react";
 import { AppContext } from "../../other/AppContext";
 import MenuBtn from "./MenuBtn";
 import styled from "styled-components";
-// ========================================================================
+// ------------------------------------------------------------------
 const Menu = () => {
-  // ========================================================================
-  const { pages, setPages, darkMode, validationErr, setvalidationErr } =
-    useContext(AppContext);
-  // --------------------------------------------------
+  // -----------------------------------
+  const { pages, setPages, darkMode, validationErr } = useContext(AppContext);
+  // -----------------------------------
+  // changing pages from left menu
   const handleLeftMenu = (ev, tab) => {
     setPages(tab);
     return false;
   };
-  // ========================================================================
+  // -----------------------------------
   return (
     <Wrapper className="menu">
       <button
@@ -67,9 +67,9 @@ const Menu = () => {
   );
 };
 export default Menu;
-// ========================================================================
+// ------------------------------------------------------------------
 const Wrapper = styled.div`
- 
+  // -----------------
   .menu {
     background-color: var(--c21);
     width: 10rem;
@@ -82,8 +82,8 @@ const Wrapper = styled.div`
     min-height: 50rem;
     text-align: center;
     margin-left: 3rem;
-
   }
+  // -----------------
   .btn {
     width: 100%;
     background-color: transparent;
@@ -98,6 +98,7 @@ const Wrapper = styled.div`
     transition: all ease-in-out 0.5s;
     margin-bottom: 0.5rem;
   }
+  // -----------------
   .active-tab {
     margin-bottom: 5rem;
   }
