@@ -32,7 +32,7 @@ const Address = () => {
           <Button className="address-method-btn" btnText="Google Finder" />
         </button>
         <button
-          className="method-btn"
+          className="method-btn" 
           type="button"
           onClick={() => setAddresMethod("Locatiocn-on-Map")}
         >
