@@ -38,7 +38,7 @@ const Div = styled.div`
   position: relative;
   z-index: 100;
   width: 100%;
-  height: 15vh;
+  height: 18vh;
   display: flex;
   justify-content: center;
   align-items: center;
