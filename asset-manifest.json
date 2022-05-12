@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5e409e9b.css",
+    "main.js": "/static/js/main.f0794e8e.js",
+    "static/js/845.4fbf7743.chunk.js": "/static/js/845.4fbf7743.chunk.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/world-points.png": "/static/media/world-points.c22b7758765abf87cb27.png",
+    "static/media/yellow-city.png": "/static/media/yellow-city.1047d2bb7ce0390a492c.png",
+    "static/media/location-icon-1.png": "/static/media/location-icon-1.6ed90075a3b1cdbe9bf9.png",
+    "static/media/click.mp3": "/static/media/click.87bc99d8fb02b0ea5949.mp3",
+    "index.html": "/index.html",
+    "main.5e409e9b.css.map": "/static/css/main.5e409e9b.css.map",
+    "main.f0794e8e.js.map": "/static/js/main.f0794e8e.js.map",
+    "845.4fbf7743.chunk.js.map": "/static/js/845.4fbf7743.chunk.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5e409e9b.css",
+    "static/js/main.f0794e8e.js"
+  ]
+}
